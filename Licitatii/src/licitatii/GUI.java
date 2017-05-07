@@ -214,7 +214,7 @@ public class GUI extends javax.swing.JFrame {
         imgLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imgLabel.setPreferredSize(new java.awt.Dimension(622, 554));
 
-        jLabel8.setText("jLabel8");
+        jLabel8.setText("Descriere");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
