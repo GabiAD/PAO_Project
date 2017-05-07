@@ -20,6 +20,7 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
@@ -34,6 +35,8 @@ public class GUI extends javax.swing.JFrame {
     private Component licitatieUserComponent;
     private Component licitatieGuestComponent;
     private boolean anBisect = false;
+    private String utilizator;
+    private DefaultListModel listaProduseProgramare;
     
     public GUI() {
         initComponents();
@@ -45,8 +48,6 @@ public class GUI extends javax.swing.JFrame {
         licitatieGuestComponent = tabContainer.getComponentAt(3);
         
         
-        System.out.println("asad");
-        
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         Date date = new Date();
         
@@ -56,6 +57,13 @@ public class GUI extends javax.swing.JFrame {
         programareAnBox.addItem(Integer.toString(Integer.parseInt(dateFormat.format(date))+3));
         
         setZile(31);
+        
+        jListProduseProgramare.setModel(new DefaultListModel());
+        listaProduseProgramare = (DefaultListModel) jListProduseProgramare.getModel();
+
+        listaProduseProgramare.add(0, "A");
+
+
     }
 
     
@@ -79,12 +87,14 @@ public class GUI extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
         programareAnBox = new javax.swing.JComboBox<>();
         programareLunaBox = new javax.swing.JComboBox<>();
         programareZiBox = new javax.swing.JComboBox<>();
         jComboBox3 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
+        programeazaButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jListProduseProgramare = new javax.swing.JList<>();
+        stergeProdusProgramareButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         adaugaButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -193,7 +203,7 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(guestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
         );
         loginCardLayout.setVerticalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,19 +253,40 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("Programeaza");
+        programeazaButton.setText("Programeaza");
+        programeazaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                programeazaButtonActionPerformed(evt);
+            }
+        });
+
+        jListProduseProgramare.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jListProduseProgramare.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListProduseProgramareMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jListProduseProgramare);
+
+        stergeProdusProgramareButton.setText("Sterge produs");
+        stergeProdusProgramareButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stergeProdusProgramareButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -267,11 +298,14 @@ public class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(programareLunaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(programareZiBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(322, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addGap(39, 39, 39))))
+                        .addComponent(programareZiBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(37, 37, 37))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(stergeProdusProgramareButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(programeazaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,10 +321,14 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addComponent(jButton5))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(programeazaButton)
+                    .addComponent(stergeProdusProgramareButton)))
         );
+
+        stergeProdusProgramareButton.setEnabled(false);
 
         tabContainer.addTab("Programare", jPanel3);
 
@@ -303,7 +341,7 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Titlu:");
+        jLabel5.setText("*Titlu:");
 
         jButton2.setText("Selectati poza");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -318,6 +356,18 @@ public class GUI extends javax.swing.JFrame {
 
         imgLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imgLabel.setPreferredSize(new java.awt.Dimension(622, 554));
+
+        titluTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                titluTFKeyTyped(evt);
+            }
+        });
+
+        pretTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                pretTFKeyTyped(evt);
+            }
+        });
 
         jLabel8.setText("Descriere");
 
@@ -336,20 +386,21 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6)
-                            .addComponent(titluTF)
-                            .addComponent(pretTF, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(numeVanzatorTF, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(12, 12, 12))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titluTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                            .addComponent(pretTF)
+                            .addComponent(numeVanzatorTF)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(12, 12, 12)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(imgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
@@ -361,7 +412,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(imgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                        .addComponent(imgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -396,14 +447,14 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(licitatieUserPanelLayout.createSequentialGroup()
                 .addGap(209, 209, 209)
                 .addComponent(jButton1)
-                .addContainerGap(303, Short.MAX_VALUE))
+                .addContainerGap(321, Short.MAX_VALUE))
         );
         licitatieUserPanelLayout.setVerticalGroup(
             licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(licitatieUserPanelLayout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(jButton1)
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addContainerGap(239, Short.MAX_VALUE))
         );
 
         tabContainer.addTab("Liciteaza", licitatieUserPanel);
@@ -419,7 +470,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(licitatieGuestPanelLayout.createSequentialGroup()
                 .addGap(248, 248, 248)
                 .addComponent(jButton3)
-                .addContainerGap(264, Short.MAX_VALUE))
+                .addContainerGap(282, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, licitatieGuestPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4)
@@ -432,7 +483,7 @@ public class GUI extends javax.swing.JFrame {
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton3)
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         tabContainer.addTab("Liciteaza", licitatieGuestPanel);
@@ -476,11 +527,11 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
         );
 
         pack();
@@ -491,6 +542,14 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_loginTFActionPerformed
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        
+        utilizator = loginTF.getText();
+        System.out.println(utilizator);
+        titluTF.setText("");
+        numeVanzatorTF.setText(utilizator);
+        pretTF.setText("");
+        descriereTF.setText("");
+        
         cl.show(container, "card3");        
         userName.setText("Logged in as ".concat(loginTF.getText()));
         
@@ -531,10 +590,18 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_selectImage
 
     private void adaugaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaugaButtonActionPerformed
-        titluTF.setText("");
-        numeVanzatorTF.setText("");
-        pretTF.setText("");
-        descriereTF.setText("");
+        String auxPret = pretTF.getText();
+        while(auxPret.length() > 0 && auxPret.charAt(0) == '0'){
+            auxPret = auxPret.substring(1);
+        }
+        if(auxPret.equals(""))
+            auxPret = "0";
+        
+        listaProduseProgramare.add(listaProduseProgramare.getSize(), String.join(": ", titluTF.getText(), auxPret));
+        
+        resetAddObject();
+        
+        programeazaButton.setEnabled(true);
     }//GEN-LAST:event_adaugaButtonActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
@@ -546,7 +613,7 @@ public class GUI extends javax.swing.JFrame {
         programareZiBox.removeAllItems();
         
         for (int i = 1; i <= k; i++) {
-            programareZiBox.addItem(i + "");
+            programareZiBox.addItem(String.valueOf(i));
         }
     }
     
@@ -599,6 +666,42 @@ public class GUI extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_programareLunaBoxActionPerformed
 
+    private void stergeProdusProgramareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergeProdusProgramareButtonActionPerformed
+        
+        if(jListProduseProgramare.getSelectedIndex() >= 0)
+            listaProduseProgramare.remove(jListProduseProgramare.getSelectedIndex());
+        
+        if(listaProduseProgramare.getSize() == 0)
+            programeazaButton.setEnabled(false);
+        
+        stergeProdusProgramareButton.setEnabled(false);
+    }//GEN-LAST:event_stergeProdusProgramareButtonActionPerformed
+
+    private void titluTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_titluTFKeyTyped
+        if(titluTF.getText().concat(String.valueOf(evt.getKeyChar())).equals(""))
+            adaugaButton.setEnabled(false);
+        else
+            adaugaButton.setEnabled(true);
+    }//GEN-LAST:event_titluTFKeyTyped
+
+    private void pretTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pretTFKeyTyped
+        if(!(pretTF.getText().concat(String.valueOf(evt.getKeyChar()))).matches("[0-9]+")){
+            evt.consume();
+        }
+    }//GEN-LAST:event_pretTFKeyTyped
+
+    private void jListProduseProgramareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListProduseProgramareMouseClicked
+        
+        if(jListProduseProgramare.getSelectedIndex() >= 0)
+            stergeProdusProgramareButton.setEnabled(true);
+    }//GEN-LAST:event_jListProduseProgramareMouseClicked
+
+    private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
+        listaProduseProgramare.removeAllElements();
+        stergeProdusProgramareButton.setEnabled(false);
+        programeazaButton.setEnabled(false);
+    }//GEN-LAST:event_programeazaButtonActionPerformed
+    
     // http://stackoverflow.com/questions/9417356/bufferedimage-resize
     public static BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
@@ -612,6 +715,12 @@ public class GUI extends javax.swing.JFrame {
     }  
 
     private void resetAddObject(){
+        titluTF.setText("");
+        pretTF.setText("");
+        descriereTF.setText("");
+        
+        adaugaButton.setEnabled(false);
+        
         BufferedImage bi = null;
         try 
         {
@@ -674,7 +783,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -685,12 +793,13 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jListProduseProgramare;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel licitatieGuestPanel;
     private javax.swing.JPanel licitatieUserPanel;
     private javax.swing.JButton loginButton;
@@ -702,6 +811,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> programareAnBox;
     private javax.swing.JComboBox<String> programareLunaBox;
     private javax.swing.JComboBox<String> programareZiBox;
+    private javax.swing.JButton programeazaButton;
+    private javax.swing.JButton stergeProdusProgramareButton;
     private javax.swing.JTabbedPane tabContainer;
     private javax.swing.JTextField titluTF;
     private javax.swing.JLabel userName;
