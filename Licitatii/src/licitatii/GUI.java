@@ -6,12 +6,17 @@
 package licitatii;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -26,6 +31,9 @@ public class GUI extends javax.swing.JFrame {
 
     private CardLayout cl;
     private JFileChooser fc;
+    private Component licitatieUserComponent;
+    private Component licitatieGuestComponent;
+    private boolean anBisect = false;
     
     public GUI() {
         initComponents();
@@ -33,8 +41,21 @@ public class GUI extends javax.swing.JFrame {
         
         cl = (CardLayout)container.getLayout();
         
+        licitatieUserComponent = tabContainer.getComponentAt(2);
+        licitatieGuestComponent = tabContainer.getComponentAt(3);
         
         
+        System.out.println("asad");
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+        Date date = new Date();
+        
+        programareAnBox.addItem(dateFormat.format(date));
+        programareAnBox.addItem(Integer.toString(Integer.parseInt(dateFormat.format(date))+1));
+        programareAnBox.addItem(Integer.toString(Integer.parseInt(dateFormat.format(date))+2));
+        programareAnBox.addItem(Integer.toString(Integer.parseInt(dateFormat.format(date))+3));
+        
+        setZile(31);
     }
 
     
@@ -54,8 +75,16 @@ public class GUI extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
         guestButton = new javax.swing.JButton();
         afterLoginCard = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tabContainer = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        programareAnBox = new javax.swing.JComboBox<>();
+        programareLunaBox = new javax.swing.JComboBox<>();
+        programareZiBox = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        jButton5 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         adaugaButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -63,13 +92,17 @@ public class GUI extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         imgLabel = new javax.swing.JLabel();
-        titlu = new javax.swing.JTextField();
-        titlu1 = new javax.swing.JTextField();
-        titlu2 = new javax.swing.JTextField();
+        titluTF = new javax.swing.JTextField();
+        pretTF = new javax.swing.JTextField();
+        numeVanzatorTF = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jPanel4 = new javax.swing.JPanel();
+        descriereTF = new javax.swing.JTextArea();
+        licitatieUserPanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        licitatieGuestPanel = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         logoutButton = new javax.swing.JButton();
         userName = new javax.swing.JLabel();
 
@@ -179,24 +212,96 @@ public class GUI extends javax.swing.JFrame {
         afterLoginCard.setBackground(new java.awt.Color(51, 51, 51));
         afterLoginCard.setForeground(new java.awt.Color(204, 204, 255));
 
-        jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabContainer.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
 
         jPanel3.setAutoscrolls(true);
+
+        jLabel4.setText("Data:");
+
+        jLabel9.setText("Ora:");
+
+        programareAnBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "An" }));
+        programareAnBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                programareAnBoxActionPerformed(evt);
+            }
+        });
+
+        programareLunaBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Luna", "Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Noi", "Dec" }));
+        programareLunaBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                programareLunaBoxActionPerformed(evt);
+            }
+        });
+
+        programareZiBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Zi" }));
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Programeaza");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 602, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(programareAnBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(programareLunaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(programareZiBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(322, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2)
+                        .addGap(39, 39, 39))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 376, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(programareAnBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(programareLunaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(programareZiBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jButton5))
         );
 
-        jTabbedPane1.addTab("Programare", jPanel3);
+        tabContainer.addTab("Programare", jPanel3);
+
+        jPanel1.setForeground(new java.awt.Color(204, 204, 255));
 
         adaugaButton.setText("Adaugati");
+        adaugaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adaugaButtonActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Titlu:");
 
@@ -216,9 +321,9 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel8.setText("Descriere");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        descriereTF.setColumns(20);
+        descriereTF.setRows(5);
+        jScrollPane1.setViewportView(descriereTF);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -235,9 +340,9 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jLabel5)
                             .addComponent(jLabel7)
                             .addComponent(jLabel6)
-                            .addComponent(titlu)
-                            .addComponent(titlu1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(titlu2, javax.swing.GroupLayout.Alignment.TRAILING))
+                            .addComponent(titluTF)
+                            .addComponent(pretTF, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(numeVanzatorTF, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(12, 12, 12))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
@@ -262,15 +367,15 @@ public class GUI extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(8, 8, 8)
-                        .addComponent(titlu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(titluTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titlu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pretTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(titlu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(numeVanzatorTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -280,20 +385,57 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Adauga produs", jPanel1);
+        tabContainer.addTab("Adauga produs", jPanel1);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 602, Short.MAX_VALUE)
+        jButton1.setText("jButton1");
+
+        javax.swing.GroupLayout licitatieUserPanelLayout = new javax.swing.GroupLayout(licitatieUserPanel);
+        licitatieUserPanel.setLayout(licitatieUserPanelLayout);
+        licitatieUserPanelLayout.setHorizontalGroup(
+            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(licitatieUserPanelLayout.createSequentialGroup()
+                .addGap(209, 209, 209)
+                .addComponent(jButton1)
+                .addContainerGap(303, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 376, Short.MAX_VALUE)
+        licitatieUserPanelLayout.setVerticalGroup(
+            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(licitatieUserPanelLayout.createSequentialGroup()
+                .addGap(120, 120, 120)
+                .addComponent(jButton1)
+                .addContainerGap(225, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Liciteaza", jPanel4);
+        tabContainer.addTab("Liciteaza", licitatieUserPanel);
+
+        jButton3.setText("jButton3");
+
+        jButton4.setText("jButton4");
+
+        javax.swing.GroupLayout licitatieGuestPanelLayout = new javax.swing.GroupLayout(licitatieGuestPanel);
+        licitatieGuestPanel.setLayout(licitatieGuestPanelLayout);
+        licitatieGuestPanelLayout.setHorizontalGroup(
+            licitatieGuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(licitatieGuestPanelLayout.createSequentialGroup()
+                .addGap(248, 248, 248)
+                .addComponent(jButton3)
+                .addContainerGap(264, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, licitatieGuestPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addGap(201, 201, 201))
+        );
+        licitatieGuestPanelLayout.setVerticalGroup(
+            licitatieGuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(licitatieGuestPanelLayout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton3)
+                .addContainerGap(238, Short.MAX_VALUE))
+        );
+
+        tabContainer.addTab("Liciteaza", licitatieGuestPanel);
 
         logoutButton.setText("Logout");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
@@ -309,7 +451,7 @@ public class GUI extends javax.swing.JFrame {
         afterLoginCard.setLayout(afterLoginCardLayout);
         afterLoginCardLayout.setHorizontalGroup(
             afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(tabContainer)
             .addGroup(afterLoginCardLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(userName)
@@ -320,7 +462,7 @@ public class GUI extends javax.swing.JFrame {
         afterLoginCardLayout.setVerticalGroup(
             afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(afterLoginCardLayout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
+                .addComponent(tabContainer)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -351,11 +493,17 @@ public class GUI extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         cl.show(container, "card3");        
         userName.setText("Logged in as ".concat(loginTF.getText()));
+        
+        tabContainer.remove(licitatieGuestComponent);
+        tabContainer.add("Liciteaza", licitatieUserComponent);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void guestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestButtonActionPerformed
         cl.show(container, "card3");        
         userName.setText("Logged in as Guest");
+        
+        tabContainer.remove(licitatieUserComponent);
+        tabContainer.add("Liciteaza", licitatieGuestComponent);
     }//GEN-LAST:event_guestButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
@@ -365,7 +513,7 @@ public class GUI extends javax.swing.JFrame {
     private void selectImage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectImage
 
         fc = new JFileChooser();
-
+        
         if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
             try {
@@ -381,6 +529,75 @@ public class GUI extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_selectImage
+
+    private void adaugaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaugaButtonActionPerformed
+        titluTF.setText("");
+        numeVanzatorTF.setText("");
+        pretTF.setText("");
+        descriereTF.setText("");
+    }//GEN-LAST:event_adaugaButtonActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void setZile(int k){
+        
+        programareZiBox.removeAllItems();
+        
+        for (int i = 1; i <= k; i++) {
+            programareZiBox.addItem(i + "");
+        }
+    }
+    
+    private void programareAnBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programareAnBoxActionPerformed
+        if(Integer.parseInt(programareAnBox.getSelectedItem().toString()) % 4 == 0){
+            anBisect = true;
+            
+            if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") &&
+                    programareZiBox.getItemCount() == 28){
+                programareZiBox.addItem("29");
+            }
+            
+        }
+        else{
+            anBisect = false;
+            
+            if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") && 
+                    programareZiBox.getItemCount() == 29){
+                
+                 programareZiBox.removeItem("29");
+            }
+            
+        }
+    }//GEN-LAST:event_programareAnBoxActionPerformed
+
+    private void programareLunaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programareLunaBoxActionPerformed
+        
+        switch(programareLunaBox.getSelectedIndex()){
+            case 1: setZile(31); break;
+            case 2: if(anBisect)
+                        setZile(29);
+                    else
+                        setZile(28); break;
+            case 3: setZile(31); break;
+            case 4: setZile(30); break;
+            case 5: setZile(31); break;
+            case 6: setZile(30); break;
+            case 7: setZile(31); break;
+            case 8: setZile(31); break;
+            case 9: setZile(30); break;
+            case 10: setZile(31); break;
+            case 11: setZile(30); break;
+            case 12: setZile(31); break;
+        }
+        
+        if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") && 
+                    Integer.parseInt(programareZiBox.getSelectedItem().toString()) > 28){
+                
+                setZile(28);
+            }
+    }//GEN-LAST:event_programareLunaBoxActionPerformed
 
     // http://stackoverflow.com/questions/9417356/bufferedimage-resize
     public static BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 
@@ -450,31 +667,43 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton adaugaButton;
     private javax.swing.JPanel afterLoginCard;
     private javax.swing.JPanel container;
+    private javax.swing.JTextArea descriereTF;
     private javax.swing.JButton guestButton;
     private javax.swing.JLabel imgLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPanel licitatieGuestPanel;
+    private javax.swing.JPanel licitatieUserPanel;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginCard;
     private javax.swing.JTextField loginTF;
     private javax.swing.JButton logoutButton;
-    private javax.swing.JTextField titlu;
-    private javax.swing.JTextField titlu1;
-    private javax.swing.JTextField titlu2;
+    private javax.swing.JTextField numeVanzatorTF;
+    private javax.swing.JTextField pretTF;
+    private javax.swing.JComboBox<String> programareAnBox;
+    private javax.swing.JComboBox<String> programareLunaBox;
+    private javax.swing.JComboBox<String> programareZiBox;
+    private javax.swing.JTabbedPane tabContainer;
+    private javax.swing.JTextField titluTF;
     private javax.swing.JLabel userName;
     // End of variables declaration//GEN-END:variables
 }
