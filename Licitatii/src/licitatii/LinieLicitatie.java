@@ -30,6 +30,7 @@ public class LinieLicitatie {
     private JLabel pretMaxim;
     private JTextField pretClient;
     private JButton bidButton;
+    private int pozitie = -1;
             
     LinieLicitatie(String titluStr, String pretMaximStr){
         
@@ -57,7 +58,14 @@ public class LinieLicitatie {
         
     }
     
+    public int getPozitie(){
+        return pozitie;
+    }
+    
     public void addToPanel(JPanel listaLicitatii, GridBagConstraints c, int pozitie){
+        
+        this.pozitie = pozitie;
+        
         c.insets = new Insets(0, 0, 20, 35);
         
         c.gridx = 0;
@@ -80,6 +88,21 @@ public class LinieLicitatie {
         c.gridy = pozitie;
         listaLicitatii.add(bidButton, c);
     }
+    
+    public void move(JPanel listaLicitatii, GridBagConstraints c, int pozitieNoua){
+        removeFromPanel(listaLicitatii);
+        addToPanel(listaLicitatii, c, pozitieNoua);
+    }
+    
+    public void removeFromPanel(JPanel listaLicitatii){
+        
+        listaLicitatii.remove(imagine);
+        listaLicitatii.remove(titlu);
+        listaLicitatii.remove(pretMaxim);
+        listaLicitatii.remove(pretClient);
+        listaLicitatii.remove(bidButton);
+    }
+    
     
     // http://stackoverflow.com/questions/9417356/bufferedimage-resize
     public BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 

@@ -69,11 +69,15 @@ public class GUI extends javax.swing.JFrame {
         
 
         ManagerLiniiLicitatie manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
-        manLiniiLic.addLine("asdafsdds", 20);
+        manLiniiLic.addLine("asdafsdds", 10);
+        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
         manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
         manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 40);
-        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 10);
         manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 50);
+        
+        manLiniiLic.removeAt(2);
+        
+        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 60);
         
 //        LinieLicitatie ll = new LinieLicitatie(listaLicitatii, "Asdfg");
 //        ll.addLine();

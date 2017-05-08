@@ -24,5 +24,17 @@ public class ManagerLiniiLicitatie {
         listaLinii.get(listaLinii.size()-1).addToPanel(listaLicitatii, c, listaLinii.size()-1);
     }
     
+    public void removeAt(int i){
+        
+        listaLinii.get(i).removeFromPanel(listaLicitatii);
+        listaLinii.remove(i);
+        
+        for (int j = i; j < listaLinii.size(); j++) {
+            listaLinii.get(j).move(listaLicitatii, c, listaLinii.get(j).getPozitie() - 1);
+            
+        }
+        
+    }
+    
     
 }
