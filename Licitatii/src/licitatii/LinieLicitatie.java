@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,26 +35,25 @@ public class LinieLicitatie implements Serializable{
     private JButton bidButton;
     private int pozitie = -1;
             
-    LinieLicitatie(String titluStr, int pretMaximStr, int indexLicitatie){
+    LinieLicitatie(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie){
         
         this.indexLicitatie = indexLicitatie;
         
         imagine = new JLabel();
         imagine.setPreferredSize(new Dimension(100, 100));
         
-        BufferedImage bi = null;
-        try 
-        {
-            bi = ImageIO.read(new File("defaultNewObjectImage.png"));
-            
-            bi = getScaledImage(bi, 100, 100);
-            imagine.setIcon(new ImageIcon(bi));
-            //imagine.setText(":)");
-        } 
-        catch (IOException e) 
-        {
-            e.printStackTrace();
-        }
+        BufferedImage bi = new BufferedImage(icon.getIconWidth(),
+                                             icon.getIconHeight(),
+                                             BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bi.createGraphics();
+        // paint the Icon to the BufferedImage.
+        icon.paintIcon(null, g, 0,0);
+        g.dispose();
+        
+           
+        bi = getScaledImage(bi, 100, 100);
+        imagine.setIcon(new ImageIcon(bi));
+
         
         titlu = new JLabel(titluStr);
         pretMaxim = new JLabel(String.valueOf(pretMaximStr));

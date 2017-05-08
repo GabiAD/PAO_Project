@@ -45,7 +45,7 @@ public class LicitatiiServer {
                         System.out.println(pp.getTitlu() + " " + pp.getPret());
                         
                         // Test trimitere LinieLicitatie (trebuie trimise la data si ora corespunzatoare) -- index-ul e dat unic de server
-                        LinieLicitatie ll = new LinieLicitatie(pp.getTitlu(), pp.getPret(), 0);
+                        LinieLicitatie ll = new LinieLicitatie(pp.getTitlu(), pp.getPret(), pp.getIcon(), 0);
                         oos.writeObject(ll);
                         oos.flush();
                         

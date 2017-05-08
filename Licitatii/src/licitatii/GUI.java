@@ -49,6 +49,7 @@ public class GUI extends javax.swing.JFrame {
     private DefaultListModel listaProduseProgramare;
     private Client client;
     private ArrayList<ProdusPacket> listaProduse = new ArrayList<ProdusPacket>();
+    ManagerLiniiLicitatie manLiniiLic;
     
     public GUI() {
         initComponents();
@@ -76,7 +77,7 @@ public class GUI extends javax.swing.JFrame {
         listaProduseProgramare = (DefaultListModel) jListProduseProgramare.getModel();
         
 
-//        ManagerLiniiLicitatie manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
+        manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
 //        manLiniiLic.addLine("asdafsdds", 10);
 //        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
 //        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
@@ -684,7 +685,14 @@ public class GUI extends javax.swing.JFrame {
         
         client.trimiteProduse(listaProduse);
         
+        // TO DO: Thread special pentru asa ceva; asta e doar pentru test
+        LinieLicitatie ll = client.primesteLinieLicitatie();
+        manLiniiLic.addLine(ll);
+        
+        
+        
         listaProduseProgramare.removeAllElements();
+        listaProduse.clear();
         stergeProdusProgramareButton.setEnabled(false);
         programeazaButton.setEnabled(false);
     }//GEN-LAST:event_programeazaButtonActionPerformed

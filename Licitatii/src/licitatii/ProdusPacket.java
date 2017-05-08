@@ -11,7 +11,7 @@ public class ProdusPacket implements Serializable{
     private int pret;
     private String nume;
     private String descriere;
-    private Icon imagine;
+    private Icon icon;
     private int zi = 0;
     private String luna = "";
     private int an = 0;
@@ -22,7 +22,7 @@ public class ProdusPacket implements Serializable{
         pret = p;
         nume = n;
         descriere = d;
-        imagine = i;
+        icon = i;
     }
     
     public void setData(int z, String l, int a, String o){
@@ -48,8 +48,8 @@ public class ProdusPacket implements Serializable{
         return ora;
     }
 
-    public Icon getImagine() {
-        return imagine;
+    public Icon getIcon() {
+        return icon;
     }
 
     public String getTitlu() {

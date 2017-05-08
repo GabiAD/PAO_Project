@@ -82,5 +82,22 @@ public class Client {
         
     }
     
+    public LinieLicitatie primesteLinieLicitatie(){
+        
+        LinieLicitatie ll = null;
+        
+        try {
+            
+            ll = (LinieLicitatie)ois.readObject();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return ll;
+    }
+    
     
 }

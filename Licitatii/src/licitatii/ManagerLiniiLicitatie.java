@@ -2,6 +2,7 @@ package licitatii;
 
 import java.awt.GridBagConstraints;
 import java.util.ArrayList;
+import javax.swing.Icon;
 import javax.swing.JPanel;
 
 public class ManagerLiniiLicitatie {
@@ -18,11 +19,11 @@ public class ManagerLiniiLicitatie {
     }
     
     
-    public void addLine(String titlu, int pretStart){
-        
-        listaLinii.add(new LinieLicitatie(titlu, pretStart, 0));
+    public void addLine(LinieLicitatie linieLicitatie){
+        listaLinii.add(linieLicitatie);
         listaLinii.get(listaLinii.size()-1).addToPanel(listaLicitatii, c, listaLinii.size()-1);
     }
+    
     
     public void removeAt(int i){
         
