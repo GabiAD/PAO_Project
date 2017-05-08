@@ -14,6 +14,7 @@ import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,7 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import static licitatii.GUI.getScaledImage;
 
-public class LinieLicitatie {
+public class LinieLicitatie implements Serializable{
     
     private JLabel imagine;
     private JLabel titlu;
@@ -66,7 +67,7 @@ public class LinieLicitatie {
         
         this.pozitie = pozitie;
         
-        c.insets = new Insets(0, 0, 20, 35);
+        c.insets = new Insets(10, 0, 10, 35);
         
         c.gridx = 0;
         c.gridy = pozitie;

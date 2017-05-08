@@ -8,6 +8,7 @@ package licitatii;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -17,6 +18,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.DateFormat;
@@ -29,6 +31,7 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -43,10 +46,13 @@ public class GUI extends javax.swing.JFrame {
     private boolean anBisect = false;
     private String utilizator;
     private DefaultListModel listaProduseProgramare;
+    private Client client;
     
     public GUI() {
         initComponents();
         resetAddObject();
+        
+        client = new Client();
         
         cl = (CardLayout)container.getLayout();
         
@@ -96,7 +102,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         loginTF = new javax.swing.JTextField();
-        jPasswordField2 = new javax.swing.JPasswordField();
+        passwordTF = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
         guestButton = new javax.swing.JButton();
         afterLoginCard = new javax.swing.JPanel();
@@ -189,7 +195,7 @@ public class GUI extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 152;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(25, 18, 0, 95);
-        jPanel2.add(jPasswordField2, gridBagConstraints);
+        jPanel2.add(passwordTF, gridBagConstraints);
 
         loginButton.setText("Login");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -543,32 +549,49 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_loginTFActionPerformed
 
+    
+    
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         
         utilizator = loginTF.getText();
-        System.out.println(utilizator);
-        titluTF.setText("");
-        numeVanzatorTF.setText(utilizator);
-        pretTF.setText("");
-        descriereTF.setText("");
         
-        cl.show(container, "card3");        
-        userName.setText("Logged in as ".concat(loginTF.getText()));
-   
-        numeCumparatorLabel.setText("Licitati cu numele ".concat(utilizator).concat("."));
-        jTextField1.setVisible(false);
+        if(!client.conectat()){
+            client.connectToServer();
+        }
         
+        if(client.conectat() && client.login(utilizator, String.valueOf(passwordTF.getPassword()))){
+
+            titluTF.setText("");
+            numeVanzatorTF.setText(utilizator);
+            pretTF.setText("");
+            descriereTF.setText("");
+
+            cl.show(container, "card3");        
+            userName.setText("Logged in as ".concat(loginTF.getText()));
+
+            numeCumparatorLabel.setText("Licitati cu numele ".concat(utilizator).concat("."));
+            jTextField1.setVisible(false);
+
+        }
 //        tabContainer.remove(licitatieGuestComponent);
 //        tabContainer.add("Liciteaza", licitatieUserComponent);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void guestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestButtonActionPerformed
-        cl.show(container, "card3");        
-        userName.setText("Logged in as Guest");
         
-        numeCumparatorLabel.setText("Licitati cu numele: ");
-        jTextField1.setVisible(true);
+        if(!client.conectat()){
+            client.connectToServer();
+        }
         
+        if(client.conectat() && client.login("Guest", "")){
+            
+            cl.show(container, "card3");        
+            userName.setText("Logged in as Guest");
+
+            numeCumparatorLabel.setText("Licitati cu numele: ");
+            jTextField1.setVisible(true);
+
+        }
 //        tabContainer.remove(licitatieUserComponent);
 //        tabContainer.add("Liciteaza", licitatieGuestComponent);
     }//GEN-LAST:event_guestButtonActionPerformed
@@ -778,23 +801,6 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         
-        /*
-        try {
-            Socket socket = new Socket("localhost", 8080);
-            
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            
-            oos.writeUTF("Trimite asta");
-            oos.flush();
-            oos.writeUTF("Trimite asta");
-            oos.flush();
-            oos.writeUTF("Trimite asta");
-            oos.flush();
-        
-        } catch (IOException ex) {
-            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        */
         
     }
 
@@ -820,7 +826,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -833,6 +838,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton logoutButton;
     private javax.swing.JLabel numeCumparatorLabel;
     private javax.swing.JTextField numeVanzatorTF;
+    private javax.swing.JPasswordField passwordTF;
     private javax.swing.JTextField pretTF;
     private javax.swing.JComboBox<String> programareAnBox;
     private javax.swing.JComboBox<String> programareLunaBox;

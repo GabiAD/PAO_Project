@@ -1,0 +1,65 @@
+
+package licitatii;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import javax.swing.JOptionPane;
+
+public class Client {
+
+    private Socket socket = null;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    private boolean conexiuneStabilita = false;
+    
+    public boolean connectToServer(){
+        
+        
+        try {
+            socket = new Socket("localhost", 8080);
+            
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());
+        
+        } catch (IOException ex) {
+            
+            conexiuneStabilita= false;
+            
+            JOptionPane.showMessageDialog(null, "Nu s-a putut face conexiunea la server. Incercati din nou mai tarziu.");
+            return false;
+            
+        }
+        
+        conexiuneStabilita = true;
+        return true;
+    }
+    
+    public boolean login(String username, String password){
+        
+        try {
+         
+            LoginPacket lp = new LoginPacket(username, password);
+            oos.writeObject(lp);
+            
+            if(ois.readUTF().compareTo("Y") != 0){
+                JOptionPane.showMessageDialog(null, "Cont inexistent.");
+                return false;
+            }
+        
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            
+        }
+        
+     
+        return true;
+    }
+    
+    
+    public boolean conectat(){
+        return conexiuneStabilita;
+    }
+    
+}

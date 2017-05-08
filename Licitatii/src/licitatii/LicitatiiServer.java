@@ -17,15 +17,30 @@ public class LicitatiiServer {
         ServerSocket ss = null;
         Socket socket = null;
         ObjectInputStream ois = null;
-                
+        ObjectOutputStream oos = null;
+        
+        
         try {
             ss = new ServerSocket(8080);
             socket = ss.accept();
             
             ois = new ObjectInputStream(socket.getInputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
             
-            while(true)
-                System.out.println(ois.readUTF());
+            try {
+                while(true){
+                    LoginPacket lp = (LoginPacket)ois.readObject();
+
+                    System.out.println(lp.getUsername() + " " + lp.getPassword());
+
+                    oos.writeUTF("Y");
+                    oos.flush();
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(LicitatiiServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
         
         }
         catch (IOException ex) {
