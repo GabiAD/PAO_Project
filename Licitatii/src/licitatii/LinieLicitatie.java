@@ -1,0 +1,96 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package licitatii;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import static licitatii.GUI.getScaledImage;
+
+public class LinieLicitatie {
+    
+    private JLabel imagine;
+    private JLabel titlu;
+    private JLabel pretMaxim;
+    private JTextField pretClient;
+    private JButton bidButton;
+            
+    LinieLicitatie(String titluStr, String pretMaximStr){
+        
+        imagine = new JLabel();
+        imagine.setPreferredSize(new Dimension(100, 100));
+        
+        BufferedImage bi = null;
+        try 
+        {
+            bi = ImageIO.read(new File("defaultNewObjectImage.png"));
+            
+            bi = getScaledImage(bi, 100, 100);
+            imagine.setIcon(new ImageIcon(bi));
+            //imagine.setText(":)");
+        } 
+        catch (IOException e) 
+        {
+            e.printStackTrace();
+        }
+        
+        titlu = new JLabel(titluStr);
+        pretMaxim = new JLabel(pretMaximStr);
+        pretClient = new JTextField(6);
+        bidButton = new JButton("Licitati");
+        
+    }
+    
+    public void addToPanel(JPanel listaLicitatii, GridBagConstraints c, int pozitie){
+        c.insets = new Insets(0, 0, 20, 35);
+        
+        c.gridx = 0;
+        c.gridy = pozitie;
+        listaLicitatii.add(imagine, c);
+        
+        c.gridx = 1;
+        c.gridy = pozitie;
+        listaLicitatii.add(titlu, c);
+        
+        c.gridx = 2;
+        c.gridy = pozitie;
+        listaLicitatii.add(pretMaxim, c);
+        
+        c.gridx = 3;
+        c.gridy = pozitie;
+        listaLicitatii.add(pretClient, c);
+        
+        c.gridx = 4;
+        c.gridy = pozitie;
+        listaLicitatii.add(bidButton, c);
+    }
+    
+    // http://stackoverflow.com/questions/9417356/bufferedimage-resize
+    public BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 
+        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = dimg.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
+
+        return dimg;
+    }
+    
+}

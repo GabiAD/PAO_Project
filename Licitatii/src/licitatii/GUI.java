@@ -5,14 +5,20 @@
  */
 package licitatii;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +39,7 @@ public class GUI extends javax.swing.JFrame {
     private CardLayout cl;
     private JFileChooser fc;
     private Component licitatieUserComponent;
-    private Component licitatieGuestComponent;
+//    private Component licitatieGuestComponent;
     private boolean anBisect = false;
     private String utilizator;
     private DefaultListModel listaProduseProgramare;
@@ -45,7 +51,7 @@ public class GUI extends javax.swing.JFrame {
         cl = (CardLayout)container.getLayout();
         
         licitatieUserComponent = tabContainer.getComponentAt(2);
-        licitatieGuestComponent = tabContainer.getComponentAt(3);
+//        licitatieGuestComponent = tabContainer.getComponentAt(3);
         
         
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
@@ -60,10 +66,17 @@ public class GUI extends javax.swing.JFrame {
         
         jListProduseProgramare.setModel(new DefaultListModel());
         listaProduseProgramare = (DefaultListModel) jListProduseProgramare.getModel();
+        
 
-        listaProduseProgramare.add(0, "A");
-
-
+        ManagerLiniiLicitatie manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
+        manLiniiLic.addLine("asdafsdds", 20);
+        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
+        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 40);
+        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 10);
+        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 50);
+        
+//        LinieLicitatie ll = new LinieLicitatie(listaLicitatii, "Asdfg");
+//        ll.addLine();
     }
 
     
@@ -84,17 +97,11 @@ public class GUI extends javax.swing.JFrame {
         guestButton = new javax.swing.JButton();
         afterLoginCard = new javax.swing.JPanel();
         tabContainer = new javax.swing.JTabbedPane();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        programareAnBox = new javax.swing.JComboBox<>();
-        programareLunaBox = new javax.swing.JComboBox<>();
-        programareZiBox = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        programeazaButton = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jListProduseProgramare = new javax.swing.JList<>();
-        stergeProdusProgramareButton = new javax.swing.JButton();
+        licitatieUserPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listaLicitatii = new javax.swing.JPanel();
+        numeCumparatorLabel = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         adaugaButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -108,11 +115,17 @@ public class GUI extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         descriereTF = new javax.swing.JTextArea();
-        licitatieUserPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        licitatieGuestPanel = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        programareAnBox = new javax.swing.JComboBox<>();
+        programareLunaBox = new javax.swing.JComboBox<>();
+        programareZiBox = new javax.swing.JComboBox<>();
+        jComboBox3 = new javax.swing.JComboBox<>();
+        programeazaButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jListProduseProgramare = new javax.swing.JList<>();
+        stergeProdusProgramareButton = new javax.swing.JButton();
         logoutButton = new javax.swing.JButton();
         userName = new javax.swing.JLabel();
 
@@ -203,7 +216,7 @@ public class GUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(guestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
         );
         loginCardLayout.setVerticalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,6 +236,146 @@ public class GUI extends javax.swing.JFrame {
         afterLoginCard.setForeground(new java.awt.Color(204, 204, 255));
 
         tabContainer.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        listaLicitatii.setLayout(new java.awt.GridBagLayout());
+        jScrollPane2.setViewportView(listaLicitatii);
+
+        numeCumparatorLabel.setText("Licitati cu numele:");
+
+        javax.swing.GroupLayout licitatieUserPanelLayout = new javax.swing.GroupLayout(licitatieUserPanel);
+        licitatieUserPanel.setLayout(licitatieUserPanelLayout);
+        licitatieUserPanelLayout.setHorizontalGroup(
+            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(licitatieUserPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(licitatieUserPanelLayout.createSequentialGroup()
+                        .addComponent(numeCumparatorLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 512, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        licitatieUserPanelLayout.setVerticalGroup(
+            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, licitatieUserPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(numeCumparatorLabel)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabContainer.addTab("Licitatii", licitatieUserPanel);
+
+        jPanel1.setForeground(new java.awt.Color(204, 204, 255));
+
+        adaugaButton.setText("Adaugati");
+        adaugaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adaugaButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("*Titlu:");
+
+        jButton2.setText("Selectati poza");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectImage(evt);
+            }
+        });
+
+        jLabel6.setText("Pret de pornire:");
+
+        jLabel7.setText("Nume vanzator:");
+
+        imgLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imgLabel.setPreferredSize(new java.awt.Dimension(622, 554));
+
+        titluTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                titluTFKeyTyped(evt);
+            }
+        });
+
+        pretTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                pretTFKeyTyped(evt);
+            }
+        });
+
+        jLabel8.setText("Descriere");
+
+        descriereTF.setColumns(20);
+        descriereTF.setRows(5);
+        jScrollPane1.setViewportView(descriereTF);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(adaugaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(titluTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                            .addComponent(pretTF)
+                            .addComponent(numeVanzatorTF)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(12, 12, 12)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(imgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
+                .addGap(23, 23, 23))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(imgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(8, 8, 8)
+                        .addComponent(titluTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pretTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(numeVanzatorTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(adaugaButton)
+                .addContainerGap())
+        );
+
+        tabContainer.addTab("Adauga produs", jPanel1);
 
         jPanel3.setAutoscrolls(true);
 
@@ -286,7 +439,7 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -328,165 +481,10 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(stergeProdusProgramareButton)))
         );
 
+        programeazaButton.setEnabled(false);
         stergeProdusProgramareButton.setEnabled(false);
 
         tabContainer.addTab("Programare", jPanel3);
-
-        jPanel1.setForeground(new java.awt.Color(204, 204, 255));
-
-        adaugaButton.setText("Adaugati");
-        adaugaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adaugaButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setText("*Titlu:");
-
-        jButton2.setText("Selectati poza");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectImage(evt);
-            }
-        });
-
-        jLabel6.setText("Pret de pornire:");
-
-        jLabel7.setText("Nume vanzator:");
-
-        imgLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imgLabel.setPreferredSize(new java.awt.Dimension(622, 554));
-
-        titluTF.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                titluTFKeyTyped(evt);
-            }
-        });
-
-        pretTF.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                pretTFKeyTyped(evt);
-            }
-        });
-
-        jLabel8.setText("Descriere");
-
-        descriereTF.setColumns(20);
-        descriereTF.setRows(5);
-        jScrollPane1.setViewportView(descriereTF);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(adaugaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(titluTF, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
-                            .addComponent(pretTF)
-                            .addComponent(numeVanzatorTF)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(12, 12, 12)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(imgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE))
-                .addGap(23, 23, 23))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(imgLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(8, 8, 8)
-                        .addComponent(titluTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pretTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(numeVanzatorTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(adaugaButton)
-                .addContainerGap())
-        );
-
-        tabContainer.addTab("Adauga produs", jPanel1);
-
-        jButton1.setText("jButton1");
-
-        javax.swing.GroupLayout licitatieUserPanelLayout = new javax.swing.GroupLayout(licitatieUserPanel);
-        licitatieUserPanel.setLayout(licitatieUserPanelLayout);
-        licitatieUserPanelLayout.setHorizontalGroup(
-            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(licitatieUserPanelLayout.createSequentialGroup()
-                .addGap(209, 209, 209)
-                .addComponent(jButton1)
-                .addContainerGap(321, Short.MAX_VALUE))
-        );
-        licitatieUserPanelLayout.setVerticalGroup(
-            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(licitatieUserPanelLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jButton1)
-                .addContainerGap(239, Short.MAX_VALUE))
-        );
-
-        tabContainer.addTab("Liciteaza", licitatieUserPanel);
-
-        jButton3.setText("jButton3");
-
-        jButton4.setText("jButton4");
-
-        javax.swing.GroupLayout licitatieGuestPanelLayout = new javax.swing.GroupLayout(licitatieGuestPanel);
-        licitatieGuestPanel.setLayout(licitatieGuestPanelLayout);
-        licitatieGuestPanelLayout.setHorizontalGroup(
-            licitatieGuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(licitatieGuestPanelLayout.createSequentialGroup()
-                .addGap(248, 248, 248)
-                .addComponent(jButton3)
-                .addContainerGap(282, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, licitatieGuestPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4)
-                .addGap(201, 201, 201))
-        );
-        licitatieGuestPanelLayout.setVerticalGroup(
-            licitatieGuestPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(licitatieGuestPanelLayout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3)
-                .addContainerGap(252, Short.MAX_VALUE))
-        );
-
-        tabContainer.addTab("Liciteaza", licitatieGuestPanel);
 
         logoutButton.setText("Logout");
         logoutButton.addActionListener(new java.awt.event.ActionListener() {
@@ -527,7 +525,7 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -552,27 +550,46 @@ public class GUI extends javax.swing.JFrame {
         
         cl.show(container, "card3");        
         userName.setText("Logged in as ".concat(loginTF.getText()));
+   
+        numeCumparatorLabel.setText("Licitati cu numele ".concat(utilizator).concat("."));
+        jTextField1.setVisible(false);
         
-        tabContainer.remove(licitatieGuestComponent);
-        tabContainer.add("Liciteaza", licitatieUserComponent);
+//        tabContainer.remove(licitatieGuestComponent);
+//        tabContainer.add("Liciteaza", licitatieUserComponent);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void guestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestButtonActionPerformed
         cl.show(container, "card3");        
         userName.setText("Logged in as Guest");
         
-        tabContainer.remove(licitatieUserComponent);
-        tabContainer.add("Liciteaza", licitatieGuestComponent);
+        numeCumparatorLabel.setText("Licitati cu numele: ");
+        jTextField1.setVisible(true);
+        
+//        tabContainer.remove(licitatieUserComponent);
+//        tabContainer.add("Liciteaza", licitatieGuestComponent);
     }//GEN-LAST:event_guestButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         cl.show(container, "card2");
     }//GEN-LAST:event_logoutButtonActionPerformed
 
+    private void pretTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pretTFKeyTyped
+        if(!(pretTF.getText().concat(String.valueOf(evt.getKeyChar()))).matches("[0-9]+")){
+            evt.consume();
+        }
+    }//GEN-LAST:event_pretTFKeyTyped
+
+    private void titluTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_titluTFKeyTyped
+        if(titluTF.getText().concat(String.valueOf(evt.getKeyChar())).equals(""))
+        adaugaButton.setEnabled(false);
+        else
+        adaugaButton.setEnabled(true);
+    }//GEN-LAST:event_titluTFKeyTyped
+
     private void selectImage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectImage
 
         fc = new JFileChooser();
-        
+
         if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
             try {
@@ -586,7 +603,6 @@ public class GUI extends javax.swing.JFrame {
                 Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }//GEN-LAST:event_selectImage
 
     private void adaugaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaugaButtonActionPerformed
@@ -595,58 +611,50 @@ public class GUI extends javax.swing.JFrame {
             auxPret = auxPret.substring(1);
         }
         if(auxPret.equals(""))
-            auxPret = "0";
-        
+        auxPret = "0";
+
         listaProduseProgramare.add(listaProduseProgramare.getSize(), String.join(": ", titluTF.getText(), auxPret));
-        
+
         resetAddObject();
-        
+
         programeazaButton.setEnabled(true);
     }//GEN-LAST:event_adaugaButtonActionPerformed
+
+    private void stergeProdusProgramareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergeProdusProgramareButtonActionPerformed
+
+        if(jListProduseProgramare.getSelectedIndex() >= 0)
+        listaProduseProgramare.remove(jListProduseProgramare.getSelectedIndex());
+
+        if(listaProduseProgramare.getSize() == 0)
+        programeazaButton.setEnabled(false);
+
+        stergeProdusProgramareButton.setEnabled(false);
+    }//GEN-LAST:event_stergeProdusProgramareButtonActionPerformed
+
+    private void jListProduseProgramareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListProduseProgramareMouseClicked
+
+        if(jListProduseProgramare.getSelectedIndex() >= 0)
+        stergeProdusProgramareButton.setEnabled(true);
+    }//GEN-LAST:event_jListProduseProgramareMouseClicked
+
+    private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
+        listaProduseProgramare.removeAllElements();
+        stergeProdusProgramareButton.setEnabled(false);
+        programeazaButton.setEnabled(false);
+    }//GEN-LAST:event_programeazaButtonActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
-    private void setZile(int k){
-        
-        programareZiBox.removeAllItems();
-        
-        for (int i = 1; i <= k; i++) {
-            programareZiBox.addItem(String.valueOf(i));
-        }
-    }
-    
-    private void programareAnBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programareAnBoxActionPerformed
-        if(Integer.parseInt(programareAnBox.getSelectedItem().toString()) % 4 == 0){
-            anBisect = true;
-            
-            if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") &&
-                    programareZiBox.getItemCount() == 28){
-                programareZiBox.addItem("29");
-            }
-            
-        }
-        else{
-            anBisect = false;
-            
-            if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") && 
-                    programareZiBox.getItemCount() == 29){
-                
-                 programareZiBox.removeItem("29");
-            }
-            
-        }
-    }//GEN-LAST:event_programareAnBoxActionPerformed
-
     private void programareLunaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programareLunaBoxActionPerformed
-        
+
         switch(programareLunaBox.getSelectedIndex()){
             case 1: setZile(31); break;
             case 2: if(anBisect)
-                        setZile(29);
-                    else
-                        setZile(28); break;
+            setZile(29);
+            else
+            setZile(28); break;
             case 3: setZile(31); break;
             case 4: setZile(30); break;
             case 5: setZile(31); break;
@@ -658,50 +666,45 @@ public class GUI extends javax.swing.JFrame {
             case 11: setZile(30); break;
             case 12: setZile(31); break;
         }
-        
-        if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") && 
-                    Integer.parseInt(programareZiBox.getSelectedItem().toString()) > 28){
-                
-                setZile(28);
-            }
+
+        if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") &&
+            Integer.parseInt(programareZiBox.getSelectedItem().toString()) > 28){
+
+            setZile(28);
+        }
     }//GEN-LAST:event_programareLunaBoxActionPerformed
 
-    private void stergeProdusProgramareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergeProdusProgramareButtonActionPerformed
-        
-        if(jListProduseProgramare.getSelectedIndex() >= 0)
-            listaProduseProgramare.remove(jListProduseProgramare.getSelectedIndex());
-        
-        if(listaProduseProgramare.getSize() == 0)
-            programeazaButton.setEnabled(false);
-        
-        stergeProdusProgramareButton.setEnabled(false);
-    }//GEN-LAST:event_stergeProdusProgramareButtonActionPerformed
+    private void programareAnBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programareAnBoxActionPerformed
+        if(Integer.parseInt(programareAnBox.getSelectedItem().toString()) % 4 == 0){
+            anBisect = true;
 
-    private void titluTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_titluTFKeyTyped
-        if(titluTF.getText().concat(String.valueOf(evt.getKeyChar())).equals(""))
-            adaugaButton.setEnabled(false);
-        else
-            adaugaButton.setEnabled(true);
-    }//GEN-LAST:event_titluTFKeyTyped
+            if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") &&
+                programareZiBox.getItemCount() == 28){
+                programareZiBox.addItem("29");
+            }
 
-    private void pretTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pretTFKeyTyped
-        if(!(pretTF.getText().concat(String.valueOf(evt.getKeyChar()))).matches("[0-9]+")){
-            evt.consume();
         }
-    }//GEN-LAST:event_pretTFKeyTyped
+        else{
+            anBisect = false;
 
-    private void jListProduseProgramareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListProduseProgramareMouseClicked
+            if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") &&
+                programareZiBox.getItemCount() == 29){
+
+                programareZiBox.removeItem("29");
+            }
+
+        }
+    }//GEN-LAST:event_programareAnBoxActionPerformed
+
+    private void setZile(int k){
         
-        if(jListProduseProgramare.getSelectedIndex() >= 0)
-            stergeProdusProgramareButton.setEnabled(true);
-    }//GEN-LAST:event_jListProduseProgramareMouseClicked
-
-    private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
-        listaProduseProgramare.removeAllElements();
-        stergeProdusProgramareButton.setEnabled(false);
-        programeazaButton.setEnabled(false);
-    }//GEN-LAST:event_programeazaButtonActionPerformed
-    
+        programareZiBox.removeAllItems();
+        
+        for (int i = 1; i <= k; i++) {
+            programareZiBox.addItem(String.valueOf(i));
+        }
+    }
+        
     // http://stackoverflow.com/questions/9417356/bufferedimage-resize
     public static BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
@@ -770,6 +773,25 @@ public class GUI extends javax.swing.JFrame {
                 new GUI().setVisible(true);
             }
         });
+        
+        /*
+        try {
+            Socket socket = new Socket("localhost", 8080);
+            
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            
+            oos.writeUTF("Trimite asta");
+            oos.flush();
+            oos.writeUTF("Trimite asta");
+            oos.flush();
+            oos.writeUTF("Trimite asta");
+            oos.flush();
+        
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        */
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -779,10 +801,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextArea descriereTF;
     private javax.swing.JButton guestButton;
     private javax.swing.JLabel imgLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -799,13 +818,16 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JPanel licitatieGuestPanel;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel licitatieUserPanel;
+    private javax.swing.JPanel listaLicitatii;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginCard;
     private javax.swing.JTextField loginTF;
     private javax.swing.JButton logoutButton;
+    private javax.swing.JLabel numeCumparatorLabel;
     private javax.swing.JTextField numeVanzatorTF;
     private javax.swing.JTextField pretTF;
     private javax.swing.JComboBox<String> programareAnBox;
