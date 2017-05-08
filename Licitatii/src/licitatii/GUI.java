@@ -23,6 +23,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -47,6 +48,7 @@ public class GUI extends javax.swing.JFrame {
     private String utilizator;
     private DefaultListModel listaProduseProgramare;
     private Client client;
+    private ArrayList<ProdusPacket> listaProduse = new ArrayList<ProdusPacket>();
     
     public GUI() {
         initComponents();
@@ -74,16 +76,16 @@ public class GUI extends javax.swing.JFrame {
         listaProduseProgramare = (DefaultListModel) jListProduseProgramare.getModel();
         
 
-        ManagerLiniiLicitatie manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
-        manLiniiLic.addLine("asdafsdds", 10);
-        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
-        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
-        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 40);
-        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 50);
-        
-        manLiniiLic.removeAt(2);
-        
-        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 60);
+//        ManagerLiniiLicitatie manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
+//        manLiniiLic.addLine("asdafsdds", 10);
+//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
+//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
+//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 40);
+//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 50);
+//        
+//        manLiniiLic.removeAt(2);
+//        
+//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 60);
         
 //        LinieLicitatie ll = new LinieLicitatie(listaLicitatii, "Asdfg");
 //        ll.addLine();
@@ -131,7 +133,7 @@ public class GUI extends javax.swing.JFrame {
         programareAnBox = new javax.swing.JComboBox<>();
         programareLunaBox = new javax.swing.JComboBox<>();
         programareZiBox = new javax.swing.JComboBox<>();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        programareOraBox = new javax.swing.JComboBox<>();
         programeazaButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jListProduseProgramare = new javax.swing.JList<>();
@@ -393,14 +395,13 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel9.setText("Ora:");
 
-        programareAnBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "An" }));
         programareAnBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 programareAnBoxActionPerformed(evt);
             }
         });
 
-        programareLunaBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Luna", "Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Noi", "Dec" }));
+        programareLunaBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Noi", "Dec" }));
         programareLunaBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 programareLunaBoxActionPerformed(evt);
@@ -409,10 +410,10 @@ public class GUI extends javax.swing.JFrame {
 
         programareZiBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Zi" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" }));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        programareOraBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" }));
+        programareOraBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                programareOraBoxActionPerformed(evt);
             }
         });
 
@@ -456,7 +457,7 @@ public class GUI extends javax.swing.JFrame {
                             .addComponent(jLabel9))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(programareOraBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(programareAnBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(programareLunaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -482,7 +483,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(programareOraBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -633,15 +634,18 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_selectImage
 
     private void adaugaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adaugaButtonActionPerformed
+        
         String auxPret = pretTF.getText();
         while(auxPret.length() > 0 && auxPret.charAt(0) == '0'){
             auxPret = auxPret.substring(1);
         }
         if(auxPret.equals(""))
         auxPret = "0";
-
+        
         listaProduseProgramare.add(listaProduseProgramare.getSize(), String.join(": ", titluTF.getText(), auxPret));
-
+        
+        listaProduse.add(new ProdusPacket(titluTF.getText(), Integer.parseInt(auxPret), numeVanzatorTF.getText(), descriereTF.getText(), imgLabel.getIcon()));
+        
         resetAddObject();
 
         programeazaButton.setEnabled(true);
@@ -649,11 +653,16 @@ public class GUI extends javax.swing.JFrame {
 
     private void stergeProdusProgramareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergeProdusProgramareButtonActionPerformed
 
-        if(jListProduseProgramare.getSelectedIndex() >= 0)
-        listaProduseProgramare.remove(jListProduseProgramare.getSelectedIndex());
-
-        if(listaProduseProgramare.getSize() == 0)
-        programeazaButton.setEnabled(false);
+        if(jListProduseProgramare.getSelectedIndex() >= 0){
+            listaProduse.remove(jListProduseProgramare.getSelectedIndex());
+            listaProduseProgramare.remove(jListProduseProgramare.getSelectedIndex());
+            
+        }
+        
+        if(listaProduseProgramare.getSize() == 0){
+            programeazaButton.setEnabled(false);
+            
+        }
 
         stergeProdusProgramareButton.setEnabled(false);
     }//GEN-LAST:event_stergeProdusProgramareButtonActionPerformed
@@ -665,33 +674,43 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jListProduseProgramareMouseClicked
 
     private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
+        
+        for (int i = 0; i < listaProduse.size(); i++) {
+            listaProduse.get(i).setData(Integer.parseInt(programareZiBox.getSelectedItem().toString()), 
+                                        programareLunaBox.getSelectedItem().toString(), 
+                                        Integer.parseInt(programareAnBox.getSelectedItem().toString()), 
+                                        programareOraBox.getSelectedItem().toString());
+        }
+        
+        client.trimiteProduse(listaProduse);
+        
         listaProduseProgramare.removeAllElements();
         stergeProdusProgramareButton.setEnabled(false);
         programeazaButton.setEnabled(false);
     }//GEN-LAST:event_programeazaButtonActionPerformed
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+    private void programareOraBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programareOraBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    }//GEN-LAST:event_programareOraBoxActionPerformed
 
     private void programareLunaBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programareLunaBoxActionPerformed
 
         switch(programareLunaBox.getSelectedIndex()){
-            case 1: setZile(31); break;
-            case 2: if(anBisect)
+            case 0: setZile(31); break;
+            case 1: if(anBisect)
             setZile(29);
             else
             setZile(28); break;
-            case 3: setZile(31); break;
-            case 4: setZile(30); break;
-            case 5: setZile(31); break;
-            case 6: setZile(30); break;
+            case 2: setZile(31); break;
+            case 3: setZile(30); break;
+            case 4: setZile(31); break;
+            case 5: setZile(30); break;
+            case 6: setZile(31); break;
             case 7: setZile(31); break;
-            case 8: setZile(31); break;
-            case 9: setZile(30); break;
-            case 10: setZile(31); break;
-            case 11: setZile(30); break;
-            case 12: setZile(31); break;
+            case 8: setZile(30); break;
+            case 9: setZile(31); break;
+            case 10: setZile(30); break;
+            case 11: setZile(31); break;
         }
 
         if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") &&
@@ -812,7 +831,6 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton guestButton;
     private javax.swing.JLabel imgLabel;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -842,6 +860,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField pretTF;
     private javax.swing.JComboBox<String> programareAnBox;
     private javax.swing.JComboBox<String> programareLunaBox;
+    private javax.swing.JComboBox<String> programareOraBox;
     private javax.swing.JComboBox<String> programareZiBox;
     private javax.swing.JButton programeazaButton;
     private javax.swing.JButton stergeProdusProgramareButton;

@@ -20,7 +20,7 @@ public class ManagerLiniiLicitatie {
     
     public void addLine(String titlu, int pretStart){
         
-        listaLinii.add(new LinieLicitatie(titlu, String.valueOf(pretStart)));
+        listaLinii.add(new LinieLicitatie(titlu, pretStart, 0));
         listaLinii.get(listaLinii.size()-1).addToPanel(listaLicitatii, c, listaLinii.size()-1);
     }
     

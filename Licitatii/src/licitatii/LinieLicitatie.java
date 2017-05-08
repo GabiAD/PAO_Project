@@ -26,6 +26,7 @@ import static licitatii.GUI.getScaledImage;
 
 public class LinieLicitatie implements Serializable{
     
+    private int indexLicitatie = -1;
     private JLabel imagine;
     private JLabel titlu;
     private JLabel pretMaxim;
@@ -33,7 +34,9 @@ public class LinieLicitatie implements Serializable{
     private JButton bidButton;
     private int pozitie = -1;
             
-    LinieLicitatie(String titluStr, String pretMaximStr){
+    LinieLicitatie(String titluStr, int pretMaximStr, int indexLicitatie){
+        
+        this.indexLicitatie = indexLicitatie;
         
         imagine = new JLabel();
         imagine.setPreferredSize(new Dimension(100, 100));
@@ -53,7 +56,7 @@ public class LinieLicitatie implements Serializable{
         }
         
         titlu = new JLabel(titluStr);
-        pretMaxim = new JLabel(pretMaximStr);
+        pretMaxim = new JLabel(String.valueOf(pretMaximStr));
         pretClient = new JTextField(6);
         bidButton = new JButton("Licitati");
         
@@ -102,6 +105,14 @@ public class LinieLicitatie implements Serializable{
         listaLicitatii.remove(pretMaxim);
         listaLicitatii.remove(pretClient);
         listaLicitatii.remove(bidButton);
+    }
+    
+    public void setIndexLicitatie(int val){
+        indexLicitatie = val;
+    }
+    
+    public int getIndexLicitatie(){
+        return indexLicitatie;
     }
     
     

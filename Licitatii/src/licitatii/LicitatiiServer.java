@@ -27,14 +27,29 @@ public class LicitatiiServer {
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
             
+            
+            
             try {
                 while(true){
+                    // Test login
                     LoginPacket lp = (LoginPacket)ois.readObject();
 
                     System.out.println(lp.getUsername() + " " + lp.getPassword());
 
                     oos.writeUTF("Y");
                     oos.flush();
+
+                    // Test primire lista de produse
+                    while(true){
+                        ProdusPacket pp = (ProdusPacket)ois.readObject();
+                        System.out.println(pp.getTitlu() + " " + pp.getPret());
+                        
+                        // Test trimitere LinieLicitatie (trebuie trimise la data si ora corespunzatoare) -- index-ul e dat unic de server
+                        LinieLicitatie ll = new LinieLicitatie(pp.getTitlu(), pp.getPret(), 0);
+                        oos.writeObject(ll);
+                        oos.flush();
+                        
+                    }
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(LicitatiiServer.class.getName()).log(Level.SEVERE, null, ex);

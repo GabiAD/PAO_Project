@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
 
 public class Client {
 
@@ -13,6 +17,7 @@ public class Client {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private boolean conexiuneStabilita = false;
+    
     
     public boolean connectToServer(){
         
@@ -61,5 +66,21 @@ public class Client {
     public boolean conectat(){
         return conexiuneStabilita;
     }
+    
+    public void trimiteProduse(ArrayList<ProdusPacket> listaProduse){
+        
+        try {
+            
+            for (int i = 0; i < listaProduse.size(); i++) {
+                oos.writeObject(listaProduse.get(i));
+                oos.flush();
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     
 }
