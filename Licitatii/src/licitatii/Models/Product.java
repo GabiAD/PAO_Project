@@ -16,7 +16,6 @@ public class Product implements Serializable {
     private int price;
     private String image_path = "";
     private String description = "";
-    private int licitaion_id = -1;
 
     public Product(int user_id, String name,
         int price){
@@ -39,7 +38,6 @@ public class Product implements Serializable {
     }
 
     public static void addProduct(Product p, Connection conn) throws SQLException {
-        Statement s = conn.createStatement();
         //save product image_path
         PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO products " +
@@ -126,13 +124,5 @@ public class Product implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getLicitaion_id() {
-        return licitaion_id;
-    }
-
-    public void setLicitaion_id(int licitaion_id) {
-        this.licitaion_id = licitaion_id;
     }
 }

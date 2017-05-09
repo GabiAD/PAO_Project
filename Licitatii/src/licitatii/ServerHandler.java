@@ -1,6 +1,5 @@
 package licitatii;
 
-import com.mysql.jdbc.Statement;
 import licitatii.Models.User;
 import licitatii.Pachete.*;
 
@@ -46,8 +45,8 @@ public class ServerHandler extends Thread {
             while (true) {
                 Object message = in.readObject();
                 if(!loggedId) {
-                    String handlerResponse = loginHandler(message);
-                    out.writeUTF(handlerResponse);
+                    Object handlerResponse = loginHandler(message);
+                    out.writeObject(handlerResponse);
                     out.flush();
                 }
                 else {
@@ -75,7 +74,7 @@ public class ServerHandler extends Thread {
             }
         }
     }
-    private String loginHandler(Object message) throws SQLException, IOException {
+    private Object loginHandler(Object message) throws SQLException, IOException {
         if (message instanceof LoginPacket) {
             LoginPacket loginMessage = (LoginPacket) message;
 
@@ -86,13 +85,12 @@ public class ServerHandler extends Thread {
             );
 
             if(user != null){
-                loginMessage.setUser(user);
                 // return object
-                return "Y";
+                return user;
             } else {
                 LoginFailedPacket failMessage = new LoginFailedPacket("Invalid Credentials");
                 // return object
-                return "N";
+                return failMessage;
             }
         }
         else if (message instanceof AdminLoginPacket){
@@ -118,7 +116,7 @@ public class ServerHandler extends Thread {
         if(message instanceof AddProductPacket){
 
         }
-        else if(message instanceof GetProductPacket){
+        else if(message instanceof GetProductsPacket){
 
         }
         return null;

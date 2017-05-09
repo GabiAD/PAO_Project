@@ -27,10 +27,15 @@ CREATE TABLE products (
 CREATE TABLE licitations (   
   start_time DATETIME NOT NULL,
   product_id Int NOT NULL,
+  price Int NOT NULL,
+  user_id Int,
   PRIMARY KEY (product_id),
   FOREIGN KEY (product_id)
     REFERENCES products(id)
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+  FOREIGN KEY (user_id)
+    REFERENCES users(id)
+    ON DELETE SET NULL
 );
 
 
