@@ -38,7 +38,7 @@ import javax.swing.JOptionPane;
  *
  * @author gabiad
  */
-public class GUI extends javax.swing.JFrame {
+public class GUI extends javax.swing.JFrame{
 
     private CardLayout cl;
     private JFileChooser fc;
@@ -54,8 +54,6 @@ public class GUI extends javax.swing.JFrame {
     public GUI() {
         initComponents();
         resetAddObject();
-        
-        client = new Client();
         
         cl = (CardLayout)container.getLayout();
         
@@ -76,8 +74,11 @@ public class GUI extends javax.swing.JFrame {
         jListProduseProgramare.setModel(new DefaultListModel());
         listaProduseProgramare = (DefaultListModel) jListProduseProgramare.getModel();
         
-
+        
         manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
+        
+        client = new Client(manLiniiLic);
+        
 //        manLiniiLic.addLine("asdafsdds", 10);
 //        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
 //        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
@@ -686,8 +687,8 @@ public class GUI extends javax.swing.JFrame {
         client.trimiteProduse(listaProduse);
         
         // TO DO: Thread special pentru asa ceva; asta e doar pentru test
-        LinieLicitatie ll = client.primesteLinieLicitatie();
-        manLiniiLic.addLine(ll);
+//        LinieLicitatie ll = client.primesteLinieLicitatie();
+//        manLiniiLic.addLine(ll);
         
         
         

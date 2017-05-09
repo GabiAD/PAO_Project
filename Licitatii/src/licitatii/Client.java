@@ -17,7 +17,12 @@ public class Client {
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
     private boolean conexiuneStabilita = false;
+    private Thread liniiLicitatieThread;
+    private ManagerLiniiLicitatie managerLiniiLicitatie;
     
+    Client(ManagerLiniiLicitatie managerLiniiLicitatie){
+        this.managerLiniiLicitatie = managerLiniiLicitatie;
+    }
     
     public boolean connectToServer(){
         
@@ -27,6 +32,7 @@ public class Client {
             
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());
+            
         
         } catch (IOException ex) {
             
@@ -38,6 +44,7 @@ public class Client {
         }
         
         conexiuneStabilita = true;
+        
         return true;
     }
     
@@ -58,7 +65,7 @@ public class Client {
             
         }
         
-     
+        newThreadPrimesteMesaje();
         return true;
     }
     
@@ -97,6 +104,52 @@ public class Client {
         }
         
         return ll;
+    }
+    
+    public void trimiteSumaNouaLicitatiePacket(int index, int suma){
+        SumaNouaLicitatiePacket snlp = new SumaNouaLicitatiePacket(index, suma);
+        
+        try {
+            oos.writeObject(snlp);
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void newThreadPrimesteMesaje() {
+        
+        liniiLicitatieThread = new Thread(new Runnable(){
+            
+            @Override
+            public void run() {
+                while(true){
+                    
+                    try {
+                        
+                        Object mesaj = ois.readObject();
+                        
+                        if(mesaj.getClass() == LinieLicitatie.class)
+                            managerLiniiLicitatie.addLine((LinieLicitatie) mesaj);
+                        
+                        
+                        
+                    } catch (IOException ex) {
+                        Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
+            }
+        
+        });
+        
+        liniiLicitatieThread.start();
+        
+//        LinieLicitatie ll = client.primesteLinieLicitatie();
+//        manLiniiLic.addLine(ll);
+        
+        
     }
     
     
