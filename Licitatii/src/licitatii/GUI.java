@@ -5,6 +5,8 @@
  */
 package licitatii;
 
+import licitatii.Pachete.ProdusPacket;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -678,7 +680,7 @@ public class GUI extends javax.swing.JFrame{
     private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
         
         for (int i = 0; i < listaProduse.size(); i++) {
-            listaProduse.get(i).setData(Integer.parseInt(programareZiBox.getSelectedItem().toString()), 
+            listaProduse.get(i).setData(Integer.parseInt(programareZiBox.getSelectedItem().toString()),
                                         programareLunaBox.getSelectedItem().toString(), 
                                         Integer.parseInt(programareAnBox.getSelectedItem().toString()), 
                                         programareOraBox.getSelectedItem().toString());
@@ -721,6 +723,7 @@ public class GUI extends javax.swing.JFrame{
             case 10: setZile(30); break;
             case 11: setZile(31); break;
         }
+
 
         if(Objects.equals(programareLunaBox.getSelectedItem().toString(), "Feb") &&
             Integer.parseInt(programareZiBox.getSelectedItem().toString()) > 28){

@@ -1,4 +1,4 @@
-package licitatii;
+package licitatii.Pachete;
 
 
 public class SumaNouaLicitatiePacket {

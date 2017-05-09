@@ -1,4 +1,4 @@
-package licitatii;
+package licitatii.Pachete;
 
 import java.io.Serializable;
 import javax.swing.Icon;
@@ -17,7 +17,7 @@ public class ProdusPacket implements Serializable{
     private int an = 0;
     private String ora = "";
     
-    ProdusPacket(String t, int p, String n, String d, Icon i){
+    public ProdusPacket(String t, int p, String n, String d, Icon i){
         titlu = t;
         pret = p;
         nume = n;

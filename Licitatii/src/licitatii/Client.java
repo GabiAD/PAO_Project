@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import jdk.nashorn.internal.runtime.arrays.ArrayLikeIterator;
+
+import licitatii.Pachete.LoginPacket;
+import licitatii.Pachete.ProdusPacket;
+import licitatii.Pachete.SumaNouaLicitatiePacket;
 
 public class Client {
 
