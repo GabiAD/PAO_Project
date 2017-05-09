@@ -1,8 +1,9 @@
 package licitatii;
 
+import licitatii.Pachete.LinieLicitatie;
+
 import java.awt.GridBagConstraints;
 import java.util.ArrayList;
-import javax.swing.Icon;
 import javax.swing.JPanel;
 
 public class ManagerLiniiLicitatie {
@@ -15,7 +16,7 @@ public class ManagerLiniiLicitatie {
         this.listaLicitatii = listaLicitatii;
         
         c = new GridBagConstraints();
-        
+
     }
     
     

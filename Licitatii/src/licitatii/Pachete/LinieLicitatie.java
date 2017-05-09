@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package licitatii;
+package licitatii.Pachete;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,7 +35,7 @@ public class LinieLicitatie implements Serializable{
     private JButton bidButton;
     private int pozitie = -1;
             
-    LinieLicitatie(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie){
+    public LinieLicitatie(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie){
         
         this.indexLicitatie = indexLicitatie;
         

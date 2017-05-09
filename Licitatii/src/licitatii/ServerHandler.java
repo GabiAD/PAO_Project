@@ -2,15 +2,14 @@ package licitatii;
 
 import com.mysql.jdbc.Statement;
 import licitatii.Models.User;
-import licitatii.Pachete.AdminLoginPacket;
-import licitatii.Pachete.LoginFailedPacket;
-import licitatii.Pachete.LoginPacket;
+import licitatii.Pachete.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,6 +19,10 @@ import java.util.ArrayList;
  */
 public class ServerHandler extends Thread {
 
+    private static final String url = "jdbc:mysql://localhost/pao";
+    private static final String user = "root";
+    private static final String password = "root";
+
     private Connection con;
     private String name;
     private Socket socket;
@@ -28,9 +31,10 @@ public class ServerHandler extends Thread {
     private Boolean admin;
     private Boolean loggedId = false;
 
-    public ServerHandler(Socket socket, Connection con) {
+    public ServerHandler(Socket socket) throws SQLException {
         this.socket = socket;
-        this.con = con;
+        // Establish connection with mysql
+        this.con = DriverManager.getConnection(url, user, password);
         System.out.println("Server Created");
     }
 
@@ -47,11 +51,13 @@ public class ServerHandler extends Thread {
                     out.flush();
                 }
                 else {
+                    Object handlerResponse;
                     if(admin){
-
+                        handlerResponse = adminOperationsHandler(message);
                     } else {
-
+                        handlerResponse = basicOperationHandler(message);
                     }
+                    out.writeObject(handlerResponse);
                 }
             }
         } catch (IOException e) {
@@ -73,20 +79,13 @@ public class ServerHandler extends Thread {
         if (message instanceof LoginPacket) {
             LoginPacket loginMessage = (LoginPacket) message;
 
-            Statement st = (Statement) this.con.createStatement();
-            ResultSet rs = st.executeQuery(String.format("SELECT * FROM users " +
-                    "WHERE username=\"%s\" " +
-                    "AND password=\"%s\";", loginMessage.getUsername(), loginMessage.getPassword()));
+            User user = User.queryUser(
+                loginMessage.getUsername(),
+                loginMessage.getPassword(),
+                con
+            );
 
-            if (rs.first()) {
-                System.out.println(rs.getString("name"));
-                System.out.println(rs.getString("id"));
-                User user = new User(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("username"),
-                    rs.getString("password")
-                );
+            if(user != null){
                 loginMessage.setUser(user);
                 // return object
                 return "Y";
@@ -96,21 +95,12 @@ public class ServerHandler extends Thread {
                 return "N";
             }
         }
-        if (message instanceof AdminLoginPacket){
+        else if (message instanceof AdminLoginPacket){
             AdminLoginPacket loginMessage = (AdminLoginPacket) message;
             this.admin = true;
 
-            ArrayList<User> users = new ArrayList<User>();
-            Statement st = (Statement) this.con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM users");
-            while(rs.next()){
-                users.add(new User(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("username"),
-                    rs.getString("password")
-                ));
-            }
+            ArrayList<User> users = User.queryUsers(con);
+
             loginMessage.setUsers(users);
             // return object
             return "Y";
@@ -120,12 +110,18 @@ public class ServerHandler extends Thread {
         return "N";
     }
 
-    private void adminOperationsHandler(){
-
+    private Object adminOperationsHandler(Object message){
+        return null;
     }
 
-    private void basicOperationHandler(){
+    private Object basicOperationHandler(Object message){
+        if(message instanceof AddProductPacket){
 
+        }
+        else if(message instanceof GetProductPacket){
+
+        }
+        return null;
     }
 
 
