@@ -1,4 +1,4 @@
-package licitatii;
+package licitatii.Client;
 
 import licitatii.Pachete.LinieLicitatie;
 
@@ -12,7 +12,7 @@ public class ManagerLiniiLicitatie {
     private ArrayList<LinieLicitatie> listaLinii = new ArrayList<LinieLicitatie>();
     private JPanel listaLicitatii;
     
-    ManagerLiniiLicitatie(JPanel listaLicitatii){
+    public ManagerLiniiLicitatie(JPanel listaLicitatii){
         this.listaLicitatii = listaLicitatii;
         
         c = new GridBagConstraints();
