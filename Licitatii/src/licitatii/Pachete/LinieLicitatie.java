@@ -5,25 +5,19 @@
  */
 package licitatii.Pachete;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import static licitatii.GUI.getScaledImage;
 
 public class LinieLicitatie implements Serializable{
     

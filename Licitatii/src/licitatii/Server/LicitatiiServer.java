@@ -1,9 +1,7 @@
-package licitatii;
+package licitatii.Server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class LicitatiiServer {

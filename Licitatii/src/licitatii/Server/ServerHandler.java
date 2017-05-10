@@ -1,4 +1,4 @@
-package licitatii;
+package licitatii.Server;
 
 import licitatii.Models.User;
 import licitatii.Pachete.*;
@@ -66,6 +66,12 @@ public class ServerHandler extends Thread {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            try {
+                con.commit();
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             try {
                 in.close();
                 out.close();

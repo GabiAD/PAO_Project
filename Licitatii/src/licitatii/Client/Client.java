@@ -1,5 +1,5 @@
 
-package licitatii;
+package licitatii.Client;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import licitatii.ManagerLiniiLicitatie;
 import licitatii.Pachete.LinieLicitatie;
 import licitatii.Pachete.LoginPacket;
 import licitatii.Pachete.ProdusPacket;

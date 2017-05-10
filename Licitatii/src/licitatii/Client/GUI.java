@@ -3,26 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package licitatii;
+package licitatii.Client;
 
+import licitatii.ManagerLiniiLicitatie;
 import licitatii.Pachete.ProdusPacket;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.Dialog;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +26,6 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 /**
  *
