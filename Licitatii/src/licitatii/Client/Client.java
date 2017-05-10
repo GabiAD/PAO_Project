@@ -11,6 +11,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import licitatii.ManagerLiniiLicitatie;
+import licitatii.Models.User;
+import licitatii.Pachete.LoginFailedPacket;
 import licitatii.Pachete.LoginPacket;
 import licitatii.Pachete.ProdusPacket;
 import licitatii.Pachete.SumaNouaLicitatiePacket;
@@ -23,6 +25,7 @@ public class Client {
     private boolean conexiuneStabilita = false;
     private Thread liniiLicitatieThread;
     private ManagerLiniiLicitatie managerLiniiLicitatie;
+    private User user = null;
     
     public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
         this.managerLiniiLicitatie = managerLiniiLicitatie;
@@ -39,7 +42,7 @@ public class Client {
             
         
         } catch (IOException ex) {
-            
+            ex.printStackTrace();
             conexiuneStabilita= false;
             
             JOptionPane.showMessageDialog(null, "Nu s-a putut face conexiunea la server. Incercati din nou mai tarziu.");
@@ -59,14 +62,22 @@ public class Client {
             LoginPacket lp = new LoginPacket(username, password);
             oos.writeObject(lp);
             
-            if(ois.readUTF().compareTo("Y") != 0){
-                JOptionPane.showMessageDialog(null, "Cont inexistent.");
+            Object raspuns = ois.readObject();
+            
+            if(raspuns.getClass() == LoginFailedPacket.class){
+                JOptionPane.showMessageDialog(null, ((LoginFailedPacket)raspuns).getMessage());
                 return false;
+            }
+            else{
+                user = (User)raspuns;
+                System.out.println(user.getName());
             }
         
         } catch (IOException ex) {
             ex.printStackTrace();
             
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         newThreadPrimesteMesaje();

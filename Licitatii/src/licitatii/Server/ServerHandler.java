@@ -57,6 +57,7 @@ public class ServerHandler extends Thread {
                         handlerResponse = basicOperationHandler(message);
                     }
                     out.writeObject(handlerResponse);
+                    out.flush();
                 }
             }
         } catch (IOException e) {
