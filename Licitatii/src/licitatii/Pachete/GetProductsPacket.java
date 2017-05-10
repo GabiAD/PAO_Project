@@ -11,7 +11,8 @@ import java.util.ArrayList;
 public class GetProductsPacket implements Serializable {
 
     private ArrayList<Product> products;
-
+    private int user_id;
+    
     public ArrayList<Product> getProducts() {
         return products;
     }
@@ -19,4 +20,14 @@ public class GetProductsPacket implements Serializable {
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
     }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+    
+    
 }

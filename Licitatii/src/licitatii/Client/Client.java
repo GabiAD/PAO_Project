@@ -222,6 +222,8 @@ public class Client {
     public ArrayList<Product> getProducts() {
         
         GetProductsPacket produse = new GetProductsPacket();
+        produse.setUser_id(user.getId());
+        
         
         try {
             
