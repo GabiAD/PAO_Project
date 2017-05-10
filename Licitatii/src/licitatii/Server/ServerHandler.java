@@ -22,7 +22,7 @@ public class ServerHandler extends Thread {
 
     private static final String url = "jdbc:mysql://localhost/pao";
     private static final String user = "root";
-    private static final String password = "OmpasDBMaster33";
+    private static final String password = "root";
 
     private Connection con;
     private String name;

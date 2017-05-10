@@ -214,8 +214,8 @@ public class Client {
                     try {
                         
                             Object mesaj = ois.readObject();
-                            if(mesaj.getClass() == LinieLicitatie.class)
-                                managerLiniiLicitatie.addLine((LinieLicitatie) mesaj);
+                            //if(mesaj.getClass() == LinieLicitatie.class)
+                            //    managerLiniiLicitatie.addLine((LinieLicitatie) mesaj);
                         
                         
                     } catch (IOException ex) {
