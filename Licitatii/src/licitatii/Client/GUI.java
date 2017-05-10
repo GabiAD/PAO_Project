@@ -26,6 +26,7 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import licitatii.Client.Client;
 
 /**
  *

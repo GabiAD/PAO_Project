@@ -1,4 +1,4 @@
-package licitatii.Client;
+package licitatii;
 
 import licitatii.Pachete.LinieLicitatie;
 
