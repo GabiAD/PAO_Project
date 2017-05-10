@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import licitatii.ManagerLiniiLicitatie;
-import licitatii.Pachete.LinieLicitatie;
 import licitatii.Pachete.LoginPacket;
 import licitatii.Pachete.ProdusPacket;
 import licitatii.Pachete.SumaNouaLicitatiePacket;

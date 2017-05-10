@@ -1,6 +1,6 @@
 package licitatii;
 
-import licitatii.Pachete.LinieLicitatie;
+import licitatii.Client.LinieLicitatie;
 
 import java.awt.GridBagConstraints;
 import java.util.ArrayList;
