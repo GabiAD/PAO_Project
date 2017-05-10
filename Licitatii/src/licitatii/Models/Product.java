@@ -19,14 +19,14 @@ public class Product implements Serializable {
     private String image_path = "";
     private String description = "";
 
-    public Product(int user_id, String name,
-        int price){
-        this.user_id = id;
+    public Product(int user_id, String name, int price){
+        this.user_id = user_id;
         this.name = name;
         this.price = price;
     }
 
     public Product(int user_id, String name, int price, String decription, Icon icon){
+        this.user_id = user_id;
         this.name = name;
         this.price = price;
         this.description = description;
@@ -70,14 +70,14 @@ public class Product implements Serializable {
 //        ps.setString(5, description);
     }
 
-    public static ArrayList<Product> queryProduct(int user_id, Connection conn) throws SQLException {
+    public static ArrayList<Product> queryProducts(int user_id, Connection conn) throws SQLException {
         return fetchQuery(
             conn,
             String.format("SELECT * FROM products WHERE user_id = \"%s\";", user_id)
         );
     }
 
-    public static ArrayList<Product> queryProduct(Connection conn) throws SQLException {
+    public static ArrayList<Product> queryProducts(Connection conn) throws SQLException {
         return fetchQuery(conn,"SELECT * FROM products");
     }
 

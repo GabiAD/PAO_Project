@@ -13,4 +13,12 @@ public class AddLicitationPacket implements Serializable {
     public AddLicitationPacket(Licitation l) {
         this.l = l;
     }
+
+    public Licitation getL() {
+        return l;
+    }
+
+    public void setL(Licitation l) {
+        this.l = l;
+    }
 }

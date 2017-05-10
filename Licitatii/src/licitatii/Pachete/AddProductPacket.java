@@ -13,4 +13,12 @@ public class AddProductPacket implements Serializable {
     public AddProductPacket(Product p) {
         this.p = p;
     }
+
+    public Product getP() {
+        return p;
+    }
+
+    public void setP(Product p) {
+        this.p = p;
+    }
 }

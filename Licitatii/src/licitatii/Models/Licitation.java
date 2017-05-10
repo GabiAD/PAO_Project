@@ -31,7 +31,7 @@ public class Licitation {
         ps.setInt(2, l.product_id);
         ps.setInt(3, l.price);
         ps.executeUpdate();
-
+        conn.commit();
     }
 
     public static int GetStartingPrice(int product_id ,Connection conn) throws SQLException {
@@ -50,6 +50,8 @@ public class Licitation {
         ps.setInt(1, price);
         ps.setInt(2, user_id);
         ps.setInt(3, l.product_id);
+        ps.executeUpdate();
+        conn.commit();
     }
 
     public static Licitation GetLicitation(int product_id, Connection conn) throws SQLException {
