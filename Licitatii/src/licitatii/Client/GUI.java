@@ -788,6 +788,11 @@ public class GUI extends javax.swing.JFrame{
                 listaProduseModel.add(listaProduseModel.size(), String.join(": ", listaProduse.get(i).getName(), String.valueOf(listaProduse.get(i).getPrice())));
             }
             
+            if(listaProduse.size() > 0)
+                programeazaButton.setEnabled(true);
+            else
+                programeazaButton.setEnabled(false);
+            
         }
         
     }//GEN-LAST:event_tabContainerStateChanged
