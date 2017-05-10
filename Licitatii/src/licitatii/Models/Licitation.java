@@ -1,10 +1,11 @@
 package licitatii.Models;
 
+import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Licitation {
+public class Licitation implements Serializable{
 
     private int product_id;
     private String dt;
