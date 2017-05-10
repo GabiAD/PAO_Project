@@ -1,5 +1,7 @@
 # PAO_Project
 
+Protocol: https://docs.google.com/document/d/1pyv5LctmtboBFXXdRnVRseTLkyKCzCo7vE9RaFIOKE0/edit
+
 [D][ ] Modul pentru programare licitatii (data, ora, produse expuse)
 
 [D][ ] Modul adaugare produse (nume, poza, pret de pornire, nume vanzator etc)

@@ -34,7 +34,7 @@ public class ServerHandler extends Thread {
         this.socket = socket;
         // Establish connection with mysql
         this.con = DriverManager.getConnection(url, user, password);
-        System.out.println("Server Created");
+        
     }
 
     public void run(){
