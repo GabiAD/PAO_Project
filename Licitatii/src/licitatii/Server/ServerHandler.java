@@ -142,8 +142,7 @@ public class ServerHandler extends Thread {
             Product productMessage = (Product) message;
             Product.addProduct(productMessage, con);
             return null;
-        }
-        else if(message instanceof GetProductsPacket){
+        } else if(message instanceof GetProductsPacket){
             GetProductsPacket getProductsMessage = (GetProductsPacket) message;
             getProductsMessage.setProducts(
                 Product.queryProducts(
@@ -152,16 +151,18 @@ public class ServerHandler extends Thread {
                 )
             );
             return getProductsMessage;
-        }
-        else if(message instanceof AddLicitationPacket){
+        } else if(message instanceof AddLicitationPacket){
             AddLicitationPacket addLicitationMessage = (AddLicitationPacket) message;
             Licitation.AddLiciatie(addLicitationMessage.getL(), con);
             return null;
-        }
-        else if(message instanceof GetLicitationsPacket){
+        } else if(message instanceof GetLicitationsPacket){
             GetLicitationsPacket getLicitationsMessage = (GetLicitationsPacket) message;
             getLicitationsMessage.setLicitations(Licitation.getLicitations(con));
             return getLicitationsMessage;
+        } else if(message instanceof  DeleteProductPacket){
+            DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;
+            Product.removeProduct(deleteProductMessage.getProductId(), con);
+            return null;
         } else {
             return null;
         }
