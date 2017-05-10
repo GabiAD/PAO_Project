@@ -78,7 +78,7 @@ public class Client {
             }
             else{
                 user = (User)raspuns;
-                System.out.println(user.getName());
+                System.out.println(user.getName() + " " + user.getId());
             }
         
         } catch (IOException ex) {

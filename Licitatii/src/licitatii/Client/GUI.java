@@ -175,6 +175,7 @@ public class GUI extends javax.swing.JFrame{
         gridBagConstraints.insets = new java.awt.Insets(50, 95, 0, 0);
         jPanel2.add(jLabel2, gridBagConstraints);
 
+        loginTF.setText("test1");
         loginTF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginTFActionPerformed(evt);
@@ -188,6 +189,8 @@ public class GUI extends javax.swing.JFrame{
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(50, 18, 0, 95);
         jPanel2.add(loginTF, gridBagConstraints);
+
+        passwordTF.setText("test1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -782,7 +785,7 @@ public class GUI extends javax.swing.JFrame{
             listaProduse = client.getProducts();
             
             for (int i = 0; i < listaProduse.size(); i++) {
-                listaProduseModel.add(listaProduse.size(), String.join(": ", listaProduse.get(i).getName(), String.valueOf(listaProduse.get(i).getPrice())));
+                listaProduseModel.add(listaProduseModel.size(), String.join(": ", listaProduse.get(i).getName(), String.valueOf(listaProduse.get(i).getPrice())));
             }
             
         }
