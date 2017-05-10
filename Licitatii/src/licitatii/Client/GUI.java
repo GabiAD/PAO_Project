@@ -663,9 +663,11 @@ public class GUI extends javax.swing.JFrame{
     private void stergeProdusProgramareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergeProdusProgramareButtonActionPerformed
 
         if(jListProduseProgramare.getSelectedIndex() >= 0){
+            
+            client.stergeProdus(listaProduse.get(jListProduseProgramare.getSelectedIndex()));
+            
             listaProduse.remove(jListProduseProgramare.getSelectedIndex());
             listaProduseModel.remove(jListProduseProgramare.getSelectedIndex());
-            
         }
         
         if(listaProduseModel.getSize() == 0){
@@ -774,6 +776,15 @@ public class GUI extends javax.swing.JFrame{
     }//GEN-LAST:event_programareAnBoxActionPerformed
 
     private void tabContainerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabContainerStateChanged
+        
+        if(client != null){
+            if(tabContainer.getSelectedIndex() == 0){
+                client.pornesteEcranLicitatii();
+            }
+            else
+                client.opresteEcranLicitatii();
+        }
+        
         if(tabContainer.getSelectedIndex() == 2){
             
             //listaProduseModel.add(listaProduseModel.getSize(), String.join(": ", titluTF.getText(), auxPret));

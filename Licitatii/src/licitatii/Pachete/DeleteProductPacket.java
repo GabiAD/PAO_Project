@@ -7,7 +7,7 @@ import licitatii.Models.Product;
  */
 public class DeleteProductPacket {
     private int productId;
-
+    
     public int getProductId() {
         return productId;
     }

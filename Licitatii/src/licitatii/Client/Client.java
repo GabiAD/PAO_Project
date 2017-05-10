@@ -1,4 +1,3 @@
-
 package licitatii.Client;
 
 import java.io.IOException;
@@ -19,6 +18,7 @@ import licitatii.Models.Product;
 import licitatii.Models.User;
 import licitatii.Pachete.AddLicitationPacket;
 import licitatii.Pachete.AdminLoginPacket;
+import licitatii.Pachete.DeleteProductPacket;
 import licitatii.Pachete.GetProductsPacket;
 import licitatii.Pachete.LoginFailedPacket;
 import licitatii.Pachete.LoginPacket;
@@ -34,6 +34,7 @@ public class Client {
     private Thread liniiLicitatieThread;
     private ManagerLiniiLicitatie managerLiniiLicitatie;
     private User user = null;
+    private int state = 0; // 0 = login; 1 = tab1; 2 = tab2; 3 = tab3;
     
     public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
         this.managerLiniiLicitatie = managerLiniiLicitatie;
@@ -69,6 +70,7 @@ public class Client {
          
             LoginPacket lp = new LoginPacket(username, password);
             oos.writeObject(lp);
+            oos.flush();
             
             Object raspuns = ois.readObject();
             
@@ -88,7 +90,7 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //newThreadPrimesteMesaje();
+        pornesteEcranLicitatii();
         return true;
     }
     
@@ -99,6 +101,7 @@ public class Client {
          
             AdminLoginPacket lp = new AdminLoginPacket(username, password);
             oos.writeObject(lp);
+            oos.flush();
             
             Object raspuns = ois.readObject();
             
@@ -118,7 +121,7 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //newThreadPrimesteMesaje();
+        pornesteEcranLicitatii();
         return true;
     }
     
@@ -163,28 +166,27 @@ public class Client {
         
         try {
             oos.writeObject(snlp);
+            oos.flush();
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /*
-    private void newThreadPrimesteMesaje() {
+    
+    public void pornesteEcranLicitatii() {
+        System.out.println("EcranLicitatii Pornit");
         
         liniiLicitatieThread = new Thread(new Runnable(){
             
             @Override
             public void run() {
                 while(true){
-                    
                     try {
-                        
-                        Object mesaj = ois.readObject();
-                        
-                        if(mesaj.getClass() == LinieLicitatie.class)
-                            managerLiniiLicitatie.addLine((LinieLicitatie) mesaj);
-                        
-                        
+                        while(state == 1){
+                            Object mesaj = ois.readObject();
+                            if(mesaj.getClass() == LinieLicitatie.class)
+                                managerLiniiLicitatie.addLine((LinieLicitatie) mesaj);
+                        }
                         
                     } catch (IOException ex) {
                         Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -197,22 +199,30 @@ public class Client {
         
         });
         
-        
         liniiLicitatieThread.start();
         
 //        LinieLicitatie ll = client.primesteLinieLicitatie();
 //        manLiniiLic.addLine(ll);
+       
+    }
+    
+    public void opresteEcranLicitatii(){
+        System.out.println("EcranLicitatii Oprit");
         
+        if(!liniiLicitatieThread.isInterrupted()){
+            liniiLicitatieThread.interrupt();    
+        }
         
     }
-    */
+    
 
     public void adaugaProdus(String titlu, int pret, String descriere, Icon icon) {
         try {
             
             Product produs = new Product(user.getId(), titlu, pret, descriere, icon);
             oos.writeObject(produs);
-        
+            oos.flush();
+            
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -228,7 +238,8 @@ public class Client {
         try {
             
             oos.writeObject(produse);
-        
+            oos.flush();
+            
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -257,12 +268,31 @@ public class Client {
             try {
             
                 oos.writeObject(licitPack);
-            
+                oos.flush();
+                
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
             
             
+        }
+        
+    }
+    
+    public void setState(int stateNou){
+        state = stateNou;
+    }
+
+    public void stergeProdus(Product prod) {
+        
+        try {
+            DeleteProductPacket delProd = new DeleteProductPacket();
+            delProd.setProductId(prod.getUser_id());
+            
+            oos.writeObject(delProd);
+            oos.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
