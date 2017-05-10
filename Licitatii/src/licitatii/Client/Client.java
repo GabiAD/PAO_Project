@@ -25,7 +25,7 @@ public class Client {
     private Thread liniiLicitatieThread;
     private ManagerLiniiLicitatie managerLiniiLicitatie;
     
-    Client(ManagerLiniiLicitatie managerLiniiLicitatie){
+    public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
         this.managerLiniiLicitatie = managerLiniiLicitatie;
     }
     
