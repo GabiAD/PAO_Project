@@ -159,7 +159,9 @@ public class ServerHandler extends Thread {
             return null;
         }
         else if(message instanceof GetLicitationsPacket){
-            return null;
+            GetLicitationsPacket getLicitationsMessage = (GetLicitationsPacket) message;
+            getLicitationsMessage.setLicitations(Licitation.getLicitations(con));
+            return getLicitationsMessage;
         } else {
             return null;
         }

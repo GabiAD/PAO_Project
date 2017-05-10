@@ -37,7 +37,7 @@ public class Licitation implements Serializable{
 
     public static int GetStartingPrice(int product_id ,Connection conn) throws SQLException {
         Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT price FROM products WHERE product_id = \""+product_id+"\";");
+        ResultSet rs = s.executeQuery("SELECT price FROM products WHERE id = \""+product_id+"\";");
         if(rs.first())
             return rs.getInt("price");
         return 0;
