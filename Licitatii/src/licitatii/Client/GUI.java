@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import licitatii.Client.Client;
+import licitatii.Models.Product;
 
 /**
  *
@@ -40,9 +42,9 @@ public class GUI extends javax.swing.JFrame{
 //    private Component licitatieGuestComponent;
     private boolean anBisect = false;
     private String utilizator;
-    private DefaultListModel listaProduseProgramare;
+    private DefaultListModel listaProduseModel;
     private Client client;
-    private ArrayList<ProdusPacket> listaProduse = new ArrayList<ProdusPacket>();
+    private ArrayList<Product> listaProduse = new ArrayList<Product>();
     ManagerLiniiLicitatie manLiniiLic;
     
     public GUI() {
@@ -66,7 +68,7 @@ public class GUI extends javax.swing.JFrame{
         setZile(31);
         
         jListProduseProgramare.setModel(new DefaultListModel());
-        listaProduseProgramare = (DefaultListModel) jListProduseProgramare.getModel();
+        listaProduseModel = (DefaultListModel) jListProduseProgramare.getModel();
         
         
         manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
@@ -102,7 +104,7 @@ public class GUI extends javax.swing.JFrame{
         loginTF = new javax.swing.JTextField();
         passwordTF = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
-        guestButton = new javax.swing.JButton();
+        adminButton = new javax.swing.JButton();
         afterLoginCard = new javax.swing.JPanel();
         tabContainer = new javax.swing.JTabbedPane();
         licitatieUserPanel = new javax.swing.JPanel();
@@ -208,10 +210,10 @@ public class GUI extends javax.swing.JFrame{
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 50, 0);
         jPanel2.add(loginButton, gridBagConstraints);
 
-        guestButton.setText("Guest");
-        guestButton.addActionListener(new java.awt.event.ActionListener() {
+        adminButton.setText("Admin Login");
+        adminButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                guestButtonActionPerformed(evt);
+                adminButtonActionPerformed(evt);
             }
         });
 
@@ -220,11 +222,11 @@ public class GUI extends javax.swing.JFrame{
         loginCardLayout.setHorizontalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginCardLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(guestButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(adminButton)
                 .addContainerGap())
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
         );
         loginCardLayout.setVerticalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,9 +234,9 @@ public class GUI extends javax.swing.JFrame{
                 .addGap(35, 35, 35)
                 .addComponent(jLabel1)
                 .addGap(49, 49, 49)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                 .addGap(50, 50, 50)
-                .addComponent(guestButton)
+                .addComponent(adminButton)
                 .addContainerGap())
         );
 
@@ -244,6 +246,11 @@ public class GUI extends javax.swing.JFrame{
         afterLoginCard.setForeground(new java.awt.Color(204, 204, 255));
 
         tabContainer.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
+        tabContainer.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabContainerStateChanged(evt);
+            }
+        });
 
         listaLicitatii.setLayout(new java.awt.GridBagLayout());
         jScrollPane2.setViewportView(listaLicitatii);
@@ -536,7 +543,7 @@ public class GUI extends javax.swing.JFrame{
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
+            .addComponent(container, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -574,16 +581,18 @@ public class GUI extends javax.swing.JFrame{
 //        tabContainer.add("Liciteaza", licitatieUserComponent);
     }//GEN-LAST:event_loginButtonActionPerformed
 
-    private void guestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestButtonActionPerformed
+    private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
+        
+        utilizator = loginTF.getText();
         
         if(!client.conectat()){
             client.connectToServer();
         }
         
-        if(client.conectat() && client.login("Guest", "")){
+        if(client.conectat() && client.adminLogin(utilizator, String.valueOf(passwordTF.getPassword()))){
             
             cl.show(container, "card3");        
-            userName.setText("Logged in as Guest");
+            userName.setText("Logged in as Admin");
 
             numeCumparatorLabel.setText("Licitati cu numele: ");
             jTextField1.setVisible(true);
@@ -591,7 +600,7 @@ public class GUI extends javax.swing.JFrame{
         }
 //        tabContainer.remove(licitatieUserComponent);
 //        tabContainer.add("Liciteaza", licitatieGuestComponent);
-    }//GEN-LAST:event_guestButtonActionPerformed
+    }//GEN-LAST:event_adminButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         cl.show(container, "card2");
@@ -638,9 +647,10 @@ public class GUI extends javax.swing.JFrame{
         if(auxPret.equals(""))
         auxPret = "0";
         
-        listaProduseProgramare.add(listaProduseProgramare.getSize(), String.join(": ", titluTF.getText(), auxPret));
+        client.adaugaProdus(titluTF.getText(), Integer.parseInt(auxPret), descriereTF.getText(), imgLabel.getIcon());
         
-        listaProduse.add(new ProdusPacket(titluTF.getText(), Integer.parseInt(auxPret), numeVanzatorTF.getText(), descriereTF.getText(), imgLabel.getIcon()));
+        //listaProduseModel.add(listaProduseModel.getSize(), String.join(": ", titluTF.getText(), auxPret));
+        //listaProduse.add(new ProdusPacket(titluTF.getText(), Integer.parseInt(auxPret), numeVanzatorTF.getText(), descriereTF.getText(), imgLabel.getIcon()));
         
         resetAddObject();
 
@@ -651,11 +661,11 @@ public class GUI extends javax.swing.JFrame{
 
         if(jListProduseProgramare.getSelectedIndex() >= 0){
             listaProduse.remove(jListProduseProgramare.getSelectedIndex());
-            listaProduseProgramare.remove(jListProduseProgramare.getSelectedIndex());
+            listaProduseModel.remove(jListProduseProgramare.getSelectedIndex());
             
         }
         
-        if(listaProduseProgramare.getSize() == 0){
+        if(listaProduseModel.getSize() == 0){
             programeazaButton.setEnabled(false);
             
         }
@@ -670,6 +680,18 @@ public class GUI extends javax.swing.JFrame{
     }//GEN-LAST:event_jListProduseProgramareMouseClicked
 
     private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
+
+        int ora = Integer.parseInt(programareOraBox.getSelectedItem().toString().substring(0, programareOraBox.getSelectedItem().toString().indexOf(":")));
+        
+        Date data = new GregorianCalendar(Integer.parseInt(programareAnBox.getSelectedItem().toString()),
+                                        programareLunaBox.getSelectedIndex() + 1,
+                                        Integer.parseInt(programareZiBox.getSelectedItem().toString()), 
+                                        ora, 0 ).getTime();
+        
+        client.sendNewLicitation(listaProduse, data);
+        
+        
+        /*
         
         for (int i = 0; i < listaProduse.size(); i++) {
             listaProduse.get(i).setData(Integer.parseInt(programareZiBox.getSelectedItem().toString()),
@@ -680,13 +702,15 @@ public class GUI extends javax.swing.JFrame{
         
         client.trimiteProduse(listaProduse);
         
+        */
+        
         // TO DO: Thread special pentru asa ceva; asta e doar pentru test
 //        LinieLicitatie ll = client.primesteLinieLicitatie();
 //        manLiniiLic.addLine(ll);
         
         
         
-        listaProduseProgramare.removeAllElements();
+        listaProduseModel.removeAllElements();
         listaProduse.clear();
         stergeProdusProgramareButton.setEnabled(false);
         programeazaButton.setEnabled(false);
@@ -745,6 +769,25 @@ public class GUI extends javax.swing.JFrame{
 
         }
     }//GEN-LAST:event_programareAnBoxActionPerformed
+
+    private void tabContainerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabContainerStateChanged
+        if(tabContainer.getSelectedIndex() == 2){
+            
+            //listaProduseModel.add(listaProduseModel.getSize(), String.join(": ", titluTF.getText(), auxPret));
+            //listaProduse.add(new ProdusPacket(titluTF.getText(), Integer.parseInt(auxPret), numeVanzatorTF.getText(), descriereTF.getText(), imgLabel.getIcon()));
+            
+            listaProduseModel.removeAllElements();
+            listaProduse.clear();
+            
+            listaProduse = client.getProducts();
+            
+            for (int i = 0; i < listaProduse.size(); i++) {
+                listaProduseModel.add(listaProduse.size(), String.join(": ", listaProduse.get(i).getName(), String.valueOf(listaProduse.get(i).getPrice())));
+            }
+            
+        }
+        
+    }//GEN-LAST:event_tabContainerStateChanged
 
     private void setZile(int k){
         
@@ -829,10 +872,10 @@ public class GUI extends javax.swing.JFrame{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adaugaButton;
+    private javax.swing.JButton adminButton;
     private javax.swing.JPanel afterLoginCard;
     private javax.swing.JPanel container;
     private javax.swing.JTextArea descriereTF;
-    private javax.swing.JButton guestButton;
     private javax.swing.JLabel imgLabel;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

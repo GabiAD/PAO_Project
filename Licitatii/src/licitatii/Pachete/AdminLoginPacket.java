@@ -11,6 +11,17 @@ import java.util.ArrayList;
 public class AdminLoginPacket implements Serializable {
 
     private ArrayList<User> users;
+    private String username;
+    private String password;
+    
+    public AdminLoginPacket(){
+        
+    }
+    
+    public AdminLoginPacket(String u, String p) {
+        username = u;
+        password = p;
+    }
 
     public ArrayList<User> getUsers() {
         return users;

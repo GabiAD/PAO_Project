@@ -4,6 +4,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
+import javax.swing.Icon;
 
 /**
  * Created by alex on 5/9/17.
@@ -14,6 +15,7 @@ public class Product implements Serializable {
     private int user_id;
     private String name;
     private int price;
+    private Icon icon;
     private String image_path = "";
     private String description = "";
 
@@ -24,6 +26,13 @@ public class Product implements Serializable {
         this.price = price;
     }
 
+    public Product(int user_id, String name, int price, String decription, Icon icon){
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.icon = icon;
+    }
+    
     public static void removeProduct(Product p, Connection conn) throws SQLException {
         removeProduct(p.getId(), conn);
     }

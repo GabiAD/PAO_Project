@@ -6,12 +6,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import licitatii.ManagerLiniiLicitatie;
+import licitatii.Models.Licitation;
+import licitatii.Models.Product;
 import licitatii.Models.User;
+import licitatii.Pachete.AddLicitationPacket;
+import licitatii.Pachete.AdminLoginPacket;
+import licitatii.Pachete.GetProductsPacket;
 import licitatii.Pachete.LoginFailedPacket;
 import licitatii.Pachete.LoginPacket;
 import licitatii.Pachete.ProdusPacket;
@@ -80,10 +88,39 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        newThreadPrimesteMesaje();
+        //newThreadPrimesteMesaje();
         return true;
     }
     
+    
+    public boolean adminLogin(String username, String password){
+        
+        try {
+         
+            AdminLoginPacket lp = new AdminLoginPacket(username, password);
+            oos.writeObject(lp);
+            
+            Object raspuns = ois.readObject();
+            
+            if(raspuns.getClass() == LoginFailedPacket.class){
+                JOptionPane.showMessageDialog(null, ((LoginFailedPacket)raspuns).getMessage());
+                return false;
+            }
+            else{
+                user = (User)raspuns;
+                System.out.println(user.getName());
+            }
+        
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //newThreadPrimesteMesaje();
+        return true;
+    }
     
     public boolean conectat(){
         return conexiuneStabilita;
@@ -131,6 +168,7 @@ public class Client {
         }
     }
 
+    /*
     private void newThreadPrimesteMesaje() {
         
         liniiLicitatieThread = new Thread(new Runnable(){
@@ -159,11 +197,62 @@ public class Client {
         
         });
         
+        
         liniiLicitatieThread.start();
         
 //        LinieLicitatie ll = client.primesteLinieLicitatie();
 //        manLiniiLic.addLine(ll);
         
+        
+    }
+    */
+
+    public void adaugaProdus(String titlu, int pret, String descriere, Icon icon) {
+        try {
+            
+            Product produs = new Product(user.getId(), titlu, pret, descriere, icon);
+            oos.writeObject(produs);
+        
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
+    public ArrayList<Product> getProducts() {
+        
+        GetProductsPacket produse = new GetProductsPacket();
+        
+        try {
+            
+            oos.writeObject(produse);
+        
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            
+            produse = (GetProductsPacket)ois.readObject();
+        
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        return produse.getProducts();
+    }
+
+    public void sendNewLicitation(ArrayList<Product> produse, Date data) {
+        
+        for (int i = 0; i < produse.size(); i++) {
+            
+            AddLicitationPacket licitPack = new AddLicitationPacket(new Licitation(produse.get(i).getId(), data));
+            
+        }
         
     }
     
