@@ -16,7 +16,7 @@ CREATE TABLE products (
   owner_name VARCHAR(127) NOT NULL,
   starting_price INT NOT NULL DEFAULT 0,
   image_path VARCHAR(255) NOT NULL,
-  description TEXT DEFAULT '',
+  description TEXT,
   PRIMARY KEY ( id )
 );
 
