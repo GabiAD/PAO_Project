@@ -188,8 +188,8 @@ public class Client {
                 
                 for (LinieLicitatiePacket llp:pachetLicitatii.getLicitationLine()) {
 
-                    LinieLicitatie ll = new LinieLicitatie(llp.getProdus().getName(),
-                            llp.getLicitatie().getPrice(), llp.getProdus().getIcon(),
+                    LinieLicitatie ll = new LinieLicitatie(llp.getProdus().getTitle(),
+                            llp.getLicitatie().getLast_licitation_price(), llp.getProdus().getIcon(),
                             llp.getLicitatie().getProductId());
 
                     managerLiniiLicitatie.addLine(ll);
@@ -253,8 +253,7 @@ public class Client {
 
     public void adaugaProdus(String titlu, int pret, String descriere, Icon icon) {
         try {
-            
-            Product produs = new Product(user.getId(), titlu, pret, descriere, icon);
+            Product produs = new Product(titlu, pret, "#NUME HARDCODAT",descriere, icon);
             oos.writeObject(produs);
             oos.flush();
             
@@ -266,10 +265,8 @@ public class Client {
 
     public ArrayList<Product> getProducts() {
         
-        GetProductsPacket produse = new GetProductsPacket(products);
-        produse.setUser_id(user.getId());
-        
-        
+        GetProductsPacket produse = new GetProductsPacket();
+
         try {
             
             oos.writeObject(produse);
@@ -319,7 +316,7 @@ public class Client {
         
         try {
             DeleteProductPacket delProd = new DeleteProductPacket();
-            delProd.setProductId(prod.getId());
+            delProd.setP(prod);
             
             oos.writeObject(delProd);
             oos.flush();

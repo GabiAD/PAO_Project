@@ -189,4 +189,6 @@ public class Licitation implements Serializable{
     public int getProductId() {
         return product_id;
     }
+
+    public int getLast_licitation_price(){ return last_licitation_price;}
 }
