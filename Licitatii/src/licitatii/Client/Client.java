@@ -27,6 +27,7 @@ public class Client {
     private Thread liniiLicitatieThread;
     private ManagerLiniiLicitatie managerLiniiLicitatie;
     private User user = null;
+    private ArrayList<User> useri;
     
     public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
         this.managerLiniiLicitatie = managerLiniiLicitatie;
@@ -90,7 +91,7 @@ public class Client {
     public boolean adminLogin(){
         
         try {
-         
+            
             AdminLoginPacket lp = new AdminLoginPacket();
             oos.writeObject(lp);
             oos.flush();
@@ -101,9 +102,10 @@ public class Client {
                 JOptionPane.showMessageDialog(null, ((LoginFailedPacket)raspuns).getMessage());
                 return false;
             }
-            else{
-                user = (User)raspuns;
-                System.out.println(user.getName());
+            else if(raspuns.getClass() == AdminLoginPacket.class){
+                System.out.println("asdsadads");
+                //useri = ((AdminLoginPacket)raspuns).getUsers();
+                
             }
         
         } catch (IOException ex) {
@@ -168,10 +170,11 @@ public class Client {
     public void updateEcranLicitatii(){
         
         synchronized(this){
+            
             GetLicitationsPacket pachetLicitatii = new GetLicitationsPacket();
 
             try {
-
+                
                 oos.writeObject(pachetLicitatii);
                 oos.flush();
                 

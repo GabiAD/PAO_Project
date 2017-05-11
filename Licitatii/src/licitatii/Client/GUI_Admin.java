@@ -503,7 +503,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         }
         
         if(client.conectat() && client.adminLogin()){
-            
+
             cl.show(container, "card3");        
             userName.setText("Logged in as Admin");
 
@@ -527,9 +527,9 @@ public class GUI_Admin extends javax.swing.JFrame{
 
     private void titluTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_titluTFKeyTyped
         if(titluTF.getText().concat(String.valueOf(evt.getKeyChar())).equals(""))
-        adaugaButton.setEnabled(false);
+            adaugaButton.setEnabled(false);
         else
-        adaugaButton.setEnabled(true);
+            adaugaButton.setEnabled(true);
     }//GEN-LAST:event_titluTFKeyTyped
 
     private void selectImage(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectImage
@@ -567,7 +567,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         
         resetAddObject();
 
-        programeazaButton.setEnabled(true);
+        ////programeazaButton.setEnabled(true);
     }//GEN-LAST:event_adaugaButtonActionPerformed
 
     private void stergeProdusProgramareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergeProdusProgramareButtonActionPerformed
@@ -581,17 +581,20 @@ public class GUI_Admin extends javax.swing.JFrame{
         }
         
         if(listaProduseModel.getSize() == 0){
-            programeazaButton.setEnabled(false);
             
+            stergeProdusProgramareButton.setEnabled(false);
         }
-
+        
+        programeazaButton.setEnabled(false);
         stergeProdusProgramareButton.setEnabled(false);
     }//GEN-LAST:event_stergeProdusProgramareButtonActionPerformed
 
     private void jListProduseProgramareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListProduseProgramareMouseClicked
 
-        if(jListProduseProgramare.getSelectedIndex() >= 0)
-        stergeProdusProgramareButton.setEnabled(true);
+        if(jListProduseProgramare.getSelectedIndex() >= 0){
+            stergeProdusProgramareButton.setEnabled(true);
+            programeazaButton.setEnabled(true);
+        }
     }//GEN-LAST:event_jListProduseProgramareMouseClicked
 
     private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
@@ -709,10 +712,12 @@ public class GUI_Admin extends javax.swing.JFrame{
                 listaProduseModel.add(listaProduseModel.size(), String.join(": ", listaProduse.get(i).getName(), String.valueOf(listaProduse.get(i).getPrice())));
             }
             
+            /*
             if(listaProduse.size() > 0)
                 programeazaButton.setEnabled(true);
             else
                 programeazaButton.setEnabled(false);
+            */
             
         }
         
