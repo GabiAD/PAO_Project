@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.nimbus.State;
 
 /**
  * Created by alex on 5/9/17.
@@ -17,112 +16,126 @@ import javax.swing.plaf.nimbus.State;
 public class Product implements Serializable {
 
     private int id;
-    private int user_id;
-    private String name;
-    private int price;
+    private String title;
+    private String owner_name;
+    private int starting_price;
     private Icon icon;
-    private String image_path = "";
-    private String description = "";
+    private String image_path;
+    private String description;
 
-    public Product(int user_id, String name, int price){
-        this.user_id = user_id;
-        this.name = name;
-        this.price = price;
+    private Product(String title, int starting_price, String owner_name, String description){
+        this.title = title;
+        this.starting_price = starting_price;
+        this.owner_name = owner_name;
+        this.description = description;
     }
 
-    public Product(int user_id, String name, int price, String decription, Icon icon){
-        this.user_id = user_id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
+    public Product(String title, int starting_price, String owner_name, String description, Icon icon){
+        this(title, starting_price,owner_name, description);
         this.icon = icon;
     }
-    
-    public static void removeProduct(Product p, Connection conn) throws SQLException {
-        removeProduct(p.getId(), conn);
-    }
-    public static void removeProduct(int p_id, Connection conn) throws SQLException {
-        Statement s = conn.createStatement();
-        PreparedStatement ps = conn.prepareStatement(
-                "DELETE FROM products WHERE id = ?"
-        );
-        ps.setInt(1, p_id);
 
-        ps.executeUpdate();
-        ps.close();
-
+    public Product(String title, int starting_price, String owner_name, String description, String image_path){
+        this(title, starting_price,owner_name, description);
+        this.image_path = image_path;
     }
 
-    public static void addProduct(Product p, Connection conn) throws SQLException{
-        //save product image_path
-        ImageIcon i = (ImageIcon) p.getIcon();
-        Image img = i.getImage();
+    public void removeProduct(Connection conn){
 
-        BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_3BYTE_BGR);
-
-        Graphics2D g2 = bi.createGraphics();
-        g2.drawImage(img, 0, 0, null);
-        g2.dispose();
-        String path = (System.currentTimeMillis())+ "_" + p.getUser_id() + ".jpg";
+        PreparedStatement ps = null;
         try {
-            ImageIO.write(bi, "jpg", new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO products " +
-                        "(user_id, name, price, image_path, description) " +
-                        "VALUES " +
-                        "(?, ?, ?, ?, ?)"
-        );
-
-        ps.setInt(1, p.getUser_id());
-        ps.setString(2, p.getName());
-        ps.setInt(3, p.getPrice());
-        ps.setString(4, path);
-        ps.setString(5, p.getDescription());
-
-        ps.executeUpdate();
-        ps.close();
-    }
-
-    public static ArrayList<Product> queryProducts(int user_id, Connection conn) throws SQLException {
-        return fetchQuery(
-            conn,
-            String.format("SELECT * FROM products WHERE user_id = \"%s\" AND id NOT IN " +
-                    "(SELECT product_id FROM licitations)", user_id)
-        );
-    }
-
-    public static ArrayList<Product> queryProducts(Connection conn) throws SQLException {
-        return fetchQuery(conn,"SELECT * FROM products WHERE id NOT IN " +
-                "(SELECT product_id FROM licitations)");
-    }
-
-    private static ArrayList<Product> fetchQuery(Connection conn, String q) throws SQLException {
-        Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery(q);
-        ArrayList<Product> products = new ArrayList<Product>();
-        while(rs.next()){
-            Product p = new Product(
-                    rs.getInt("user_id"),
-                    rs.getString("name"),
-                    rs.getInt("price")
+            ps = conn.prepareStatement(
+                    "DELETE FROM products WHERE id = ?"
             );
-            p.setId(rs.getInt("id"));
-            p.setDescription(rs.getString("description"));
-            p.setIcon(getIconFromFile(p.getImage_path()));
-            products.add(p);
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to delete product");
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Failed to close prepared statement");
+            }
         }
-        s.close();
+    }
+
+    public void addProduct(Connection conn){
+        String path;
+        if(icon != null) {
+            path = saveIconToFile(icon);
+        } else {
+            path = "defaultNewObjectImage.png";
+        }
+
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(
+                    "INSERT INTO products " +
+                            "(owner_name, title, starting_price, image_path, description) " +
+                            "VALUES " +
+                            "(?, ?, ?, ?, ?)"
+            );
+            ps.setString(1, owner_name);
+            ps.setString(2, title);
+            ps.setInt(3, starting_price);
+            ps.setString(4, path);
+            ps.setString(5, description);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Failed to add product");
+            e.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close prepared statement");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static ArrayList<Product> queryProducts(Connection conn){
+        ArrayList<Product> products = new ArrayList<Product>();
+        Statement s = null;
+        ResultSet rs = null;
+        try {
+            s = conn.createStatement();
+            rs = s.executeQuery("SELECT * FROM products WHERE id NOT IN " +
+                    "(SELECT product_id FROM licitations)");
+            while(rs.next()){
+                Product p = new Product(rs.getString("title"),
+                        rs.getInt("starting_price"), rs.getString("owner_name"),
+                        rs.getString("description"), rs.getString("image_path"));
+                p.setIcon(getIconFromFile(p.getImage_path()));
+                products.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to fetch Products");
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close result set");
+                e.printStackTrace();
+            }
+
+            try {
+                s.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close statment");
+                e.printStackTrace();
+            }
+        }
+
         return products;
     }
-
-    private void setIcon(Icon i) {
-        icon = i;
-    }
-
+    
     private static Icon getIconFromFile(String path){
         BufferedImage bi = null;
         try
@@ -138,24 +151,57 @@ public class Product implements Serializable {
         return null;
     }
 
-    public static Product queryProduct(int productId, Connection conn) throws SQLException {
-        Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT * FROM products WHERE id = \"+" + productId + "\";");
-        if(rs.first()){
-            Product p = new Product(
-                    rs.getInt("user_id"),
-                    rs.getString("name"),
-                    rs.getInt("price")
-            );
-            p.setId(rs.getInt("id"));
-            p.setDescription(rs.getString("description"));
-            p.setIcon(getIconFromFile(rs.getString("image_path")));
-            s.close();
-            return p;
+    private static String saveIconToFile(Icon i){
+        //save product image_path
+        Image img = ((ImageIcon) i).getImage();
+
+        BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_3BYTE_BGR);
+
+        Graphics2D g2 = bi.createGraphics();
+        g2.drawImage(img, 0, 0, null);
+        g2.dispose();
+        String path = (System.currentTimeMillis()) + ".jpg";
+        try {
+            ImageIO.write(bi, "jpg", new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        s.close();
-        return null;
+
+        return path;
     }
+
+    public static Product queryProduct(int productId, Connection conn){
+        Statement s = null;
+        ResultSet rs = null;
+        Product p = null;
+        try {
+            s = conn.createStatement();
+            rs = s.executeQuery("SELECT * FROM products WHERE id = \"+" + productId + "\";");
+//            String title, int starting_price, String owner_name, String description, Icon icon
+            if(rs.first()){
+                p = new Product(
+                        rs.getString("title"),
+                        rs.getInt("starting_price"),
+                        rs.getString("owner_name"),
+                        rs.getString("description"),
+                        getIconFromFile(rs.getString("image_path"))
+                );
+
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to query product");
+            e.printStackTrace();
+        } finally {
+            try {
+                s.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close statment");
+                e.printStackTrace();
+            }
+        }
+        return p;
+    }
+
     private void setId(int id){
         this.id = id;
     }
@@ -164,16 +210,8 @@ public class Product implements Serializable {
         return id;
     }
 
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public int getPrice() {
-        return price;
+        return starting_price;
     }
 
     public String getImage_path() {
@@ -194,5 +232,25 @@ public class Product implements Serializable {
 
     public Icon getIcon() {
         return icon;
+    }
+
+    public String getOwner_name() {
+        return owner_name;
+    }
+
+    public void setOwner_name(String owner_name) {
+        this.owner_name = owner_name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
 }

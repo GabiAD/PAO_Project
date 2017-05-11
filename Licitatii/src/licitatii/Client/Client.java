@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import licitatii.ManagerLiniiLicitatie;
 import licitatii.Models.Licitation;
@@ -267,7 +266,7 @@ public class Client {
 
     public ArrayList<Product> getProducts() {
         
-        GetProductsPacket produse = new GetProductsPacket();
+        GetProductsPacket produse = new GetProductsPacket(products);
         produse.setUser_id(user.getId());
         
         

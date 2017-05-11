@@ -98,7 +98,7 @@ public class ServerHandler extends Thread {
             }
         }
     }
-    private Object loginHandler(Object message) throws SQLException, IOException {
+    private Object loginHandler(Object message){
         if (message instanceof LoginPacket) {
             LoginPacket loginMessage = (LoginPacket) message;
 
@@ -140,39 +140,31 @@ public class ServerHandler extends Thread {
     private Object basicOperationHandler(Object message) throws SQLException {
         if(message instanceof Product){
             Product productMessage = (Product) message;
-            Product.addProduct(productMessage, con);
+            productMessage.addProduct(con);
             return null;
         } else if(message instanceof GetProductsPacket){
             GetProductsPacket getProductsMessage = (GetProductsPacket) message;
-            getProductsMessage.setProducts(
-                Product.queryProducts(
-                    getProductsMessage.getUser_id(),
-                    con
-                )
-            );
+            getProductsMessage.setProducts(Product.queryProducts(con));
             return getProductsMessage;
         } else if(message instanceof AddLicitationPacket){
             AddLicitationPacket addLicitationMessage = (AddLicitationPacket) message;
-            Licitation.AddLiciatie(addLicitationMessage.getL(), con);
+            addLicitationMessage.getL().AddLiciatie(con);
             return null;
         } else if(message instanceof GetLicitationsPacket){
             GetLicitationsPacket getLicitationsMessage = (GetLicitationsPacket) message;
             ArrayList<Licitation> licitations = Licitation.getLicitations(con);
             ArrayList<LinieLicitatiePacket> licitationPackets = new ArrayList<LinieLicitatiePacket>();
             for(Licitation l:licitations){
-                User u = null;
-                if(l.getUser_id() != 0)
-                    u = User.queryUserByID(l.getUser_id(), con);
                 Product p = Product.queryProduct(l.getProductId(), con);
 
-                LinieLicitatiePacket llp = new LinieLicitatiePacket(null, l, u, p);
+                LinieLicitatiePacket llp = new LinieLicitatiePacket(null, l, p);
                 licitationPackets.add(llp);
             }
             getLicitationsMessage.setLicitationLine(licitationPackets);
             return getLicitationsMessage;
         } else if(message instanceof  DeleteProductPacket){
             DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;
-            Product.removeProduct(deleteProductMessage.getProductId(), con);
+            deleteProductMessage.getP().removeProduct(con);
             return null;
         } else {
             return null;

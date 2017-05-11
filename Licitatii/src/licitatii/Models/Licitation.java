@@ -1,110 +1,192 @@
 package licitatii.Models;
 
+import licitatii.Client.LinieLicitatie;
+
 import java.io.Serializable;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Licitation implements Serializable{
 
     private int product_id;
-    private String dt;
-    private int price;
-    private int user_id;
+    private String start_time;
+    private String last_lictation_time;
+    private int last_licitation_price;
+    private String winner_name;
 
-    public Licitation(){}
-
-    public Licitation(int product_id, Date dt ){
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.dt = sdf.format(dt);
+    public Licitation(int product_id, Date start_time){
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        this.start_time = sdf.format(start_time);
+        this.last_lictation_time = this.start_time;
         this.product_id = product_id;
     }
 
-    public static void AddLiciatie(Licitation l, Connection conn) throws SQLException {
-        l.price = GetStartingPrice(l.product_id, conn);
-        PreparedStatement ps = conn.prepareStatement(
-            "INSERT INTO licitations " +
-                "(start_time, product_id, price) " +
-                "VALUES " +
-                "(?,?,?)"
-        );
-        ps.setString(1, l.dt);
-        ps.setInt(2, l.product_id);
-        ps.setInt(3, l.price);
-        ps.executeUpdate();
-        ps.close();
+    public Licitation(int product_id, String start_time, String last_lictation_time, int last_licitation_price, String winner_name){
+        this.product_id = product_id;
+        this.start_time = start_time;
+        this.last_lictation_time = last_lictation_time;
+        this.last_licitation_price = last_licitation_price;
+        this.winner_name = winner_name;
     }
 
-    public static int GetStartingPrice(int product_id ,Connection conn) throws SQLException {
-        Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT price FROM products WHERE id = \""+product_id+"\";");
-        if(rs.first()) {
-            int ret = rs.getInt("price");
-            rs.close();
-            return ret;
+    public void AddLiciatie(Connection conn) {
+        last_licitation_price = GetLictationPrice(conn);
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(
+                "INSERT INTO licitations " +
+                    "(product_id, start_time, last_licitation_time, last_licitation_price) " +
+                    "VALUES " +
+                    "(?,?,?,?)"
+            );
+            ps.setInt(1, product_id);
+            ps.setString(2, start_time);
+            ps.setString(3, last_lictation_time);
+            ps.setInt(4, last_licitation_price);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Failed to add licitation");
+            e.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close statment");
+                e.printStackTrace();
+            }
         }
-        rs.close();
+
+    }
+
+    private int GetLictationPrice(Connection conn){
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conn.prepareStatement("SELECT price FROM products WHERE id = ?");
+            ps.setInt(1,product_id);
+            rs = ps.executeQuery();
+            if(rs.first()) {
+                int ret = rs.getInt("price");
+                rs.close();
+                return ret;
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close result set");
+                e.printStackTrace();
+            }
+
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close statment");
+                e.printStackTrace();
+            }
+        }
+
         return 0;
     }
 
-    public static void UpdateLicitatie(Licitation l, int price, int user_id, Connection conn) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement(
-                "UPDATE products " +
-                        "SET price = ?, user_id = ? " +
-                        "WHERE product_id = ?;");
-        ps.setInt(1, price);
-        ps.setInt(2, user_id);
-        ps.setInt(3, l.product_id);
-        ps.executeUpdate();
-        ps.close();
-        //conn.commit();
+    public void UpdateLicitatie(int new_price, String user_name, Connection conn) {
+        if (new_price <= GetLictationPrice(conn))
+            return;
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date current_time = new Date();
+        PreparedStatement ps = null;
+        try {
+            ps = conn.prepareStatement(
+                    "UPDATE products " +
+                            "SET last_licitation_price = ?, last_licitation_time = ?, winner_name = ? " +
+                            "WHERE product_id = ?;");
+            ps.setInt(1, new_price);
+            ps.setString(2, sdf.format(current_time));
+            ps.setString(3, user_name);
+            ps.setInt(4, this.product_id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Failed to update lictation");
+            e.printStackTrace();
+        } finally {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close statment");
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static Licitation GetLicitation(int product_id, Connection conn) throws SQLException {
-        Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT * FROM products WHERE product_id = \""+product_id+"\";");
-        if (rs.first()){
-            Licitation l = new Licitation();
-            l.price = rs.getInt("price");
-            l.dt = rs.getString("start_time");
-            l.product_id = rs.getInt("product_id");
-            s.close();
+    public static Licitation GetLicitation(int product_id, Connection conn) {
+        Statement s = null;
+        ResultSet rs = null;
+        Licitation l = null;
+        try {
+            s = conn.createStatement();
+            rs = s.executeQuery("SELECT * FROM products WHERE product_id = \""+product_id+"\";");
+            if (rs.first()) {
+                l = new Licitation(
+                        rs.getInt("product_id"),
+                        rs.getString("start_time"),
+                        rs.getString("last_liciation_time"),
+                        rs.getInt("last_licitation_price"),
+                        rs.getString("winner_name")
+                );
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("Failed to get licitation");
+            e.printStackTrace();
+        } finally{
+            try {
+                s.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close statment");
+                e.printStackTrace();
+            }
             return l;
         }
-        s.close();
-        return null;
     }
 
-    public static ArrayList<Licitation> getLicitations(Connection conn) throws SQLException {
-        Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT * FROM licitations;");
-        ArrayList<Licitation> licitations = new ArrayList<Licitation>();
-        while (rs.next()){
-            Licitation l = new Licitation();
-            l.price = rs.getInt("price");
-            l.dt = rs.getString("start_time");
-            l.product_id = rs.getInt("product_id");
-            l.user_id = rs.getInt("user_id");
-            licitations.add(l);
+    public static ArrayList<Licitation> getLicitations(Connection conn){
+        Statement s = null;
+        ResultSet rs = null;
+        ArrayList<Licitation> licitations = null;
+        try {
+            s = conn.createStatement();
+            rs = s.executeQuery("SELECT * FROM licitations;");
+            licitations = new ArrayList<Licitation>();
+            while (rs.next()){
+                licitations.add(new Licitation(
+                        rs.getInt("product_id"),
+                        rs.getString("start_time"),
+                        rs.getString("last_liciation_time"),
+                        rs.getInt("last_licitation_price"),
+                        rs.getString("winner_name")
+                ));
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to get licitations");
+            e.printStackTrace();
+        } finally {
+            try {
+                s.close();
+            } catch (SQLException e) {
+                System.out.println("Failed to close statment");
+                e.printStackTrace();
+            }
         }
-        s.close();
         return licitations;
-    }
-
-
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
     }
 
     public int getProductId() {
         return product_id;
-    }
-
-    public int getPrice(){
-        return price;
     }
 }

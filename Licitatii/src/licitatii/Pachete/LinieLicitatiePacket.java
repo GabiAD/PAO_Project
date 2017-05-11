@@ -18,12 +18,10 @@ public class LinieLicitatiePacket implements Serializable {
     
     private Licitation licitatie; // licitatia
     private Product produs; // produsul din licitatie
-    private User user; // user-ul care a licitat cel mai mult
-    
-    public LinieLicitatiePacket(Icon ic, Licitation l, User u, Product p){
+
+    public LinieLicitatiePacket(Icon ic, Licitation l, Product p){
         icon = ic; //scoate icon de aici, este in produs
         licitatie = l;
-        user = u;
         produs = p;
     }
 
@@ -39,7 +37,4 @@ public class LinieLicitatiePacket implements Serializable {
         return produs;
     }
 
-    public User getUser() {
-        return user;
-    }
 }

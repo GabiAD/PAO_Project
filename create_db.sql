@@ -4,7 +4,7 @@ USE pao;
 
 CREATE TABLE users ( 
   id INT NOT NULL AUTO_INCREMENT,  
-  name VARCHAR(63) NOT NULL, 
+  name VARCHAR(127) NOT NULL, 
   username VARCHAR(63) NOT NULL,
   password VARCHAR(63) NOT NULL,
   PRIMARY KEY ( id )
@@ -12,30 +12,24 @@ CREATE TABLE users (
 
 CREATE TABLE products ( 
   id INT NOT NULL AUTO_INCREMENT,  
-  user_id INT NOT NULL, 
-
-  name VARCHAR(63) NOT NULL,
-  price INT NOT NULL,
-  image_path VARCHAR(63),
-  description TEXT,
-  PRIMARY KEY ( id ),
-  FOREIGN KEY (user_id)
-    REFERENCES users(id)
-    ON DELETE CASCADE
+  title VARCHAR(127) NOT NULL,
+  owner_name VARCHAR(127) NOT NULL,
+  starting_price INT NOT NULL DEFAULT 0,
+  image_path VARCHAR(255) NOT NULL,
+  description TEXT DEFAULT '',
+  PRIMARY KEY ( id )
 );
 
 CREATE TABLE licitations (   
-  start_time DATETIME NOT NULL,
   product_id Int NOT NULL,
-  price Int NOT NULL,
-  user_id Int,
+  start_time DATETIME NOT NULL,
+  last_licitation_time DATETIME NOT NULL,
+  last_licitation_price Int NOT NULL,
+  winner_name VARCHAR(127),
   PRIMARY KEY (product_id),
   FOREIGN KEY (product_id)
     REFERENCES products(id)
-    ON DELETE CASCADE,
-  FOREIGN KEY (user_id)
-    REFERENCES users(id)
-    ON DELETE SET NULL
+    ON DELETE CASCADE
 );
 
 

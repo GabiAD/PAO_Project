@@ -1,16 +1,18 @@
 package licitatii.Pachete;
 
 
+import licitatii.Models.Product;
+
 import java.io.Serializable;
 
 public class DeleteProductPacket implements Serializable{
-    private int productId;
-    
-    public int getProductId() {
-        return productId;
+    private Product p;
+
+    public Product getP() {
+        return p;
     }
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+    public void setP(Product p) {
+        this.p = p;
     }
 }
