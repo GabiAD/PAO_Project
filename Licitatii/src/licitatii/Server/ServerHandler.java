@@ -53,35 +53,38 @@ public class ServerHandler extends Thread {
                 }
                 else {
                     Object handlerResponse;
-                    if(admin){
-                        handlerResponse = adminOperationsHandler(message);
-                    } else {
-                        handlerResponse = basicOperationHandler(message);
+                    if (message instanceof LogoutPacket){
+                        loggedId = false;
                     }
-                    if (handlerResponse != null) {
-                        out.writeObject(handlerResponse);
-                        out.flush();
+                    else {
+                        if (admin) {
+                            handlerResponse = adminOperationsHandler(message);
+                        } else {
+                            handlerResponse = basicOperationHandler(message);
+                        }
+                        if (handlerResponse != null) {
+                            out.writeObject(handlerResponse);
+                            out.flush();
+                        }
                     }
                 }
             }
         } catch (IOException e) {
             System.out.println("Unexpected error on client input/output streams");
+            e.printStackTrace();
         } catch (ClassNotFoundException e){
             System.out.println("There was a problem decoding message from client");
-        } catch (SQLException e) {
             e.printStackTrace();
+        } catch (SQLException e) {
             System.out.println("Mysql exception");
+            e.printStackTrace();
         } finally {
-            try {
-                con.commit();
-            } catch (SQLException e) {
-                System.out.println("Failed to commit session");
-            }
-
             try {
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Failed to close mysql connection");
+                e.printStackTrace();
+
             }
 
             try {
@@ -134,23 +137,7 @@ public class ServerHandler extends Thread {
     }
 
     private Object adminOperationsHandler(Object message){
-        return null;
-    }
-
-    private Object basicOperationHandler(Object message) throws SQLException {
-        if(message instanceof Product){
-            Product productMessage = (Product) message;
-            productMessage.addProduct(con);
-            return null;
-        } else if(message instanceof GetProductsPacket){
-            GetProductsPacket getProductsMessage = (GetProductsPacket) message;
-            getProductsMessage.setProducts(Product.queryProducts(con));
-            return getProductsMessage;
-        } else if(message instanceof AddLicitationPacket){
-            AddLicitationPacket addLicitationMessage = (AddLicitationPacket) message;
-            addLicitationMessage.getL().AddLiciatie(con);
-            return null;
-        } else if(message instanceof GetLicitationsPacket){
+        if(message instanceof GetLicitationsPacket){
             GetLicitationsPacket getLicitationsMessage = (GetLicitationsPacket) message;
             ArrayList<Licitation> licitations = Licitation.getLicitations(con);
             ArrayList<LinieLicitatiePacket> licitationPackets = new ArrayList<LinieLicitatiePacket>();
@@ -162,10 +149,56 @@ public class ServerHandler extends Thread {
             }
             getLicitationsMessage.setLicitationLine(licitationPackets);
             return getLicitationsMessage;
+        } else if(message instanceof GetProductsPacket){
+            GetProductsPacket getProductsMessage = (GetProductsPacket) message;
+            getProductsMessage.setProducts(Product.queryProducts(con));
+            return getProductsMessage;
+        } else if(message instanceof AddLicitationPacket){
+            AddLicitationPacket addLicitationMessage = (AddLicitationPacket) message;
+            addLicitationMessage.getL().AddLiciatie(con);
+            return null;
+        } else if(message instanceof Product) {
+            Product productMessage = (Product) message;
+            productMessage.addProduct(con);
+            return null;
         } else if(message instanceof  DeleteProductPacket){
             DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;
             deleteProductMessage.getP().removeProduct(con);
             return null;
+        } else {
+            return null;
+        }
+    }
+
+    private Object basicOperationHandler(Object message) throws SQLException {
+        if(message instanceof GetLicitationsPacket){
+            GetLicitationsPacket getLicitationsMessage = (GetLicitationsPacket) message;
+            ArrayList<Licitation> licitations = Licitation.getLicitations(con);
+            ArrayList<LinieLicitatiePacket> licitationPackets = new ArrayList<LinieLicitatiePacket>();
+            for(Licitation l:licitations){
+                Product p = Product.queryProduct(l.getProductId(), con);
+
+                LinieLicitatiePacket llp = new LinieLicitatiePacket(null, l, p);
+                licitationPackets.add(llp);
+            }
+            getLicitationsMessage.setLicitationLine(licitationPackets);
+            return getLicitationsMessage;
+        } else if(message instanceof AddLicitationPacket){
+            AddLicitationPacket addLicitationMessage = (AddLicitationPacket) message;
+            addLicitationMessage.getL().AddLiciatie(con);
+            return null;
+//        } else if(message instanceof GetProductsPacket){
+//            GetProductsPacket getProductsMessage = (GetProductsPacket) message;
+//            getProductsMessage.setProducts(Product.queryProducts(con));
+//            return getProductsMessage;
+//        } else if(message instanceof Product) {
+//            Product productMessage = (Product) message;
+//            productMessage.addProduct(con);
+//            return null;
+//        } else if(message instanceof  DeleteProductPacket){
+//            DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;
+//            deleteProductMessage.getP().removeProduct(con);
+//            return null;
         } else {
             return null;
         }

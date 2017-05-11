@@ -64,11 +64,11 @@ public class Licitation implements Serializable{
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = conn.prepareStatement("SELECT price FROM products WHERE id = ?");
+            ps = conn.prepareStatement("SELECT starting_price FROM products WHERE id = ?");
             ps.setInt(1,product_id);
             rs = ps.executeQuery();
             if(rs.first()) {
-                int ret = rs.getInt("price");
+                int ret = rs.getInt("starting_price");
                 rs.close();
                 return ret;
             }
@@ -167,7 +167,7 @@ public class Licitation implements Serializable{
                 licitations.add(new Licitation(
                         rs.getInt("product_id"),
                         rs.getString("start_time"),
-                        rs.getString("last_liciation_time"),
+                        rs.getString("last_licitation_time"),
                         rs.getInt("last_licitation_price"),
                         rs.getString("winner_name")
                 ));

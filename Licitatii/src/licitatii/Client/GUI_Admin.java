@@ -709,7 +709,7 @@ public class GUI_Admin extends javax.swing.JFrame{
             listaProduse = client.getProducts();
             
             for (int i = 0; i < listaProduse.size(); i++) {
-                listaProduseModel.add(listaProduseModel.size(), String.join(": ", listaProduse.get(i).getName(), String.valueOf(listaProduse.get(i).getPrice())));
+                listaProduseModel.add(listaProduseModel.size(), String.join(": ", listaProduse.get(i).getTitle(), String.valueOf(listaProduse.get(i).getPrice())));
             }
             
             /*

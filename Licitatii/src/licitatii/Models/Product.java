@@ -112,6 +112,7 @@ public class Product implements Serializable {
                         rs.getInt("starting_price"), rs.getString("owner_name"),
                         rs.getString("description"), rs.getString("image_path"));
                 p.setIcon(getIconFromFile(p.getImage_path()));
+                p.setId(rs.getInt("id"));
                 products.add(p);
             }
         } catch (SQLException e) {
