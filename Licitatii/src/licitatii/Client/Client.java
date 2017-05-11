@@ -192,6 +192,10 @@ public class Client {
 
                 pachetLicitatii = (GetLicitationsPacket)ois.readObject();
                 
+                for (int i = 0; i < pachetLicitatii.getLicitations().size(); i++) {
+                    
+                }
+                
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {

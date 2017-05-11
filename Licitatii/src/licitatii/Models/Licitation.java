@@ -70,7 +70,7 @@ public class Licitation implements Serializable{
 
     public static ArrayList<Licitation> getLicitations(Connection conn) throws SQLException {
         Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT * FROM products;");
+        ResultSet rs = s.executeQuery("SELECT * FROM licitations;");
         ArrayList<Licitation> licitations = new ArrayList<Licitation>();
         while (rs.next()){
             Licitation l = new Licitation();
@@ -82,4 +82,7 @@ public class Licitation implements Serializable{
         }
         return licitations;
     }
+    
+    
+    
 }
