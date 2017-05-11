@@ -144,7 +144,7 @@ public class ServerHandler extends Thread {
             for(Licitation l:licitations){
                 Product p = Product.queryProduct(l.getProductId(), con);
 
-                LinieLicitatiePacket llp = new LinieLicitatiePacket(null, l, p);
+                LinieLicitatiePacket llp = new LinieLicitatiePacket(l, p);
                 licitationPackets.add(llp);
             }
             getLicitationsMessage.setLicitationLine(licitationPackets);
@@ -178,7 +178,7 @@ public class ServerHandler extends Thread {
             for(Licitation l:licitations){
                 Product p = Product.queryProduct(l.getProductId(), con);
 
-                LinieLicitatiePacket llp = new LinieLicitatiePacket(null, l, p);
+                LinieLicitatiePacket llp = new LinieLicitatiePacket(l, p);
                 licitationPackets.add(llp);
             }
             getLicitationsMessage.setLicitationLine(licitationPackets);
@@ -187,6 +187,7 @@ public class ServerHandler extends Thread {
             AddLicitationPacket addLicitationMessage = (AddLicitationPacket) message;
             addLicitationMessage.getL().AddLiciatie(con);
             return null;
+
 //        } else if(message instanceof GetProductsPacket){
 //            GetProductsPacket getProductsMessage = (GetProductsPacket) message;
 //            getProductsMessage.setProducts(Product.queryProducts(con));
@@ -199,6 +200,7 @@ public class ServerHandler extends Thread {
 //            DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;
 //            deleteProductMessage.getP().removeProduct(con);
 //            return null;
+
         } else {
             return null;
         }

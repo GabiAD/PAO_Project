@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 public class LinieLicitatiePacket implements Serializable {
 
-    private Icon icon;  // icon-ul corespunzator imaginii din product
     // private String titluStr; --- Product
     // private String descriere; --- Product
     // private int pretMaxim; --- Licitation
@@ -19,14 +18,9 @@ public class LinieLicitatiePacket implements Serializable {
     private Licitation licitatie; // licitatia
     private Product produs; // produsul din licitatie
 
-    public LinieLicitatiePacket(Icon ic, Licitation l, Product p){
-        icon = ic; //scoate icon de aici, este in produs
+    public LinieLicitatiePacket(Licitation l, Product p){
         licitatie = l;
         produs = p;
-    }
-
-    public Icon getIcon() {
-        return icon;
     }
 
     public Licitation getLicitatie() {
