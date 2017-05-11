@@ -39,13 +39,12 @@ public class GUI extends javax.swing.JFrame{
     private CardLayout cl;
     private JFileChooser fc;
     private Component licitatieUserComponent;
-//    private Component licitatieGuestComponent;
     private boolean anBisect = false;
     private String utilizator;
     private DefaultListModel listaProduseModel;
     private Client client;
     private ArrayList<Product> listaProduse = new ArrayList<Product>();
-    ManagerLiniiLicitatie manLiniiLic;
+    private ManagerLiniiLicitatie manLiniiLic;
     
     public GUI() {
         initComponents();
