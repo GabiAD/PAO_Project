@@ -1,10 +1,14 @@
 package licitatii.Models;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
-import javax.swing.Icon;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.plaf.nimbus.State;
 
 /**
@@ -40,16 +44,32 @@ public class Product implements Serializable {
     public static void removeProduct(int p_id, Connection conn) throws SQLException {
         Statement s = conn.createStatement();
         PreparedStatement ps = conn.prepareStatement(
-                "REMOVE FROM products WHERE id = ?"
+                "DELETE FROM products WHERE id = ?"
         );
         ps.setInt(1, p_id);
 
         ps.executeUpdate();
+        ps.close();
 
     }
 
-    public static void addProduct(Product p, Connection conn) throws SQLException {
+    public static void addProduct(Product p, Connection conn) throws SQLException{
         //save product image_path
+        ImageIcon i = (ImageIcon) p.getIcon();
+        Image img = i.getImage();
+
+        BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_3BYTE_BGR);
+
+        Graphics2D g2 = bi.createGraphics();
+        g2.drawImage(img, 0, 0, null);
+        g2.dispose();
+        String path = (System.currentTimeMillis())+ "_" + p.getUser_id() + ".jpg";
+        try {
+            ImageIO.write(bi, "jpg", new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO products " +
                         "(user_id, name, price, image_path, description) " +
@@ -60,16 +80,11 @@ public class Product implements Serializable {
         ps.setInt(1, p.getUser_id());
         ps.setString(2, p.getName());
         ps.setInt(3, p.getPrice());
-        ps.setString(4, p.getImage_path());
+        ps.setString(4, path);
         ps.setString(5, p.getDescription());
 
         ps.executeUpdate();
-//        non static version
-//        ps.setInt(1, user_id);
-//        ps.setString(2, name);
-//        ps.setInt(3, price);
-//        ps.setString(4, image_path);
-//        ps.setString(5, description);
+        ps.close();
     }
 
     public static ArrayList<Product> queryProducts(int user_id, Connection conn) throws SQLException {
@@ -97,17 +112,36 @@ public class Product implements Serializable {
             );
             p.setId(rs.getInt("id"));
             p.setDescription(rs.getString("description"));
-            p.setImage_path(rs.getString("image_path"));
+            p.setIcon(getIconFromFile(p.getImage_path()));
             products.add(p);
         }
+        s.close();
         return products;
+    }
+
+    private void setIcon(Icon i) {
+        icon = i;
+    }
+
+    private static Icon getIconFromFile(String path){
+        BufferedImage bi = null;
+        try
+        {
+            System.out.println(path);
+            bi = ImageIO.read(new File(path));
+            return new ImageIcon(bi);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Product queryProduct(int productId, Connection conn) throws SQLException {
         Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT * FROM products WHERE id = \"+" + productId + "\"AND id NOT IN " +
-                "(SELECT product_id FROM licitations)");
-        if(rs.next()){
+        ResultSet rs = s.executeQuery("SELECT * FROM products WHERE id = \"+" + productId + "\";");
+        if(rs.first()){
             Product p = new Product(
                     rs.getInt("user_id"),
                     rs.getString("name"),
@@ -115,9 +149,11 @@ public class Product implements Serializable {
             );
             p.setId(rs.getInt("id"));
             p.setDescription(rs.getString("description"));
-            p.setImage_path(rs.getString("image_path"));
+            p.setIcon(getIconFromFile(rs.getString("image_path")));
+            s.close();
             return p;
         }
+        s.close();
         return null;
     }
     private void setId(int id){
@@ -156,4 +192,7 @@ public class Product implements Serializable {
         this.description = description;
     }
 
+    public Icon getIcon() {
+        return icon;
+    }
 }

@@ -37,8 +37,10 @@ public class User implements Serializable {
                     rs.getString("username"),
                     rs.getString("password")
             );
+            st.close();
             return user;
         }
+        st.close();
         return null;
     }
 
@@ -47,6 +49,7 @@ public class User implements Serializable {
         Statement st = (Statement) conn.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM users");
         while(rs.next()){
+
             users.add(new User(
                 rs.getInt("id"),
                 rs.getString("name"),
@@ -54,6 +57,7 @@ public class User implements Serializable {
                 rs.getString("password")
             ));
         }
+        rs.close();
         return users;
     }
 
@@ -69,13 +73,16 @@ public class User implements Serializable {
         Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM users WHERE id = \"" + user_id + "\";");
         if( rs.first() ){
-            return new User(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("username"),
-                rs.getString("password")
+            User u = new User(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("username"),
+                    rs.getString("password")
             );
+            st.close();
+            return u;
         }
+        st.close();
         return null;
     }
 }

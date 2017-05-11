@@ -32,14 +32,18 @@ public class Licitation implements Serializable{
         ps.setInt(2, l.product_id);
         ps.setInt(3, l.price);
         ps.executeUpdate();
-        //conn.commit();
+        ps.close();
     }
 
     public static int GetStartingPrice(int product_id ,Connection conn) throws SQLException {
         Statement s = conn.createStatement();
         ResultSet rs = s.executeQuery("SELECT price FROM products WHERE id = \""+product_id+"\";");
-        if(rs.first())
-            return rs.getInt("price");
+        if(rs.first()) {
+            int ret = rs.getInt("price");
+            rs.close();
+            return ret;
+        }
+        rs.close();
         return 0;
     }
 
@@ -52,6 +56,7 @@ public class Licitation implements Serializable{
         ps.setInt(2, user_id);
         ps.setInt(3, l.product_id);
         ps.executeUpdate();
+        ps.close();
         //conn.commit();
     }
 
@@ -63,8 +68,10 @@ public class Licitation implements Serializable{
             l.price = rs.getInt("price");
             l.dt = rs.getString("start_time");
             l.product_id = rs.getInt("product_id");
+            s.close();
             return l;
         }
+        s.close();
         return null;
     }
 
@@ -80,6 +87,7 @@ public class Licitation implements Serializable{
             l.user_id = rs.getInt("user_id");
             licitations.add(l);
         }
+        s.close();
         return licitations;
     }
 
@@ -94,5 +102,9 @@ public class Licitation implements Serializable{
 
     public int getProductId() {
         return product_id;
+    }
+
+    public int getPrice(){
+        return price;
     }
 }

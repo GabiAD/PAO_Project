@@ -16,15 +16,7 @@ import licitatii.ManagerLiniiLicitatie;
 import licitatii.Models.Licitation;
 import licitatii.Models.Product;
 import licitatii.Models.User;
-import licitatii.Pachete.AddLicitationPacket;
-import licitatii.Pachete.AdminLoginPacket;
-import licitatii.Pachete.DeleteProductPacket;
-import licitatii.Pachete.GetLicitationsPacket;
-import licitatii.Pachete.GetProductsPacket;
-import licitatii.Pachete.LoginFailedPacket;
-import licitatii.Pachete.LoginPacket;
-import licitatii.Pachete.ProdusPacket;
-import licitatii.Pachete.SumaNouaLicitatiePacket;
+import licitatii.Pachete.*;
 
 public class Client {
 
@@ -192,8 +184,15 @@ public class Client {
 
                 pachetLicitatii = (GetLicitationsPacket)ois.readObject();
                 
-                for (int i = 0; i < pachetLicitatii.getLicitations().size(); i++) {
-                    
+                for (LinieLicitatiePacket llp:pachetLicitatii.getLicitationLine()) {
+
+                    LinieLicitatie ll = new LinieLicitatie(llp.getProdus().getName(),
+                            llp.getLicitatie().getPrice(), llp.getProdus().getIcon(),
+                            llp.getLicitatie().getProductId());
+
+                    managerLiniiLicitatie.addLine(ll);
+
+
                 }
                 
             } catch (IOException ex) {
@@ -318,7 +317,7 @@ public class Client {
         
         try {
             DeleteProductPacket delProd = new DeleteProductPacket();
-            delProd.setProductId(prod.getUser_id());
+            delProd.setProductId(prod.getId());
             
             oos.writeObject(delProd);
             oos.flush();
