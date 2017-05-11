@@ -157,7 +157,18 @@ public class ServerHandler extends Thread {
             return null;
         } else if(message instanceof GetLicitationsPacket){
             GetLicitationsPacket getLicitationsMessage = (GetLicitationsPacket) message;
-            getLicitationsMessage.setLicitations(Licitation.getLicitations(con));
+            ArrayList<Licitation> licitations = Licitation.getLicitations(con);
+            ArrayList<LinieLicitatiePacket> licitationPackets = new ArrayList<LinieLicitatiePacket>();
+            for(Licitation l:licitations){
+                User u = null;
+                if(l.getUser_id() != 0)
+                    u = User.queryUserByID(l.getUser_id(), con);
+                Product p = Product.queryProduct(l.getProductId(), con);
+
+                LinieLicitatiePacket llp = new LinieLicitatiePacket(null, l, u, p);
+                licitationPackets.add(llp);
+            }
+            getLicitationsMessage.setLicitationLine(licitationPackets);
             return getLicitationsMessage;
         } else if(message instanceof  DeleteProductPacket){
             DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;

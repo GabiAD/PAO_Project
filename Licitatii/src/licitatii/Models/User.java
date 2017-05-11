@@ -1,12 +1,12 @@
 package licitatii.Models;
 
-import com.mysql.jdbc.Statement;
-
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+
 
 public class User implements Serializable {
 
@@ -23,7 +23,7 @@ public class User implements Serializable {
     }
 
     public static User queryUser(String username, String password, Connection conn) throws SQLException {
-        Statement st = (Statement) conn.createStatement();
+        Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(String.format("SELECT * FROM users " +
                 "WHERE username=\"%s\" " +
                 "AND password=\"%s\";", username, password));
@@ -48,10 +48,10 @@ public class User implements Serializable {
         ResultSet rs = st.executeQuery("SELECT * FROM users");
         while(rs.next()){
             users.add(new User(
-                    rs.getInt("id"),
-                    rs.getString("name"),
-                    rs.getString("username"),
-                    rs.getString("password")
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("username"),
+                rs.getString("password")
             ));
         }
         return users;
@@ -63,5 +63,19 @@ public class User implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public static User queryUserByID(int user_id, Connection conn) throws SQLException {
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery("SELECT * FROM users WHERE id = \"" + user_id + "\";");
+        if( rs.first() ){
+            return new User(
+                rs.getInt("id"),
+                rs.getString("name"),
+                rs.getString("username"),
+                rs.getString("password")
+            );
+        }
+        return null;
     }
 }

@@ -24,7 +24,7 @@ public class Licitation implements Serializable{
         l.price = GetStartingPrice(l.product_id, conn);
         PreparedStatement ps = conn.prepareStatement(
             "INSERT INTO licitations " +
-                "start_time, product_id, price) " +
+                "(start_time, product_id, price) " +
                 "VALUES " +
                 "(?,?,?)"
         );
@@ -32,7 +32,7 @@ public class Licitation implements Serializable{
         ps.setInt(2, l.product_id);
         ps.setInt(3, l.price);
         ps.executeUpdate();
-        conn.commit();
+        //conn.commit();
     }
 
     public static int GetStartingPrice(int product_id ,Connection conn) throws SQLException {
@@ -52,7 +52,7 @@ public class Licitation implements Serializable{
         ps.setInt(2, user_id);
         ps.setInt(3, l.product_id);
         ps.executeUpdate();
-        conn.commit();
+        //conn.commit();
     }
 
     public static Licitation GetLicitation(int product_id, Connection conn) throws SQLException {
@@ -82,7 +82,17 @@ public class Licitation implements Serializable{
         }
         return licitations;
     }
-    
-    
-    
+
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getProductId() {
+        return product_id;
+    }
 }

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.Icon;
+import javax.swing.plaf.nimbus.State;
 
 /**
  * Created by alex on 5/9/17.
@@ -44,6 +45,7 @@ public class Product implements Serializable {
         ps.setInt(1, p_id);
 
         ps.executeUpdate();
+
     }
 
     public static void addProduct(Product p, Connection conn) throws SQLException {
@@ -73,12 +75,14 @@ public class Product implements Serializable {
     public static ArrayList<Product> queryProducts(int user_id, Connection conn) throws SQLException {
         return fetchQuery(
             conn,
-            String.format("SELECT * FROM products WHERE user_id = \"%s\";", user_id)
+            String.format("SELECT * FROM products WHERE user_id = \"%s\" AND id NOT IN " +
+                    "(SELECT product_id FROM licitations)", user_id)
         );
     }
 
     public static ArrayList<Product> queryProducts(Connection conn) throws SQLException {
-        return fetchQuery(conn,"SELECT * FROM products");
+        return fetchQuery(conn,"SELECT * FROM products WHERE id NOT IN " +
+                "(SELECT product_id FROM licitations)");
     }
 
     private static ArrayList<Product> fetchQuery(Connection conn, String q) throws SQLException {
@@ -99,6 +103,23 @@ public class Product implements Serializable {
         return products;
     }
 
+    public static Product queryProduct(int productId, Connection conn) throws SQLException {
+        Statement s = conn.createStatement();
+        ResultSet rs = s.executeQuery("SELECT * FROM products WHERE id = \"+" + productId + "\"AND id NOT IN " +
+                "(SELECT product_id FROM licitations)");
+        if(rs.next()){
+            Product p = new Product(
+                    rs.getInt("user_id"),
+                    rs.getString("name"),
+                    rs.getInt("price")
+            );
+            p.setId(rs.getInt("id"));
+            p.setDescription(rs.getString("description"));
+            p.setImage_path(rs.getString("image_path"));
+            return p;
+        }
+        return null;
+    }
     private void setId(int id){
         this.id = id;
     }
@@ -134,4 +155,5 @@ public class Product implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

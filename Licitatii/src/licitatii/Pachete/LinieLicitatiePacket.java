@@ -5,7 +5,9 @@ import licitatii.Models.Licitation;
 import licitatii.Models.Product;
 import licitatii.Models.User;
 
-public class LinieLicitatiePacket {
+import java.io.Serializable;
+
+public class LinieLicitatiePacket implements Serializable {
 
     private Icon icon;  // icon-ul corespunzator imaginii din product
     // private String titluStr; --- Product
@@ -19,7 +21,7 @@ public class LinieLicitatiePacket {
     private User user; // user-ul care a licitat cel mai mult
     
     public LinieLicitatiePacket(Icon ic, Licitation l, User u, Product p){
-        icon = ic;
+        icon = ic; //scoate icon de aici, este in produs
         licitatie = l;
         user = u;
         produs = p;
@@ -40,7 +42,4 @@ public class LinieLicitatiePacket {
     public User getUser() {
         return user;
     }
-
-    
-    
 }
