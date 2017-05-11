@@ -87,11 +87,11 @@ public class Client {
     }
     
     
-    public boolean adminLogin(String username, String password){
+    public boolean adminLogin(){
         
         try {
          
-            AdminLoginPacket lp = new AdminLoginPacket(username, password);
+            AdminLoginPacket lp = new AdminLoginPacket();
             oos.writeObject(lp);
             oos.flush();
             
