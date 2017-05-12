@@ -213,6 +213,7 @@ public class Client {
         
         updateEcranLicitatii();
         
+        /*
         liniiLicitatieThread = new Thread(new Runnable(){
             
             @Override
@@ -235,6 +236,7 @@ public class Client {
             }
         
         });
+        */
         
         //liniiLicitatieThread.start();
         
@@ -245,11 +247,11 @@ public class Client {
     
     public void opresteEcranLicitatii(){
         System.out.println("EcranLicitatii Oprit");
-        
+        /*
         if(!liniiLicitatieThread.isInterrupted()){
             liniiLicitatieThread.interrupt();    
         }
-        
+        */
     }
     
 
@@ -354,5 +356,18 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        //try {
+            
+            // SumaNouaLicitatiePacket confirmare = (SumaNouaLicitatiePacket)ois.readObject();
+            
+            opresteEcranLicitatii();
+            pornesteEcranLicitatii();
+            /*
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        */
     }
 }
