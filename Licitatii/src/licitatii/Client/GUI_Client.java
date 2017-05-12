@@ -79,10 +79,9 @@ public class GUI_Client extends javax.swing.JFrame{
         loginTF = new javax.swing.JTextField();
         passwordTF = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
-        adminButton = new javax.swing.JButton();
         afterLoginCard = new javax.swing.JPanel();
-        licitatieUserPanel1 = new javax.swing.JPanel();
-        jScrollPane7 = new javax.swing.JScrollPane();
+        licitatieUserPanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         listaLicitatii = new javax.swing.JPanel();
         logoutButton = new javax.swing.JButton();
         userName = new javax.swing.JLabel();
@@ -161,23 +160,12 @@ public class GUI_Client extends javax.swing.JFrame{
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 50, 0);
         jPanel2.add(loginButton, gridBagConstraints);
 
-        adminButton.setText("Admin Login");
-        adminButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout loginCardLayout = new javax.swing.GroupLayout(loginCard);
         loginCard.setLayout(loginCardLayout);
         loginCardLayout.setHorizontalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 815, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginCardLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(adminButton)
-                .addContainerGap())
         );
         loginCardLayout.setVerticalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,9 +174,7 @@ public class GUI_Client extends javax.swing.JFrame{
                 .addComponent(jLabel1)
                 .addGap(49, 49, 49)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-                .addGap(50, 50, 50)
-                .addComponent(adminButton)
-                .addContainerGap())
+                .addGap(87, 87, 87))
         );
 
         container.add(loginCard, "card2");
@@ -197,23 +183,23 @@ public class GUI_Client extends javax.swing.JFrame{
         afterLoginCard.setForeground(new java.awt.Color(204, 204, 255));
 
         listaLicitatii.setLayout(new java.awt.GridBagLayout());
-        jScrollPane7.setViewportView(listaLicitatii);
+        jScrollPane2.setViewportView(listaLicitatii);
 
-        javax.swing.GroupLayout licitatieUserPanel1Layout = new javax.swing.GroupLayout(licitatieUserPanel1);
-        licitatieUserPanel1.setLayout(licitatieUserPanel1Layout);
-        licitatieUserPanel1Layout.setHorizontalGroup(
-            licitatieUserPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(licitatieUserPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout licitatieUserPanelLayout = new javax.swing.GroupLayout(licitatieUserPanel);
+        licitatieUserPanel.setLayout(licitatieUserPanelLayout);
+        licitatieUserPanelLayout.setHorizontalGroup(
+            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(licitatieUserPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 791, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 791, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        licitatieUserPanel1Layout.setVerticalGroup(
-            licitatieUserPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, licitatieUserPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+        licitatieUserPanelLayout.setVerticalGroup(
+            licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, licitatieUserPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         logoutButton.setText("Logout");
@@ -239,7 +225,7 @@ public class GUI_Client extends javax.swing.JFrame{
             .addGroup(afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, afterLoginCardLayout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(licitatieUserPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(licitatieUserPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         afterLoginCardLayout.setVerticalGroup(
@@ -251,10 +237,9 @@ public class GUI_Client extends javax.swing.JFrame{
                     .addComponent(logoutButton))
                 .addContainerGap())
             .addGroup(afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, afterLoginCardLayout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(licitatieUserPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(35, Short.MAX_VALUE)))
+                .addGroup(afterLoginCardLayout.createSequentialGroup()
+                    .addComponent(licitatieUserPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 34, Short.MAX_VALUE)))
         );
 
         container.add(afterLoginCard, "card3");
@@ -306,35 +291,7 @@ public class GUI_Client extends javax.swing.JFrame{
 
     }//GEN-LAST:event_logoutButtonActionPerformed
 
-    private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
-
-        utilizator = loginTF.getText();
-
-        if(!client.conectat()){
-            client.connectToServer();
-        }
-
-        if(client.conectat() && client.adminLogin()){
-
-            cl.show(container, "card3");
-            userName.setText("Logged in as Admin");
-
-            numeCumparatorLabel.setText("Licitati cu numele: ");
-            jTextField1.setVisible(true);
-
-        }
-        //        tabContainer.remove(licitatieUserComponent);
-        //        tabContainer.add("Liciteaza", licitatieGuestComponent);
-    }//GEN-LAST:event_adminButtonActionPerformed
-
-    private void setZile(int k){
-        
-        programareZiBox.removeAllItems();
-        
-        for (int i = 1; i <= k; i++) {
-            programareZiBox.addItem(String.valueOf(i));
-        }
-    }
+    
         
     // http://stackoverflow.com/questions/9417356/bufferedimage-resize
     public static BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 
@@ -389,47 +346,20 @@ public class GUI_Client extends javax.swing.JFrame{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton adminButton;
     private javax.swing.JPanel afterLoginCard;
     private javax.swing.JPanel container;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jListProduseProgramare;
-    private javax.swing.JList<String> jListProduseProgramare1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel licitatieUserPanel;
-    private javax.swing.JPanel licitatieUserPanel1;
     private javax.swing.JPanel listaLicitatii;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginCard;
     private javax.swing.JTextField loginTF;
     private javax.swing.JButton logoutButton;
-    private javax.swing.JLabel numeCumparatorLabel;
     private javax.swing.JPasswordField passwordTF;
-    private javax.swing.JComboBox<String> programareAnBox;
-    private javax.swing.JComboBox<String> programareAnBox1;
-    private javax.swing.JComboBox<String> programareLunaBox;
-    private javax.swing.JComboBox<String> programareLunaBox1;
-    private javax.swing.JComboBox<String> programareOraBox;
-    private javax.swing.JComboBox<String> programareOraBox1;
-    private javax.swing.JComboBox<String> programareZiBox;
-    private javax.swing.JComboBox<String> programareZiBox1;
-    private javax.swing.JButton programeazaButton;
-    private javax.swing.JButton programeazaButton1;
-    private javax.swing.JButton stergeProdusProgramareButton;
-    private javax.swing.JButton stergeProdusProgramareButton1;
     private javax.swing.JLabel userName;
     // End of variables declaration//GEN-END:variables
 }
