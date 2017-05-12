@@ -72,6 +72,8 @@ public class GUI_Admin extends javax.swing.JFrame{
         
         client = new Client(manLiniiLic);
         
+        connectAsAdmin();
+        
 //        manLiniiLic.addLine("asdafsdds", 10);
 //        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
 //        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
@@ -95,6 +97,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         container = new javax.swing.JPanel();
         loginCard = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         adminButton = new javax.swing.JButton();
         afterLoginCard = new javax.swing.JPanel();
         tabContainer = new javax.swing.JTabbedPane();
@@ -143,31 +146,39 @@ public class GUI_Admin extends javax.swing.JFrame{
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Welcome!");
 
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
         adminButton.setText("Admin Login");
         adminButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 adminButtonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 80;
+        gridBagConstraints.ipady = 24;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(21, 321, 24, 304);
+        jPanel2.add(adminButton, gridBagConstraints);
 
         javax.swing.GroupLayout loginCardLayout = new javax.swing.GroupLayout(loginCard);
         loginCard.setLayout(loginCardLayout);
         loginCardLayout.setHorizontalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, loginCardLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(adminButton)
-                .addGap(340, 340, 340))
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         loginCardLayout.setVerticalGroup(
             loginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loginCardLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addComponent(jLabel1)
-                .addGap(119, 119, 119)
-                .addComponent(adminButton)
-                .addContainerGap(242, Short.MAX_VALUE))
+                .addGap(94, 94, 94)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         container.add(loginCard, "card2");
@@ -689,7 +700,15 @@ public class GUI_Admin extends javax.swing.JFrame{
     }//GEN-LAST:event_tabContainerStateChanged
 
     private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
+        
+        connectAsAdmin();
+        
+        //        tabContainer.remove(licitatieUserComponent);
+        //        tabContainer.add("Liciteaza", licitatieGuestComponent);
+    }//GEN-LAST:event_adminButtonActionPerformed
 
+    private void connectAsAdmin(){
+        
         if(!client.conectat()){
             client.connectToServer();
         }
@@ -703,10 +722,9 @@ public class GUI_Admin extends javax.swing.JFrame{
             jTextField1.setVisible(true);
 
         }
-        //        tabContainer.remove(licitatieUserComponent);
-        //        tabContainer.add("Liciteaza", licitatieGuestComponent);
-    }//GEN-LAST:event_adminButtonActionPerformed
-
+    
+    }
+    
     private void setZile(int k){
         
         programareZiBox.removeAllItems();
@@ -808,6 +826,7 @@ public class GUI_Admin extends javax.swing.JFrame{
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList<String> jListProduseProgramare;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
