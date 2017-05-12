@@ -28,33 +28,52 @@ public class LinieLicitatie implements Serializable{
     private JTextField pretClient;
     private JButton bidButton;
     private int pozitie = -1;
-            
+    private String numeLastUser = "(no name yet)";
+    private java.awt.event.ActionListener actionListener;
+    
     public LinieLicitatie(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie){
         
-        this.indexLicitatie = indexLicitatie;
-        
-        imagine = new JLabel();
-        imagine.setPreferredSize(new Dimension(100, 100));
-        
-        BufferedImage bi = new BufferedImage(icon.getIconWidth(),
-                                             icon.getIconHeight(),
-                                             BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = bi.createGraphics();
-        // paint the Icon to the BufferedImage.
-        icon.paintIcon(null, g, 0,0);
-        g.dispose();
-        
-           
-        bi = getScaledImage(bi, 100, 100);
-        imagine.setIcon(new ImageIcon(bi));
-
-        
-        titlu = new JLabel(titluStr);
-        pretMaxim = new JLabel(String.valueOf(pretMaximStr));
-        pretClient = new JTextField(6);
-        bidButton = new JButton("Licitati");
+        setMandatoryFields(titluStr, pretMaximStr, icon, indexLicitatie);
         
     }
+    
+    public void addActions(Client client){
+        
+        pretClient.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                
+                if(!(pretClient.getText().concat(String.valueOf(evt.getKeyChar()))).matches("[0-9]+")){
+                    evt.consume();
+                }
+                
+            }
+        });
+        
+        bidButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                
+                if(pretClient.getText().matches("[0-9]+")){
+                    int sumaNoua = Integer.parseInt(pretClient.getText());
+                    client.anuntaSumaNoua(indexLicitatie, sumaNoua);
+                }
+                
+            }
+        });
+        
+    }
+    
+    public void removeActions(){
+        
+        for(java.awt.event.KeyListener keyList : pretClient.getKeyListeners()){
+            pretClient.removeKeyListener(keyList);
+        }
+        
+        for(java.awt.event.ActionListener actList : bidButton.getActionListeners()){
+            bidButton.removeActionListener(actList);
+        }
+        
+    }
+    
     
     public int getPozitie(){
         return pozitie;
@@ -80,9 +99,13 @@ public class LinieLicitatie implements Serializable{
         
         c.gridx = 3;
         c.gridy = pozitie;
-        listaLicitatii.add(pretClient, c);
+        listaLicitatii.add(new JLabel(numeLastUser), c);
         
         c.gridx = 4;
+        c.gridy = pozitie;
+        listaLicitatii.add(pretClient, c);
+        
+        c.gridx = 5;
         c.gridy = pozitie;
         listaLicitatii.add(bidButton, c);
     }
@@ -121,5 +144,39 @@ public class LinieLicitatie implements Serializable{
 
         return dimg;
     }
+
+    public void setNumeLastUser(String numeLastUser) {
+        this.numeLastUser = numeLastUser;
+    }
+
+    private void setMandatoryFields(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie) {
+        this.indexLicitatie = indexLicitatie;
+        
+        imagine = new JLabel();
+        imagine.setPreferredSize(new Dimension(100, 100));
+        
+        BufferedImage bi = new BufferedImage(icon.getIconWidth(),
+                                             icon.getIconHeight(),
+                                             BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bi.createGraphics();
+        // paint the Icon to the BufferedImage.
+        icon.paintIcon(null, g, 0,0);
+        g.dispose();
+        
+           
+        bi = getScaledImage(bi, 100, 100);
+        imagine.setIcon(new ImageIcon(bi));
+
+        
+        titlu = new JLabel(titluStr);
+        pretMaxim = new JLabel(String.valueOf(pretMaximStr));
+        pretClient = new JTextField(6);
+        bidButton = new JButton("Licitati");
+        
+        
+    }
+    
+    
+    
     
 }

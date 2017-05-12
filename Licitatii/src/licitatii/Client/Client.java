@@ -28,7 +28,10 @@ public class Client {
     private ArrayList<User> useri;
     
     public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
+        
         this.managerLiniiLicitatie = managerLiniiLicitatie;
+        this.managerLiniiLicitatie.setClient(this);
+        
     }
     
     public boolean connectToServer(){
@@ -335,5 +338,21 @@ public class Client {
             e.printStackTrace();
         }
 
+    }
+
+    public void anuntaSumaNoua(int indexLicitatie, int sumaNoua) {
+        System.out.println(sumaNoua);
+        
+        SumaNouaLicitatiePacket sumaNouaPack = new SumaNouaLicitatiePacket(indexLicitatie, sumaNoua);
+        
+        try {
+            
+            oos.writeObject(sumaNouaPack);
+            oos.flush();
+        
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 }
