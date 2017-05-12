@@ -341,7 +341,7 @@ public class Client {
     }
 
     public void anuntaSumaNoua(int indexLicitatie, int sumaNoua) {
-        System.out.println(sumaNoua);
+        System.out.println(indexLicitatie + " " + sumaNoua);
         
         SumaNouaLicitatiePacket sumaNouaPack = new SumaNouaLicitatiePacket(indexLicitatie, sumaNoua);
         

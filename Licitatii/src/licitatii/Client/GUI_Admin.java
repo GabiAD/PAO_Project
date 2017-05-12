@@ -146,6 +146,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Welcome!");
 
+        jPanel2.setBackground(new java.awt.Color(204, 204, 255));
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
         adminButton.setText("Admin Login");
