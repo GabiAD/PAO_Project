@@ -1,7 +1,8 @@
 package licitatii.Pachete;
 
-/**
- * Created by alex on 5/11/17.
- */
-public class LogoutPacket {
+import java.io.Serializable;
+
+public class LogoutPacket implements Serializable{
+
+
 }

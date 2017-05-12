@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import licitatii.Models.Product;
-import licitatii.ManagerLiniiLicitatie;
 
 public class GUI_Incercare extends javax.swing.JFrame {
     

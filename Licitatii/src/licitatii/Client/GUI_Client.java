@@ -5,29 +5,18 @@
  */
 package licitatii.Client;
 
-import licitatii.ManagerLiniiLicitatie;
-import licitatii.Pachete.ProdusPacket;
-
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import licitatii.Client.Client;
+
 import licitatii.Models.Product;
 
 /**
@@ -94,7 +83,7 @@ public class GUI_Client extends javax.swing.JFrame{
         afterLoginCard = new javax.swing.JPanel();
         licitatieUserPanel1 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        listaLicitatii1 = new javax.swing.JPanel();
+        listaLicitatii = new javax.swing.JPanel();
         logoutButton = new javax.swing.JButton();
         userName = new javax.swing.JLabel();
 
@@ -207,8 +196,8 @@ public class GUI_Client extends javax.swing.JFrame{
         afterLoginCard.setBackground(new java.awt.Color(51, 51, 51));
         afterLoginCard.setForeground(new java.awt.Color(204, 204, 255));
 
-        listaLicitatii1.setLayout(new java.awt.GridBagLayout());
-        jScrollPane7.setViewportView(listaLicitatii1);
+        listaLicitatii.setLayout(new java.awt.GridBagLayout());
+        jScrollPane7.setViewportView(listaLicitatii);
 
         javax.swing.GroupLayout licitatieUserPanel1Layout = new javax.swing.GroupLayout(licitatieUserPanel1);
         licitatieUserPanel1.setLayout(licitatieUserPanel1Layout);
@@ -310,7 +299,11 @@ public class GUI_Client extends javax.swing.JFrame{
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+
+        client.logout();
+
         cl.show(container, "card2");
+
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
@@ -419,7 +412,6 @@ public class GUI_Client extends javax.swing.JFrame{
     private javax.swing.JPanel licitatieUserPanel;
     private javax.swing.JPanel licitatieUserPanel1;
     private javax.swing.JPanel listaLicitatii;
-    private javax.swing.JPanel listaLicitatii1;
     private javax.swing.JButton loginButton;
     private javax.swing.JPanel loginCard;
     private javax.swing.JTextField loginTF;

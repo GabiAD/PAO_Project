@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
-import licitatii.ManagerLiniiLicitatie;
 import licitatii.Models.Licitation;
 import licitatii.Models.Product;
 import licitatii.Models.User;
@@ -169,7 +168,9 @@ public class Client {
     public void updateEcranLicitatii(){
         
         synchronized(this){
-            
+
+            managerLiniiLicitatie.removeAll();
+
             GetLicitationsPacket pachetLicitatii = new GetLicitationsPacket();
 
             try {
@@ -193,8 +194,6 @@ public class Client {
                             llp.getLicitatie().getProductId());
 
                     managerLiniiLicitatie.addLine(ll);
-
-
                 }
                 
             } catch (IOException ex) {
@@ -291,23 +290,21 @@ public class Client {
         return produse.getProducts();
     }
 
-    public void sendNewLicitation(ArrayList<Product> produse, Date data) {
-        
-        for (int i = 0; i < produse.size(); i++) {
+    public void sendNewLicitation(Product produs, Date data) {
+
+        AddLicitationPacket licitPack = new AddLicitationPacket(new Licitation(produs.getId(), data));
             
-            AddLicitationPacket licitPack = new AddLicitationPacket(new Licitation(produse.get(i).getId(), data));
-            
-            try {
-            
-                oos.writeObject(licitPack);
-                oos.flush();
-                
-            } catch (IOException ex) {
-                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
+        try {
+
+            oos.writeObject(licitPack);
+            oos.flush();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+
+
         
     }
     
@@ -325,6 +322,18 @@ public class Client {
         }
         
     }
-    
-    
+
+
+    public void logout() {
+
+        try {
+
+            oos.writeObject(new LogoutPacket());
+            oos.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

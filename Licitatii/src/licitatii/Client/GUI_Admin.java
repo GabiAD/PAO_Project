@@ -5,8 +5,6 @@
  */
 package licitatii.Client;
 
-import licitatii.ManagerLiniiLicitatie;
-import licitatii.Pachete.ProdusPacket;
 
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -516,6 +514,9 @@ public class GUI_Admin extends javax.swing.JFrame{
     }//GEN-LAST:event_adminButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
+
+        client.logout();
+
         cl.show(container, "card2");
     }//GEN-LAST:event_logoutButtonActionPerformed
 
@@ -600,13 +601,14 @@ public class GUI_Admin extends javax.swing.JFrame{
     private void programeazaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_programeazaButtonActionPerformed
 
         int ora = Integer.parseInt(programareOraBox.getSelectedItem().toString().substring(0, programareOraBox.getSelectedItem().toString().indexOf(":")));
-        
+        int indexRem = jListProduseProgramare.getSelectedIndex();
+
         Date data = new GregorianCalendar(Integer.parseInt(programareAnBox.getSelectedItem().toString()),
                                         programareLunaBox.getSelectedIndex() + 1,
                                         Integer.parseInt(programareZiBox.getSelectedItem().toString()), 
                                         ora, 0 ).getTime();
         
-        client.sendNewLicitation(listaProduse, data);
+        client.sendNewLicitation(listaProduse.get(indexRem), data);
         
         
         /*
@@ -621,15 +623,10 @@ public class GUI_Admin extends javax.swing.JFrame{
         client.trimiteProduse(listaProduse);
         
         */
-        
-        // TO DO: Thread special pentru asa ceva; asta e doar pentru test
-//        LinieLicitatie ll = client.primesteLinieLicitatie();
-//        manLiniiLic.addLine(ll);
-        
-        
-        
-        listaProduseModel.removeAllElements();
-        listaProduse.clear();
+
+        listaProduse.remove(indexRem);
+        listaProduseModel.removeElementAt(indexRem);
+
         stergeProdusProgramareButton.setEnabled(false);
         programeazaButton.setEnabled(false);
     }//GEN-LAST:event_programeazaButtonActionPerformed

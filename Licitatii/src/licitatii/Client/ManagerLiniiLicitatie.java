@@ -1,4 +1,4 @@
-package licitatii;
+package licitatii.Client;
 
 import licitatii.Client.LinieLicitatie;
 
@@ -37,6 +37,13 @@ public class ManagerLiniiLicitatie {
         }
         
     }
-    
-    
+
+
+    public void removeAll() {
+
+        for(LinieLicitatie linie: listaLinii)
+            linie.removeFromPanel(listaLicitatii);
+        listaLinii = new ArrayList<LinieLicitatie>();
+
+    }
 }

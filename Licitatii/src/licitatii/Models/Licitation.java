@@ -124,12 +124,13 @@ public class Licitation implements Serializable{
     }
 
     public static Licitation GetLicitation(int product_id, Connection conn) {
-        Statement s = null;
+        PreparedStatement ps = null;
         ResultSet rs = null;
         Licitation l = null;
         try {
-            s = conn.createStatement();
-            rs = s.executeQuery("SELECT * FROM products WHERE product_id = \""+product_id+"\";");
+            ps = conn.prepareStatement("SELECT * FROM products WHERE product_id = ?");
+            ps.setInt(1, product_id);
+            rs = ps.executeQuery();
             if (rs.first()) {
                 l = new Licitation(
                         rs.getInt("product_id"),
@@ -146,7 +147,7 @@ public class Licitation implements Serializable{
             e.printStackTrace();
         } finally{
             try {
-                s.close();
+                ps.close();
             } catch (SQLException e) {
                 System.out.println("Failed to close statment");
                 e.printStackTrace();
@@ -156,12 +157,16 @@ public class Licitation implements Serializable{
     }
 
     public static ArrayList<Licitation> getLicitations(Connection conn){
-        Statement s = null;
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date current_time = new Date();
+        PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<Licitation> licitations = null;
         try {
-            s = conn.createStatement();
-            rs = s.executeQuery("SELECT * FROM licitations;");
+            ps = conn.prepareStatement("SELECT * FROM licitations WHERE start_time < ?;");
+            ps.setString(1, sdf.format(current_time));
+
+            rs = ps.executeQuery();
             licitations = new ArrayList<Licitation>();
             while (rs.next()){
                 licitations.add(new Licitation(
@@ -177,7 +182,7 @@ public class Licitation implements Serializable{
             e.printStackTrace();
         } finally {
             try {
-                s.close();
+                ps.close();
             } catch (SQLException e) {
                 System.out.println("Failed to close statment");
                 e.printStackTrace();
