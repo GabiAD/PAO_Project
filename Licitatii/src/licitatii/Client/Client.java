@@ -356,18 +356,18 @@ public class Client {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        //try {
+        try {
             
-            // SumaNouaLicitatiePacket confirmare = (SumaNouaLicitatiePacket)ois.readObject();
+            ConfirmLicitatiiPacket confirmare = (ConfirmLicitatiiPacket)ois.readObject();
             
             opresteEcranLicitatii();
             pornesteEcranLicitatii();
-            /*
+            
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+        
     }
 }

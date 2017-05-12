@@ -11,6 +11,6 @@ import java.io.Serializable;
  *
  * @author gabiad
  */
-public class ConfirmLicitatii implements Serializable{
+public class ConfirmLicitatiiPacket implements Serializable{
     
 }
