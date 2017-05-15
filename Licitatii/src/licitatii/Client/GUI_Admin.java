@@ -105,7 +105,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         jScrollPane2 = new javax.swing.JScrollPane();
         listaLicitatii = new javax.swing.JPanel();
         numeCumparatorLabel = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        numeClientTF = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         adaugaButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -209,7 +209,7 @@ public class GUI_Admin extends javax.swing.JFrame{
                     .addGroup(licitatieUserPanelLayout.createSequentialGroup()
                         .addComponent(numeCumparatorLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(numeClientTF, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 512, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -219,7 +219,7 @@ public class GUI_Admin extends javax.swing.JFrame{
                 .addContainerGap()
                 .addGroup(licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(numeCumparatorLabel)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numeClientTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                 .addContainerGap())
@@ -713,13 +713,13 @@ public class GUI_Admin extends javax.swing.JFrame{
             client.connectToServer();
         }
 
-        if(client.conectat() && client.adminLogin()){
+        if(client.conectat() && client.adminLogin(numeClientTF)){
 
             cl.show(container, "card3");
             userName.setText("Logged in as Admin");
 
             numeCumparatorLabel.setText("Licitati cu numele: ");
-            jTextField1.setVisible(true);
+            numeClientTF.setVisible(true);
 
         }
     
@@ -831,11 +831,11 @@ public class GUI_Admin extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel licitatieUserPanel;
     private javax.swing.JPanel listaLicitatii;
     private javax.swing.JPanel loginCard;
     private javax.swing.JButton logoutButton;
+    private javax.swing.JTextField numeClientTF;
     private javax.swing.JLabel numeCumparatorLabel;
     private javax.swing.JTextField numeVanzatorTF;
     private javax.swing.JTextField pretTF;

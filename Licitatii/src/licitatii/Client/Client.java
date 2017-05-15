@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import licitatii.Models.Licitation;
 import licitatii.Models.Product;
@@ -26,6 +27,7 @@ public class Client {
     private ManagerLiniiLicitatie managerLiniiLicitatie;
     private User user = null;
     private ArrayList<User> useri;
+    private JTextField numeClientParticipantAbsentTF;
     
     public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
         
@@ -89,7 +91,9 @@ public class Client {
     }
     
     
-    public boolean adminLogin(){
+    public boolean adminLogin(JTextField numeClientParticipantAbsent){
+        
+        this.numeClientParticipantAbsentTF = numeClientParticipantAbsentTF;
         
         try {
             
@@ -157,7 +161,13 @@ public class Client {
     }
     
     public void trimiteSumaNouaLicitatiePacket(int index, int suma){
-        SumaNouaLicitatiePacket snlp = new SumaNouaLicitatiePacket(index, user.getName(), suma);
+        
+        SumaNouaLicitatiePacket snlp = null;
+                
+        if(user != null)
+            snlp = new SumaNouaLicitatiePacket(index, user.getName(), suma);
+        else
+            snlp = new SumaNouaLicitatiePacket(index, numeClientParticipantAbsentTF.getText(), suma);
         
         try {
             oos.writeObject(snlp);
@@ -345,7 +355,12 @@ public class Client {
     public void anuntaSumaNoua(int indexLicitatie, int sumaNoua) {
         System.out.println(indexLicitatie + " " + sumaNoua);
         
-        SumaNouaLicitatiePacket sumaNouaPack = new SumaNouaLicitatiePacket(indexLicitatie, user.getName(), sumaNoua);
+        SumaNouaLicitatiePacket sumaNouaPack = null;
+        
+        if(user != null)
+            sumaNouaPack = new SumaNouaLicitatiePacket(indexLicitatie, user.getName(), sumaNoua);
+        else
+            sumaNouaPack = new SumaNouaLicitatiePacket(indexLicitatie, numeClientParticipantAbsentTF.getText(), sumaNoua);
         
         try {
             

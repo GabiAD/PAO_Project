@@ -187,7 +187,7 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="numeCumparatorLabel" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jTextField1" min="-2" pref="144" max="-2" attributes="0"/>
+                                      <Component id="numeClientTF" min="-2" pref="144" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="512" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -201,7 +201,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="numeCumparatorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="numeClientTF" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jScrollPane2" pref="341" max="32767" attributes="0"/>
@@ -226,7 +226,7 @@
                         <Property name="text" type="java.lang.String" value="Licitati cu numele:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField1">
+                    <Component class="javax.swing.JTextField" name="numeClientTF">
                     </Component>
                   </SubComponents>
                 </Container>
