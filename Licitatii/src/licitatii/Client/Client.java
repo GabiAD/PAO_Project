@@ -373,7 +373,7 @@ public class Client {
         
         try {
             
-            ConfirmLicitatiiPacket confirmare = (ConfirmLicitatiiPacket)ois.readObject();
+            ConfirmLicitatiePacket confirmare = (ConfirmLicitatiePacket)ois.readObject();
             
             opresteEcranLicitatii();
             pornesteEcranLicitatii();
