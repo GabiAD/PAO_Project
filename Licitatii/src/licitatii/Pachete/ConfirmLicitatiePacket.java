@@ -7,10 +7,6 @@ package licitatii.Pachete;
 
 import java.io.Serializable;
 
-/**
- *
- * @author gabiad
- */
-public class ConfirmLicitatiiPacket implements Serializable{
+public class ConfirmLicitatiePacket implements Serializable{
     
 }

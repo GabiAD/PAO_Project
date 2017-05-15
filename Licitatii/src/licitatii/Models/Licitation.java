@@ -94,12 +94,13 @@ public class Licitation implements Serializable{
         return 0;
     }
 
-    public void UpdateLicitatie(int new_price, String user_name, Connection conn) {
+    public boolean UpdateLicitatie(int new_price, String user_name, Connection conn) {
         if (new_price <= GetLictationPrice(conn))
-            return;
+            return false;
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date current_time = new Date();
         PreparedStatement ps = null;
+        boolean succeed = false;
         try {
             ps = conn.prepareStatement(
                     "UPDATE products " +
@@ -110,6 +111,7 @@ public class Licitation implements Serializable{
             ps.setString(3, user_name);
             ps.setInt(4, this.product_id);
             ps.executeUpdate();
+            succeed = true;
         } catch (SQLException e) {
             System.out.println("Failed to update lictation");
             e.printStackTrace();
@@ -121,6 +123,7 @@ public class Licitation implements Serializable{
                 e.printStackTrace();
             }
         }
+        return succeed;
     }
 
     public static Licitation GetLicitation(int product_id, Connection conn) {
@@ -128,14 +131,14 @@ public class Licitation implements Serializable{
         ResultSet rs = null;
         Licitation l = null;
         try {
-            ps = conn.prepareStatement("SELECT * FROM products WHERE product_id = ?");
+            ps = conn.prepareStatement("SELECT * FROM licitations WHERE product_id = ?");
             ps.setInt(1, product_id);
             rs = ps.executeQuery();
             if (rs.first()) {
                 l = new Licitation(
                         rs.getInt("product_id"),
                         rs.getString("start_time"),
-                        rs.getString("last_liciation_time"),
+                        rs.getString("last_licitation_time"),
                         rs.getInt("last_licitation_price"),
                         rs.getString("winner_name")
                 );

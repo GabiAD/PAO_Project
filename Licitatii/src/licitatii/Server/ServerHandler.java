@@ -165,6 +165,12 @@ public class ServerHandler extends Thread {
             DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;
             deleteProductMessage.getP().removeProduct(con);
             return null;
+        } else if(message instanceof SumaNouaLicitatiePacket){
+            SumaNouaLicitatiePacket snlMessage = (SumaNouaLicitatiePacket) message;
+            Licitation l = Licitation.GetLicitation(snlMessage.getIndexLicitatie(), con);
+            if (l.UpdateLicitatie(snlMessage.getSumaNoua(), snlMessage.getName(), con) == false)
+                return new DenyLicitatiePacket("Failed to update licitation sum");
+            return new ConfirmLicitatiePacket();
         } else {
             return null;
         }
@@ -187,6 +193,12 @@ public class ServerHandler extends Thread {
             AddLicitationPacket addLicitationMessage = (AddLicitationPacket) message;
             addLicitationMessage.getL().AddLiciatie(con);
             return null;
+        } else if(message instanceof SumaNouaLicitatiePacket){
+            SumaNouaLicitatiePacket snlMessage = (SumaNouaLicitatiePacket) message;
+            Licitation l = Licitation.GetLicitation(snlMessage.getIndexLicitatie(), con);
+            if (l.UpdateLicitatie(snlMessage.getSumaNoua(), snlMessage.getName(), con) == false)
+                return new DenyLicitatiePacket("Failed to update licitation sum");
+            return new ConfirmLicitatiePacket();
 
 //        } else if(message instanceof GetProductsPacket){
 //            GetProductsPacket getProductsMessage = (GetProductsPacket) message;

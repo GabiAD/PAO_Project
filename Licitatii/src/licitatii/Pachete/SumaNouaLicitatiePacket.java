@@ -1,19 +1,17 @@
 package licitatii.Pachete;
 
 import java.io.Serializable;
-import licitatii.Models.User;
-
 
 public class SumaNouaLicitatiePacket implements Serializable{
 
     private int indexLicitatie = -1;
     private int sumaNoua = -1;
-    private String nume;
+    private String name;
     
     public SumaNouaLicitatiePacket(int i, String n, int s) {
         indexLicitatie = i;
         sumaNoua = s;
-        nume = n;
+        name = n;
     }
 
     public int getIndexLicitatie() {
@@ -23,9 +21,9 @@ public class SumaNouaLicitatiePacket implements Serializable{
     public int getSumaNoua() {
         return sumaNoua;
     }
-    
-    
 
-    
-    
+
+    public String getName() {
+        return name;
+    }
 }
