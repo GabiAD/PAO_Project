@@ -157,7 +157,7 @@ public class Client {
     }
     
     public void trimiteSumaNouaLicitatiePacket(int index, int suma){
-        SumaNouaLicitatiePacket snlp = new SumaNouaLicitatiePacket(index, suma);
+        SumaNouaLicitatiePacket snlp = new SumaNouaLicitatiePacket(index, user.getName(), suma);
         
         try {
             oos.writeObject(snlp);
@@ -345,7 +345,7 @@ public class Client {
     public void anuntaSumaNoua(int indexLicitatie, int sumaNoua) {
         System.out.println(indexLicitatie + " " + sumaNoua);
         
-        SumaNouaLicitatiePacket sumaNouaPack = new SumaNouaLicitatiePacket(indexLicitatie, sumaNoua);
+        SumaNouaLicitatiePacket sumaNouaPack = new SumaNouaLicitatiePacket(indexLicitatie, user.getName(), sumaNoua);
         
         try {
             
