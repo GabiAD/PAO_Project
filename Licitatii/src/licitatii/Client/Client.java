@@ -181,6 +181,8 @@ public class Client {
     
     public void updateEcranLicitatii(){
         
+        System.out.println("Ecran: updateing...");
+        
         synchronized(this){
 
             managerLiniiLicitatie.removeAll();
@@ -354,7 +356,7 @@ public class Client {
     }
 
     public void anuntaSumaNoua(int indexLicitatie, int sumaNoua) {
-        System.out.println(indexLicitatie + " " + sumaNoua + " " + numeClientParticipantAbsentTF.getText());
+        //System.out.println(indexLicitatie + " " + sumaNoua + " " + numeClientParticipantAbsentTF.getText());
         
         SumaNouaLicitatiePacket sumaNouaPack = null;
         
@@ -379,14 +381,16 @@ public class Client {
             
             if(pachetPrimit instanceof ConfirmLicitatiePacket){
                 ConfirmLicitatiePacket confirmare = (ConfirmLicitatiePacket)pachetPrimit;
+                System.out.println("Confirmat");
+                
+                updateEcranLicitatii();
                 
             }
             else if(pachetPrimit instanceof DenyLicitatiePacket){
                 JOptionPane.showMessageDialog(null, ((DenyLicitatiePacket)pachetPrimit).getMessage());
+                
             }
             
-            opresteEcranLicitatii();
-            pornesteEcranLicitatii();
             
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
