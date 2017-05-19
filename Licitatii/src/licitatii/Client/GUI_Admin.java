@@ -198,6 +198,12 @@ public class GUI_Admin extends javax.swing.JFrame{
 
         numeCumparatorLabel.setText("Licitati cu numele:");
 
+        numeClientTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numeClientTFActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout licitatieUserPanelLayout = new javax.swing.GroupLayout(licitatieUserPanel);
         licitatieUserPanel.setLayout(licitatieUserPanelLayout);
         licitatieUserPanelLayout.setHorizontalGroup(
@@ -707,12 +713,16 @@ public class GUI_Admin extends javax.swing.JFrame{
         //        tabContainer.add("Liciteaza", licitatieGuestComponent);
     }//GEN-LAST:event_adminButtonActionPerformed
 
+    private void numeClientTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeClientTFActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numeClientTFActionPerformed
+
     private void connectAsAdmin(){
         
         if(!client.conectat()){
             client.connectToServer();
         }
-
+        System.out.println("++++++ " + (numeClientTF == null));
         if(client.conectat() && client.adminLogin(numeClientTF)){
 
             cl.show(container, "card3");

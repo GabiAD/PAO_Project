@@ -54,6 +54,7 @@ public class LinieLicitatie implements Serializable{
                 
                 if(pretClient.getText().matches("[0-9]+")){
                     int sumaNoua = Integer.parseInt(pretClient.getText());
+                    //System.out.println(sumaNoua);
                     client.anuntaSumaNoua(indexLicitatie, sumaNoua);
                 }
                 

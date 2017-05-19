@@ -27,7 +27,7 @@ public class Client {
     private ManagerLiniiLicitatie managerLiniiLicitatie;
     private User user = null;
     private ArrayList<User> useri;
-    private JTextField numeClientParticipantAbsentTF;
+    private JTextField numeClientParticipantAbsentTF = null;
     
     public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
         
@@ -93,7 +93,8 @@ public class Client {
     
     public boolean adminLogin(JTextField numeClientParticipantAbsent){
         
-        this.numeClientParticipantAbsentTF = numeClientParticipantAbsentTF;
+        this.numeClientParticipantAbsentTF = numeClientParticipantAbsent;
+        System.out.println(":o    " + (numeClientParticipantAbsentTF == null));
         
         try {
             
@@ -353,7 +354,7 @@ public class Client {
     }
 
     public void anuntaSumaNoua(int indexLicitatie, int sumaNoua) {
-        System.out.println(indexLicitatie + " " + sumaNoua);
+        System.out.println(indexLicitatie + " " + sumaNoua + " " + numeClientParticipantAbsentTF.getText());
         
         SumaNouaLicitatiePacket sumaNouaPack = null;
         
@@ -373,7 +374,16 @@ public class Client {
         
         try {
             
-            ConfirmLicitatiePacket confirmare = (ConfirmLicitatiePacket)ois.readObject();
+            Object pachetPrimit = ois.readObject();
+            
+            
+            if(pachetPrimit instanceof ConfirmLicitatiePacket){
+                ConfirmLicitatiePacket confirmare = (ConfirmLicitatiePacket)pachetPrimit;
+                
+            }
+            else if(pachetPrimit instanceof DenyLicitatiePacket){
+                JOptionPane.showMessageDialog(null, ((DenyLicitatiePacket)pachetPrimit).getMessage());
+            }
             
             opresteEcranLicitatii();
             pornesteEcranLicitatii();
