@@ -190,6 +190,9 @@ public class Client {
 
             managerLiniiLicitatie.removeAll();
 
+            listaLicitatii.revalidate();
+            listaLicitatii.repaint();
+            
             GetLicitationsPacket pachetLicitatii = new GetLicitationsPacket();
 
             try {
@@ -211,7 +214,7 @@ public class Client {
                             llp.getLicitatie().getLast_licitation_price(), llp.getProdus().getIcon(),
                             llp.getLicitatie().getProductId());
 
-                    ll.setNumeLastUser(llp.getProdus().getOwner_name()); // ¯\\_(ツ)_/¯
+                    ll.setNumeLastUser(llp.getLicitatie().getWinner_name()); // ¯\\_(ツ)_/¯
                     
                     managerLiniiLicitatie.addLine(ll);
                 }

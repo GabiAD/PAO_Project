@@ -16,6 +16,10 @@ public class Licitation implements Serializable{
     private int last_licitation_price;
     private String winner_name;
 
+    public String getWinner_name() {
+        return winner_name;
+    }
+
     public Licitation(int product_id, Date start_time){
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.start_time = sdf.format(start_time);
