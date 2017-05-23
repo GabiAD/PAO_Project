@@ -217,21 +217,4 @@ public class ServerHandler extends Thread {
             return null;
         }
     }
-
-
-    private void writeResultSet(ResultSet resultSet) throws SQLException {
-        // ResultSet is initially before the first data set
-        while (resultSet.next()) {
-            // It is possible to get the columns via name
-            // also possible to get the columns via the column number
-            // which starts at 1
-            // e.g. resultSet.getSTring(2);
-            String user = resultSet.getString("username");
-            String website = resultSet.getString("password");
-            String summary = resultSet.getString("name");
-            System.out.println("User: " + user);
-            System.out.println("Website: " + website);
-            System.out.println("summary: " + summary);
-        }
-    }
 }

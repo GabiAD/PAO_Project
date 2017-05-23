@@ -141,7 +141,6 @@ public class Product implements Serializable {
         BufferedImage bi = null;
         try
         {
-            System.out.println(path);
             bi = ImageIO.read(new File(path));
             return new ImageIcon(bi);
         }

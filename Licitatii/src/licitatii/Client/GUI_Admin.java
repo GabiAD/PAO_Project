@@ -70,7 +70,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         
         manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
         
-        client = new Client(manLiniiLic);
+        client = new Client(manLiniiLic, listaLicitatii);
         
         connectAsAdmin();
         

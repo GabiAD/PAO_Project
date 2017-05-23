@@ -95,7 +95,8 @@ public class Licitation implements Serializable{
     }
 
     public boolean UpdateLicitatie(int new_price, String user_name, Connection conn) {
-        if (new_price <= GetLictationPrice(conn))
+        int current_price = this.last_licitation_price;
+        if (new_price <= current_price)
             return false;
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date current_time = new Date();
@@ -103,7 +104,7 @@ public class Licitation implements Serializable{
         boolean succeed = false;
         try {
             ps = conn.prepareStatement(
-                    "UPDATE products " +
+                    "UPDATE licitations " +
                             "SET last_licitation_price = ?, last_licitation_time = ?, winner_name = ? " +
                             "WHERE product_id = ?;");
             ps.setInt(1, new_price);

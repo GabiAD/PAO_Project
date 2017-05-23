@@ -21,7 +21,7 @@ public class ManagerLiniiLicitatie {
     }
     
     
-    public void addLine(LinieLicitatie linieLicitatie){
+    public void addLine(LinieLicitatie linieLicitatie){       
         listaLinii.add(linieLicitatie);
         listaLinii.get(listaLinii.size()-1).addActions(client);
         listaLinii.get(listaLinii.size()-1).addToPanel(listaLicitatii, c, listaLinii.size()-1);

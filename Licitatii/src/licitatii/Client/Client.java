@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import licitatii.Models.Licitation;
@@ -28,11 +29,13 @@ public class Client {
     private User user = null;
     private ArrayList<User> useri;
     private JTextField numeClientParticipantAbsentTF = null;
+    private JPanel listaLicitatii;
     
-    public Client(ManagerLiniiLicitatie managerLiniiLicitatie){
+    public Client(ManagerLiniiLicitatie managerLiniiLicitatie, JPanel listaLicitatii){
         
         this.managerLiniiLicitatie = managerLiniiLicitatie;
         this.managerLiniiLicitatie.setClient(this);
+        this.listaLicitatii = listaLicitatii;
         
     }
     
@@ -183,7 +186,7 @@ public class Client {
         
         System.out.println("Ecran: updateing...");
         
-        synchronized(this){
+        //synchronized(this){
 
             managerLiniiLicitatie.removeAll();
 
@@ -198,7 +201,6 @@ public class Client {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-
             try {
 
                 pachetLicitatii = (GetLicitationsPacket)ois.readObject();
@@ -212,12 +214,18 @@ public class Client {
                     managerLiniiLicitatie.addLine(ll);
                 }
                 
+                
             } catch (IOException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }        
+            
+            
+            listaLicitatii.revalidate();
+            listaLicitatii.repaint();
+            
+        //}        
         
     }
     
@@ -383,8 +391,6 @@ public class Client {
                 ConfirmLicitatiePacket confirmare = (ConfirmLicitatiePacket)pachetPrimit;
                 System.out.println("Confirmat");
                 
-                updateEcranLicitatii();
-                
             }
             else if(pachetPrimit instanceof DenyLicitatiePacket){
                 JOptionPane.showMessageDialog(null, ((DenyLicitatiePacket)pachetPrimit).getMessage());
@@ -397,6 +403,8 @@ public class Client {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        updateEcranLicitatii();
         
     }
 }

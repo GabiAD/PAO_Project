@@ -48,7 +48,7 @@ public class GUI_Client extends javax.swing.JFrame{
         
         manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
         
-        client = new Client(manLiniiLic);
+        client = new Client(manLiniiLic, listaLicitatii);
         
 //        manLiniiLic.addLine("asdafsdds", 10);
 //        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
