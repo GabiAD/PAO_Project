@@ -44,12 +44,20 @@ public class ManagerLiniiLicitatie {
 
     public void removeAll() {
 
+//        while(listaLinii.size() > 0){
+//            removeAt(0);
+//            
+//        }
+        
         for(LinieLicitatie linie: listaLinii){
             //linie.removeAction();
             linie.removeFromPanel(listaLicitatii);
         }
-        listaLinii = new ArrayList<LinieLicitatie>();
+        listaLinii.clear(); // = new ArrayList<LinieLicitatie>();
 
+        listaLicitatii.revalidate();
+        listaLicitatii.repaint();
+        
     }
     
     public void setClient(Client client){

@@ -190,8 +190,6 @@ public class Client {
 
             managerLiniiLicitatie.removeAll();
 
-            listaLicitatii.revalidate();
-            listaLicitatii.repaint();
             
             GetLicitationsPacket pachetLicitatii = new GetLicitationsPacket();
 

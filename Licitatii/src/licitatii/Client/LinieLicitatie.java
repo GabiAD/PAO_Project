@@ -30,6 +30,7 @@ public class LinieLicitatie implements Serializable{
     private int pozitie = -1;
     private String numeLastUser = "(no name yet)";
     private java.awt.event.ActionListener actionListener;
+    private JLabel numeLastUserLabel = new JLabel();
     
     public LinieLicitatie(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie){
         
@@ -100,7 +101,7 @@ public class LinieLicitatie implements Serializable{
         
         c.gridx = 3;
         c.gridy = pozitie;
-        listaLicitatii.add(new JLabel(numeLastUser), c);
+        listaLicitatii.add(numeLastUserLabel, c);
         
         c.gridx = 4;
         c.gridy = pozitie;
@@ -123,6 +124,7 @@ public class LinieLicitatie implements Serializable{
         listaLicitatii.remove(pretMaxim);
         listaLicitatii.remove(pretClient);
         listaLicitatii.remove(bidButton);
+        listaLicitatii.remove(numeLastUserLabel);
     }
     
     public void setIndexLicitatie(int val){
@@ -148,6 +150,7 @@ public class LinieLicitatie implements Serializable{
 
     public void setNumeLastUser(String numeLastUser) {
         this.numeLastUser = numeLastUser;
+        numeLastUserLabel.setText(numeLastUser);
     }
 
     private void setMandatoryFields(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie) {
