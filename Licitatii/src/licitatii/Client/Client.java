@@ -211,6 +211,8 @@ public class Client {
                             llp.getLicitatie().getLast_licitation_price(), llp.getProdus().getIcon(),
                             llp.getLicitatie().getProductId());
 
+                    ll.setNumeLastUser(llp.getProdus().getOwner_name()); // ¯\\_(ツ)_/¯
+                    
                     managerLiniiLicitatie.addLine(ll);
                 }
                 
