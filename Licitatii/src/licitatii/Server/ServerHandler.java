@@ -25,7 +25,6 @@ public class ServerHandler extends Thread {
     private static final String password = "root";
 
     private Connection con;
-    private String name;
     private Socket socket;
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -36,7 +35,6 @@ public class ServerHandler extends Thread {
         this.socket = socket;
         // Establish connection with mysql
         this.con = DriverManager.getConnection(url, user, password);
-        
     }
 
     public void run(){
@@ -71,20 +69,15 @@ public class ServerHandler extends Thread {
             }
         } catch (IOException e) {
             System.out.println("Unexpected error on client input/output streams");
-            e.printStackTrace();
         } catch (ClassNotFoundException e){
             System.out.println("There was a problem decoding message from client");
-            e.printStackTrace();
         } catch (SQLException e) {
             System.out.println("Mysql exception");
-            e.printStackTrace();
         } finally {
             try {
                 con.close();
             } catch (SQLException e) {
                 System.out.println("Failed to close mysql connection");
-                e.printStackTrace();
-
             }
 
             try {
@@ -117,7 +110,6 @@ public class ServerHandler extends Thread {
                 return user;
             } else {
                 LoginFailedPacket failMessage = new LoginFailedPacket("Invalid Credentials");
-                // return object
                 return failMessage;
             }
         }
@@ -125,14 +117,10 @@ public class ServerHandler extends Thread {
             AdminLoginPacket loginMessage = (AdminLoginPacket) message;
             this.admin = true;
             this.loggedId = true;
-            ArrayList<User> users = User.queryUsers(con);
 
-            loginMessage.setUsers(users);
-            // return object
             return loginMessage;
         }
         LoginFailedPacket failMessage = new LoginFailedPacket("Invalid Message from Client");
-        // return object
         return failMessage;
     }
 
@@ -199,20 +187,6 @@ public class ServerHandler extends Thread {
             if (l.UpdateLicitatie(snlMessage.getSumaNoua(), snlMessage.getName(), con) == false)
                 return new DenyLicitatiePacket("Failed to update licitation sum");
             return new ConfirmLicitatiePacket();
-
-//        } else if(message instanceof GetProductsPacket){
-//            GetProductsPacket getProductsMessage = (GetProductsPacket) message;
-//            getProductsMessage.setProducts(Product.queryProducts(con));
-//            return getProductsMessage;
-//        } else if(message instanceof Product) {
-//            Product productMessage = (Product) message;
-//            productMessage.addProduct(con);
-//            return null;
-//        } else if(message instanceof  DeleteProductPacket){
-//            DeleteProductPacket deleteProductMessage = (DeleteProductPacket) message;
-//            deleteProductMessage.getP().removeProduct(con);
-//            return null;
-
         } else {
             return null;
         }

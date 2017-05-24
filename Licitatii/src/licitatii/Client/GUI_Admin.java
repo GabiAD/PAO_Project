@@ -38,7 +38,6 @@ public class GUI_Admin extends javax.swing.JFrame{
     private JFileChooser fc;
     private Component licitatieUserComponent;
     private boolean anBisect = false;
-    private String utilizator;
     private DefaultListModel listaProduseModel;
     private Client client;
     private ArrayList<Product> listaProduse = new ArrayList<Product>();
@@ -51,9 +50,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         cl = (CardLayout)container.getLayout();
         
         licitatieUserComponent = tabContainer.getComponentAt(2);
-//        licitatieGuestComponent = tabContainer.getComponentAt(3);
-        
-        
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy");
         Date date = new Date();
         
@@ -66,26 +63,12 @@ public class GUI_Admin extends javax.swing.JFrame{
         
         jListProduseProgramare.setModel(new DefaultListModel());
         listaProduseModel = (DefaultListModel) jListProduseProgramare.getModel();
-        
-        
+
         manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
         
         client = new Client(manLiniiLic, listaLicitatii);
         
         connectAsAdmin();
-        
-//        manLiniiLic.addLine("asdafsdds", 10);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 40);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 50);
-//        
-//        manLiniiLic.removeAt(2);
-//        
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 60);
-        
-//        LinieLicitatie ll = new LinieLicitatie(listaLicitatii, "Asdfg");
-//        ll.addLine();
     }
 
     
@@ -547,13 +530,9 @@ public class GUI_Admin extends javax.swing.JFrame{
         auxPret = "0";
         
         client.adaugaProdus(titluTF.getText(), Integer.parseInt(auxPret), descriereTF.getText(), imgLabel.getIcon());
-        
-        //listaProduseModel.add(listaProduseModel.getSize(), String.join(": ", titluTF.getText(), auxPret));
-        //listaProduse.add(new ProdusPacket(titluTF.getText(), Integer.parseInt(auxPret), numeVanzatorTF.getText(), descriereTF.getText(), imgLabel.getIcon()));
-        
+
         resetAddObject();
 
-        ////programeazaButton.setEnabled(true);
     }//GEN-LAST:event_adaugaButtonActionPerformed
 
     private void stergeProdusProgramareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stergeProdusProgramareButtonActionPerformed
@@ -594,20 +573,6 @@ public class GUI_Admin extends javax.swing.JFrame{
                                         ora, 0 ).getTime();
         
         client.sendNewLicitation(listaProduse.get(indexRem), data);
-        
-        
-        /*
-        
-        for (int i = 0; i < listaProduse.size(); i++) {
-            listaProduse.get(i).setData(Integer.parseInt(programareZiBox.getSelectedItem().toString()),
-                                        programareLunaBox.getSelectedItem().toString(), 
-                                        Integer.parseInt(programareAnBox.getSelectedItem().toString()), 
-                                        programareOraBox.getSelectedItem().toString());
-        }
-        
-        client.trimiteProduse(listaProduse);
-        
-        */
 
         listaProduse.remove(indexRem);
         listaProduseModel.removeElementAt(indexRem);
@@ -676,14 +641,9 @@ public class GUI_Admin extends javax.swing.JFrame{
             if(tabContainer.getSelectedIndex() == 0){
                 client.pornesteEcranLicitatii();
             }
-            else
-                client.opresteEcranLicitatii();
         }
         
         if(tabContainer.getSelectedIndex() == 2){
-            
-            //listaProduseModel.add(listaProduseModel.getSize(), String.join(": ", titluTF.getText(), auxPret));
-            //listaProduse.add(new ProdusPacket(titluTF.getText(), Integer.parseInt(auxPret), numeVanzatorTF.getText(), descriereTF.getText(), imgLabel.getIcon()));
             
             listaProduseModel.removeAllElements();
             listaProduse.clear();
@@ -693,14 +653,7 @@ public class GUI_Admin extends javax.swing.JFrame{
             for (int i = 0; i < listaProduse.size(); i++) {
                 listaProduseModel.add(listaProduseModel.size(), String.join(": ", listaProduse.get(i).getTitle(), String.valueOf(listaProduse.get(i).getPrice())));
             }
-            
-            /*
-            if(listaProduse.size() > 0)
-                programeazaButton.setEnabled(true);
-            else
-                programeazaButton.setEnabled(false);
-            */
-            
+
         }
         
     }//GEN-LAST:event_tabContainerStateChanged
@@ -708,9 +661,7 @@ public class GUI_Admin extends javax.swing.JFrame{
     private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
         
         connectAsAdmin();
-        
-        //        tabContainer.remove(licitatieUserComponent);
-        //        tabContainer.add("Liciteaza", licitatieGuestComponent);
+
     }//GEN-LAST:event_adminButtonActionPerformed
 
     private void numeClientTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeClientTFActionPerformed
@@ -722,7 +673,6 @@ public class GUI_Admin extends javax.swing.JFrame{
         if(!client.conectat()){
             client.connectToServer();
         }
-        System.out.println("++++++ " + (numeClientTF == null));
         if(client.conectat() && client.adminLogin(numeClientTF)){
 
             cl.show(container, "card3");
@@ -763,7 +713,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         
         adaugaButton.setEnabled(false);
         
-        BufferedImage bi = null;
+        BufferedImage bi;
         try 
         {
             bi = ImageIO.read(new File("defaultNewObjectImage.png"));

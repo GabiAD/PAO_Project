@@ -29,50 +29,30 @@ public class LinieLicitatie implements Serializable{
     private JButton bidButton;
     private int pozitie = -1;
     private String numeLastUser = "(no name yet)";
-    private java.awt.event.ActionListener actionListener;
     private JLabel numeLastUserLabel = new JLabel();
     
     public LinieLicitatie(String titluStr, int pretMaximStr, Icon icon, int indexLicitatie){
-        
         setMandatoryFields(titluStr, pretMaximStr, icon, indexLicitatie);
-        
     }
     
     public void addActions(Client client){
-        
         pretClient.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                
-                if(!(pretClient.getText().concat(String.valueOf(evt.getKeyChar()))).matches("[0-9]+")){
-                    evt.consume();
-                }
-                
+            if(!(pretClient.getText().concat(String.valueOf(evt.getKeyChar()))).matches("[0-9]+")){
+                evt.consume();
+            }
             }
         });
         
         bidButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
                 if(pretClient.getText().matches("[0-9]+")){
                     int sumaNoua = Integer.parseInt(pretClient.getText());
-                    //System.out.println(sumaNoua);
                     client.anuntaSumaNoua(indexLicitatie, sumaNoua);
                 }
                 
             }
         });
-        
-    }
-    
-    public void removeActions(){
-        
-        for(java.awt.event.KeyListener keyList : pretClient.getKeyListeners()){
-            pretClient.removeKeyListener(keyList);
-        }
-        
-        for(java.awt.event.ActionListener actList : bidButton.getActionListeners()){
-            bidButton.removeActionListener(actList);
-        }
         
     }
     
@@ -127,15 +107,6 @@ public class LinieLicitatie implements Serializable{
         listaLicitatii.remove(numeLastUserLabel);
     }
     
-    public void setIndexLicitatie(int val){
-        indexLicitatie = val;
-    }
-    
-    public int getIndexLicitatie(){
-        return indexLicitatie;
-    }
-    
-    
     // http://stackoverflow.com/questions/9417356/bufferedimage-resize
     public BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
@@ -171,16 +142,9 @@ public class LinieLicitatie implements Serializable{
         bi = getScaledImage(bi, 100, 100);
         imagine.setIcon(new ImageIcon(bi));
 
-        
         titlu = new JLabel(titluStr);
         pretMaxim = new JLabel(String.valueOf(pretMaximStr));
         pretClient = new JTextField(6);
         bidButton = new JButton("Licitati");
-        
-        
     }
-    
-    
-    
-    
 }

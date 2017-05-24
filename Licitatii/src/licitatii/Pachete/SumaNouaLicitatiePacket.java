@@ -22,7 +22,6 @@ public class SumaNouaLicitatiePacket implements Serializable{
         return sumaNoua;
     }
 
-
     public String getName() {
         return name;
     }

@@ -1,7 +1,5 @@
 package licitatii.Client;
 
-import licitatii.Client.LinieLicitatie;
-
 import java.awt.GridBagConstraints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -15,9 +13,8 @@ public class ManagerLiniiLicitatie {
     
     public ManagerLiniiLicitatie(JPanel listaLicitatii){
         this.listaLicitatii = listaLicitatii;
-        
+
         c = new GridBagConstraints();
-        
     }
     
     
@@ -26,31 +23,12 @@ public class ManagerLiniiLicitatie {
         listaLinii.get(listaLinii.size()-1).addActions(client);
         listaLinii.get(listaLinii.size()-1).addToPanel(listaLicitatii, c, listaLinii.size()-1);
     }
-    
-    
-    public void removeAt(int i){
-        
-        listaLinii.get(i).removeFromPanel(listaLicitatii);
-        //listaLinii.get(i).removeAction();
-        listaLinii.remove(i);
-        
-        for (int j = i; j < listaLinii.size(); j++) {
-            listaLinii.get(j).move(listaLicitatii, c, listaLinii.get(j).getPozitie() - 1);
-            
-        }
-        
-    }
 
 
     public void removeAll() {
 
-//        while(listaLinii.size() > 0){
-//            removeAt(0);
-//            
-//        }
-        
+
         for(LinieLicitatie linie: listaLinii){
-            //linie.removeAction();
             linie.removeFromPanel(listaLicitatii);
         }
         listaLinii.clear(); // = new ArrayList<LinieLicitatie>();

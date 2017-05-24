@@ -26,13 +26,9 @@ import licitatii.Models.Product;
 public class GUI_Client extends javax.swing.JFrame{
 
     private CardLayout cl;
-    private JFileChooser fc;
-    private Component licitatieUserComponent;
     private boolean anBisect = false;
     private String utilizator;
-    private DefaultListModel listaProduseModel;
     private Client client;
-    private ArrayList<Product> listaProduse = new ArrayList<Product>();
     private ManagerLiniiLicitatie manLiniiLic;
     
     public GUI_Client() {
@@ -40,28 +36,9 @@ public class GUI_Client extends javax.swing.JFrame{
         
         cl = (CardLayout)container.getLayout();
         
-//        licitatieGuestComponent = tabContainer.getComponentAt(3);
-        
-        
-        DateFormat dateFormat = new SimpleDateFormat("yyyy");
-        Date date = new Date();
-        
         manLiniiLic = new ManagerLiniiLicitatie(listaLicitatii);
         
         client = new Client(manLiniiLic, listaLicitatii);
-        
-//        manLiniiLic.addLine("asdafsdds", 10);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 20);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 30);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 40);
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 50);
-//        
-//        manLiniiLic.removeAt(2);
-//        
-//        manLiniiLic.addLine("asdafsdds2ewfsdgfgdfgfg", 60);
-        
-//        LinieLicitatie ll = new LinieLicitatie(listaLicitatii, "Asdfg");
-//        ll.addLine();
     }
 
     
@@ -265,7 +242,6 @@ public class GUI_Client extends javax.swing.JFrame{
     
     
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        
         utilizator = loginTF.getText();
         
         if(!client.conectat()){
@@ -273,39 +249,17 @@ public class GUI_Client extends javax.swing.JFrame{
         }
         
         if(client.conectat() && client.login(utilizator, String.valueOf(passwordTF.getPassword()))){
-
-            cl.show(container, "card3");        
+            cl.show(container, "card3");
             userName.setText("Logged in as ".concat(loginTF.getText()));
-
-
         }
-//        tabContainer.remove(licitatieGuestComponent);
-//        tabContainer.add("Liciteaza", licitatieUserComponent);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-
         client.logout();
 
         cl.show(container, "card2");
-
     }//GEN-LAST:event_logoutButtonActionPerformed
 
-    
-        
-    // http://stackoverflow.com/questions/9417356/bufferedimage-resize
-    public static BufferedImage getScaledImage(BufferedImage img, int newW, int newH) { 
-        Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-        BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-
-        Graphics2D g2d = dimg.createGraphics();
-        g2d.drawImage(tmp, 0, 0, null);
-        g2d.dispose();
-
-        return dimg;
-    }  
-
-    
     
     /**
      * @param args the command line arguments

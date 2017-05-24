@@ -8,8 +8,6 @@ public class LicitatiiServer {
 
     public static void main(String[] args) throws SQLException, IOException {
 
-        // Setup server
-         
         ServerSocket ss = new ServerSocket(8080);
 
         try {

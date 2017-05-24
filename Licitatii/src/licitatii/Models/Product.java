@@ -138,7 +138,7 @@ public class Product implements Serializable {
     }
     
     private static Icon getIconFromFile(String path){
-        BufferedImage bi = null;
+        BufferedImage bi;
         try
         {
             bi = ImageIO.read(new File(path));
@@ -151,8 +151,7 @@ public class Product implements Serializable {
         return null;
     }
 
-    private static String saveIconToFile(Icon i){
-        //save product image_path
+    private String saveIconToFile(Icon i){
         Image img = ((ImageIcon) i).getImage();
 
         BufferedImage bi = new BufferedImage(img.getWidth(null),img.getHeight(null),BufferedImage.TYPE_3BYTE_BGR);
@@ -172,12 +171,11 @@ public class Product implements Serializable {
 
     public static Product queryProduct(int productId, Connection conn){
         Statement s = null;
-        ResultSet rs = null;
         Product p = null;
+        ResultSet rs;
         try {
             s = conn.createStatement();
             rs = s.executeQuery("SELECT * FROM products WHERE id = \"+" + productId + "\";");
-//            String title, int starting_price, String owner_name, String description, Icon icon
             if(rs.first()){
                 p = new Product(
                         rs.getString("title"),
@@ -218,36 +216,12 @@ public class Product implements Serializable {
         return image_path;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setImage_path(String image_path) {
-        this.image_path = image_path;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Icon getIcon() {
         return icon;
     }
 
-    public String getOwner_name() {
-        return owner_name;
-    }
-
-    public void setOwner_name(String owner_name) {
-        this.owner_name = owner_name;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setIcon(Icon icon) {

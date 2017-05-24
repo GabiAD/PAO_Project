@@ -1,7 +1,5 @@
 package licitatii.Models;
 
-import licitatii.Client.LinieLicitatie;
-
 import java.io.Serializable;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -168,7 +166,7 @@ public class Licitation implements Serializable{
         SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date current_time = new Date();
         PreparedStatement ps = null;
-        ResultSet rs = null;
+        ResultSet rs;
         ArrayList<Licitation> licitations = null;
         try {
             ps = conn.prepareStatement("SELECT * FROM licitations WHERE start_time < ?;");
