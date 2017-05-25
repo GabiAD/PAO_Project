@@ -89,6 +89,7 @@ public class GUI_Admin extends javax.swing.JFrame{
         listaLicitatii = new javax.swing.JPanel();
         numeCumparatorLabel = new javax.swing.JLabel();
         numeClientTF = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         adaugaButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -113,7 +114,6 @@ public class GUI_Admin extends javax.swing.JFrame{
         jScrollPane3 = new javax.swing.JScrollPane();
         jListProduseProgramare = new javax.swing.JList<>();
         stergeProdusProgramareButton = new javax.swing.JButton();
-        logoutButton = new javax.swing.JButton();
         userName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -187,6 +187,13 @@ public class GUI_Admin extends javax.swing.JFrame{
             }
         });
 
+        jButton1.setText("Refresh");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout licitatieUserPanelLayout = new javax.swing.GroupLayout(licitatieUserPanel);
         licitatieUserPanel.setLayout(licitatieUserPanelLayout);
         licitatieUserPanelLayout.setHorizontalGroup(
@@ -199,7 +206,8 @@ public class GUI_Admin extends javax.swing.JFrame{
                         .addComponent(numeCumparatorLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(numeClientTF, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 512, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 443, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         licitatieUserPanelLayout.setVerticalGroup(
@@ -208,7 +216,8 @@ public class GUI_Admin extends javax.swing.JFrame{
                 .addContainerGap()
                 .addGroup(licitatieUserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(numeCumparatorLabel)
-                    .addComponent(numeClientTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numeClientTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                 .addContainerGap())
@@ -430,13 +439,6 @@ public class GUI_Admin extends javax.swing.JFrame{
 
         tabContainer.addTab("Programare", jPanel3);
 
-        logoutButton.setText("Logout");
-        logoutButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                logoutButtonActionPerformed(evt);
-            }
-        });
-
         userName.setForeground(new java.awt.Color(255, 255, 255));
         userName.setText("Signed in as ...");
 
@@ -444,22 +446,18 @@ public class GUI_Admin extends javax.swing.JFrame{
         afterLoginCard.setLayout(afterLoginCardLayout);
         afterLoginCardLayout.setHorizontalGroup(
             afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabContainer)
+            .addComponent(tabContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE)
             .addGroup(afterLoginCardLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(userName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logoutButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         afterLoginCardLayout.setVerticalGroup(
             afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(afterLoginCardLayout.createSequentialGroup()
-                .addComponent(tabContainer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(afterLoginCardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logoutButton))
+                .addComponent(tabContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                .addGap(14, 14, 14)
+                .addComponent(userName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -481,13 +479,6 @@ public class GUI_Admin extends javax.swing.JFrame{
 
     
     
-    private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
-
-        client.logout();
-
-        cl.show(container, "card2");
-    }//GEN-LAST:event_logoutButtonActionPerformed
-
     private void pretTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pretTFKeyTyped
         if(!(pretTF.getText().concat(String.valueOf(evt.getKeyChar()))).matches("[0-9]+")){
             evt.consume();
@@ -668,6 +659,10 @@ public class GUI_Admin extends javax.swing.JFrame{
         // TODO add your handling code here:
     }//GEN-LAST:event_numeClientTFActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        client.updateEcranLicitatii();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void connectAsAdmin(){
         
         if(!client.conectat()){
@@ -776,6 +771,7 @@ public class GUI_Admin extends javax.swing.JFrame{
     private javax.swing.JPanel container;
     private javax.swing.JTextArea descriereTF;
     private javax.swing.JLabel imgLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
@@ -794,7 +790,6 @@ public class GUI_Admin extends javax.swing.JFrame{
     private javax.swing.JPanel licitatieUserPanel;
     private javax.swing.JPanel listaLicitatii;
     private javax.swing.JPanel loginCard;
-    private javax.swing.JButton logoutButton;
     private javax.swing.JTextField numeClientTF;
     private javax.swing.JLabel numeCumparatorLabel;
     private javax.swing.JTextField numeVanzatorTF;
