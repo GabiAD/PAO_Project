@@ -224,6 +224,18 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        finally{
+            
+            conexiuneStabilita = false;
+            
+            try {
+                oos.close();
+                ois.close();
+                socket.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public void anuntaSumaNoua(int indexLicitatie, int sumaNoua) {
